@@ -1,7 +1,7 @@
 package org.kainos.ea;
 
 import io.dropwizard.Configuration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+//import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class DropwizardWebServiceConfiguration extends Configuration {
