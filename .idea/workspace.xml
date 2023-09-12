@@ -4,15 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="">
+    <list default="true" id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="added base authentication. Login endpoint, db validator service with token generator.">
       <change afterPath="$PROJECT_DIR$/src/db.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/AuthService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/cli/Login.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/client/FailedToGenerateTokenException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/client/FailedToLoginException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/core/AuthValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/AuthDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/AuthController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/dao/AuthDaoTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/service/AuthServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/DropwizardWebServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/DropwizardWebServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/DropwizardWebServiceConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/DropwizardWebServiceConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/core/AuthValidator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/AuthDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/AuthDao.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +63,44 @@
       <recent name="org.kainos.ea.core" />
     </key>
   </component>
+  <component name="RunManager" selected="JUnit.AuthDaoTest.validLogin_shouldReturnFalse_whenGetConnectionThrowSqlException">
+    <configuration name="DropwizardWebServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.DropwizardWebServiceApplication" />
+      <module name="bham1-backend" />
+      <option name="PROGRAM_PARAMETERS" value="server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.kainos.ea.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AuthDaoTest.validLogin_shouldReturnFalse_whenGetConnectionThrowSqlException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bham1-backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.kainos.ea.dao.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.kainos.ea.dao" />
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.dao.AuthDaoTest" />
+      <option name="METHOD_NAME" value="validLogin_shouldReturnFalse_whenGetConnectionThrowSqlException" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.AuthDaoTest.validLogin_shouldReturnFalse_whenGetConnectionThrowSqlException" />
+        <item itemvalue="Application.DropwizardWebServiceApplication" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -69,6 +110,27 @@
       <option name="presentableId" value="Default" />
       <updated>1694510361499</updated>
     </task>
+    <task id="LOCAL-00001" summary="added base authentication. Login endpoint, db validator service with token generator.">
+      <option name="closed" value="true" />
+      <created>1694513584740</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1694513584740</updated>
+    </task>
+    <task id="LOCAL-00002" summary="added base authentication. Login endpoint, db validator service with token generator.">
+      <option name="closed" value="true" />
+      <created>1694513599594</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1694513599594</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added base authentication. Login endpoint, db validator service with token generator." />
+    <option name="LAST_COMMIT_MESSAGE" value="added base authentication. Login endpoint, db validator service with token generator." />
   </component>
 </project>

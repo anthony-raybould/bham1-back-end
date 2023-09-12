@@ -11,6 +11,10 @@ public class AuthDao {
     private DatabaseConnector databaseConnector;
 
     public AuthDao(DatabaseConnector databaseConnector) {
+        if(databaseConnector == null)
+        {
+            throw new NullPointerException("Database connector passed in ctor is null");
+        }
         this.databaseConnector = databaseConnector;
     }
 
