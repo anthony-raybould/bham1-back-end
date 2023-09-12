@@ -9,7 +9,7 @@ insert into Role(roleID, name) VALUES (2, 'Employee');
 
 create table `User` (
 	userID SMALLINT NOT NULL,
-    email varchar(64) NOT NULL,
+    email varchar(320) UNIQUE NOT NULL,
     password varchar(255) NOT NULL,
     roleID SMALLINT NOT NULL,
     PRIMARY KEY (userID),
