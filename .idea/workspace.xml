@@ -6,8 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="">
       <change afterPath="$PROJECT_DIR$/src/db.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/DatabaseConnector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/AuthService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/cli/Login.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/client/FailedToGenerateTokenException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/client/FailedToLoginException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/core/AuthValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/AuthDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,13 +48,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "US040-LoginSystem"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;US040-LoginSystem&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="org.kainos.ea.core" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
