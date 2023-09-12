@@ -18,6 +18,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dropwizard.version>2.0.23</dropwizard.version>
         <mainClass>org.kainos.ea.DropwizardWebServiceApplication</mainClass>
+        <checkstyle.config.location>config/checkstyle/checkstyle.xml</checkstyle.config.location>
     </properties>
 
     <dependencyManagement>
@@ -48,6 +49,11 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>10.9.1</version>
         </dependency>
     </dependencies>
 
@@ -133,7 +139,22 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <consoleOutput>true</consoleOutput>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <failOnViolation>true</failOnViolation>
+                    <failsOnError>true</failsOnError>
+                    <configLocation>/config/checkstyle/checkstyle.xml</configLocation>
+                </configuration>
+            </plugin>
+
         </plugins>
+
     </build>
 
     <reporting>
