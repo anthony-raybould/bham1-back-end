@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="added base authentication. Login endpoint, db validator service with token generator.">
+=    <list default="true" id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="added base authentication. Login endpoint, db validator service with token generator.">
       <change afterPath="$PROJECT_DIR$/src/db.properties" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/AuthController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/dao/AuthDaoTest.java" afterDir="false" />
@@ -16,6 +16,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/AuthService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/core/AuthValidator.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/AuthDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/AuthDao.java" afterDir="false" />
+=
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +57,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;US040-LoginSystem&quot;
+
   }
 }</component>
   <component name="RecentsManager">
@@ -104,11 +106,11 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="" />
-      <created>1694510361499</created>
+      <changelist id="c411f47b-d192-4200-8b07-42e824d0a1de" name="Changes" comment="" />
+      <created>1694511868910</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1694510361499</updated>
+      <updated>1694511868910</updated>
     </task>
     <task id="LOCAL-00001" summary="added base authentication. Login endpoint, db validator service with token generator.">
       <option name="closed" value="true" />
