@@ -2,6 +2,7 @@ package org.kainos.ea.api;
 
 import org.kainos.ea.cli.Login;
 import org.kainos.ea.client.FailedToGenerateTokenException;
+import org.kainos.ea.client.FailedToGetUserId;
 import org.kainos.ea.client.FailedToLoginException;
 import org.kainos.ea.db.AuthDao;
 
@@ -22,7 +23,7 @@ public class AuthService {
                 if (authDao.validLogin(login)) {
                     try {
                 return authDao.generateToken(login.getEmail());
-            } catch (SQLException e) {
+            } catch (SQLException | FailedToGetUserId e) {
                 throw new FailedToGenerateTokenException();
             }
         }

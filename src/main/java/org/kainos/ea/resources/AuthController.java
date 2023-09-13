@@ -29,11 +29,9 @@ public class AuthController {
             return Response.ok(authService.login(login)).build();
         } catch (FailedToLoginException e) {
             System.err.println(e.getMessage());
-
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         } catch (FailedToGenerateTokenException e) {
             System.err.println(e.getMessage());
-
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }

@@ -4,19 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-=    <list default="true" id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="added base authentication. Login endpoint, db validator service with token generator.">
-      <change afterPath="$PROJECT_DIR$/src/db.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/AuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/dao/AuthDaoTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/service/AuthServiceTest.java" afterDir="false" />
+    <list default="true" id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="added tests">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/client/FailedToGetUserId.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/DropwizardWebServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/DropwizardWebServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/DropwizardWebServiceConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/DropwizardWebServiceConfiguration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/core/AuthValidator.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/AuthDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/AuthDao.java" afterDir="false" />
-=
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/DatabaseConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/DatabaseConnector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/dao/AuthDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/dao/AuthDaoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/service/AuthServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/service/AuthServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,8 +35,25 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;RobertCrabtreeKainos&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="b70aaf58-163a-4907-b1a6-047dcd3e1804" />
+        <option name="url" value="git@github.com:anthony-raybould/bham1-back-end.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
@@ -57,15 +71,18 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;US040-LoginSystem&quot;
-
   }
 }</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="org.kainos.ea.client" />
       <recent name="org.kainos.ea.core" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
   </component>
-  <component name="RunManager" selected="JUnit.AuthDaoTest.validLogin_shouldReturnFalse_whenGetConnectionThrowSqlException">
+  <component name="RunManager">
     <configuration name="DropwizardWebServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.kainos.ea.DropwizardWebServiceApplication" />
       <module name="bham1-backend" />
@@ -80,7 +97,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AuthDaoTest.validLogin_shouldReturnFalse_whenGetConnectionThrowSqlException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AuthDaoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bham1-backend" />
       <extension name="coverage">
         <pattern>
@@ -90,27 +107,84 @@
       </extension>
       <option name="PACKAGE_NAME" value="org.kainos.ea.dao" />
       <option name="MAIN_CLASS_NAME" value="org.kainos.ea.dao.AuthDaoTest" />
-      <option name="METHOD_NAME" value="validLogin_shouldReturnFalse_whenGetConnectionThrowSqlException" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AuthDaoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bham1-backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.kainos.ea.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.kainos.ea.dao" />
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.dao.AuthDaoTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <dir value="$USER_HOME$/Downloads/java-dropwizard-swagger-jdbc/src/test" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AuthDaoTest.generateToken_shouldThrowFailedToGetUserIdException_whenGetUserIdReturnNegative1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bham1-backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.kainos.ea.dao.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.kainos.ea.dao" />
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.dao.AuthDaoTest" />
+      <option name="METHOD_NAME" value="generateToken_shouldThrowFailedToGetUserIdException_whenGetUserIdReturnNegative1" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="AuthDaoTest.generateToken_shouldThrowFailedtoGetUserIdException_whenGetUserIdReturnNegative1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bham1-backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.kainos.ea.dao.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.kainos.ea.dao" />
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.dao.AuthDaoTest" />
+      <option name="METHOD_NAME" value="generateToken_shouldThrowFailedtoGetUserIdException_whenGetUserIdReturnNegative1" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.DropwizardWebServiceApplication" />
+      <item itemvalue="JUnit.AuthDaoTest" />
+      <item itemvalue="JUnit.AuthDaoTest.generateToken_shouldThrowFailedToGetUserIdException_whenGetUserIdReturnNegative1" />
+      <item itemvalue="JUnit.AuthDaoTest.generateToken_shouldThrowFailedtoGetUserIdException_whenGetUserIdReturnNegative1" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.AuthDaoTest.validLogin_shouldReturnFalse_whenGetConnectionThrowSqlException" />
+        <item itemvalue="JUnit.AuthDaoTest" />
+        <item itemvalue="JUnit.AuthDaoTest" />
         <item itemvalue="Application.DropwizardWebServiceApplication" />
+        <item itemvalue="JUnit.AuthDaoTest.generateToken_shouldThrowFailedToGetUserIdException_whenGetUserIdReturnNegative1" />
+        <item itemvalue="JUnit.AuthDaoTest.generateToken_shouldThrowFailedtoGetUserIdException_whenGetUserIdReturnNegative1" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c411f47b-d192-4200-8b07-42e824d0a1de" name="Changes" comment="" />
-      <created>1694511868910</created>
+      <changelist id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="" />
+      <created>1694510361499</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1694511868910</updated>
+      <updated>1694510361499</updated>
     </task>
     <task id="LOCAL-00001" summary="added base authentication. Login endpoint, db validator service with token generator.">
       <option name="closed" value="true" />
@@ -128,11 +202,20 @@
       <option name="project" value="LOCAL" />
       <updated>1694513599594</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="added tests">
+      <option name="closed" value="true" />
+      <created>1694526394510</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1694526394510</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added base authentication. Login endpoint, db validator service with token generator." />
-    <option name="LAST_COMMIT_MESSAGE" value="added base authentication. Login endpoint, db validator service with token generator." />
+    <MESSAGE value="added tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="added tests" />
   </component>
 </project>

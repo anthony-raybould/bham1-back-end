@@ -1,23 +1,20 @@
 package org.kainos.ea.service;
 
-import io.dropwizard.auth.Auth;
-import org.eclipse.jetty.util.security.Password;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.api.AuthService;
 import org.kainos.ea.cli.Login;
 import org.kainos.ea.client.FailedToGenerateTokenException;
+import org.kainos.ea.client.FailedToGetUserId;
 import org.kainos.ea.client.FailedToLoginException;
 import org.kainos.ea.db.AuthDao;
-import org.kainos.ea.db.DatabaseConnector;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.validation.constraints.Email;
-
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,15 +34,16 @@ public class AuthServiceTest {
     }
 
     @Test
-    void login_shouldThrowFailedToLoginException_whenInvalidLogin() throws FailedToLoginException{
+    void login_shouldThrowFailedToLoginException_whenInvalidLogin() {
         Mockito.when(authDao.validLogin(any(Login.class))).thenReturn(false);
 
         assertThrows(FailedToLoginException.class,
                 () -> authService.login(userLogin));
     }
 
+
     @Test
-    void login_shouldThrowFailedToGenerateLoginToken_whenAuthDaoThrowSQLException() throws SQLException, FailedToGenerateTokenException{
+    void login_shouldThrowFailedToGenerateLoginToken_whenAuthDaoThrowSQLException() throws SQLException, FailedToGetUserId {
         Mockito.when(authDao.validLogin((any(Login.class)))).thenReturn(true);
         Mockito.when(authDao.generateToken(any(String.class))).thenThrow(SQLException.class);
 
@@ -54,7 +52,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    void login_shouldReturnToken_whenValidLogin() throws SQLException, FailedToLoginException, FailedToGenerateTokenException {
+    void login_shouldReturnToken_whenValidLogin() throws SQLException, FailedToLoginException, FailedToGenerateTokenException, FailedToGetUserId {
         Mockito.when(authDao.validLogin((any(Login.class)))).thenReturn(true);
         Mockito.when(authDao.generateToken(any(String.class))).thenReturn("tokenString");
 
