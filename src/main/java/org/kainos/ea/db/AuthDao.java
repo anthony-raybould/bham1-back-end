@@ -2,6 +2,7 @@ package org.kainos.ea.db;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.kainos.ea.cli.Login;
+import org.kainos.ea.cli.User;
 
 import java.sql.*;
 import java.util.Date;
@@ -54,5 +55,29 @@ public class AuthDao {
         st.executeUpdate();
 
         return token;
+    }
+
+    public User validateToken(String token) throws SQLException {
+        Connection c = databaseConnector.getConnection();
+
+        PreparedStatement ps = c.prepareStatement("SELECT userID, email, Role.name, expiry FROM `User` JOIN Token USING (userID) WHERE token=? JOIN Role USING (roleID)");
+
+        ps.setString(1, token);
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Timestamp expiry = rs.getTimestamp("expiry");
+
+            if (expiry.after(new Date())) {
+                return new User(
+                        rs.getInt("userID"),
+                        rs.getString("email"),
+                        rs.getString("Role.name")
+                );
+            }
+        }
+
+        return null;
     }
 }
