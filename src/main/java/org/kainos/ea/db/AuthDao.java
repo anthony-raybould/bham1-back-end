@@ -58,7 +58,7 @@ public class AuthDao {
         st.setTimestamp(3, new java.sql.Timestamp(expiry.getTime()));
 
         st.executeUpdate();
-        System.err.println(token);
+
         return token;
     }
 
