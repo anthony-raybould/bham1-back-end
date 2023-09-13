@@ -6,9 +6,9 @@ public class User implements Principal {
 
     private final int id;
     private final String email;
-    private final String role;
+    private final Role role;
 
-    public User(int id, String email, String role) {
+    public User(int id, String email, Role role) {
         this.id = id;
         this.email = email;
         this.role = role;
@@ -22,7 +22,7 @@ public class User implements Principal {
         return email;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 

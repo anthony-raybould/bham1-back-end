@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.api.AuthService;
 import org.kainos.ea.cli.Login;
+import org.kainos.ea.cli.Role;
 import org.kainos.ea.cli.User;
 import org.kainos.ea.client.FailedToGenerateTokenException;
 import org.kainos.ea.client.FailedToLoginException;
@@ -80,13 +81,13 @@ public class AuthDaoTest {
         Mockito.when(resultSetMock.getTimestamp("expiry")).thenReturn(new java.sql.Timestamp(futureExpiryDate.getTime()));
         Mockito.when(resultSetMock.getInt("userID")).thenReturn(1);
         Mockito.when(resultSetMock.getString("email")).thenReturn("user@email.com");
-        Mockito.when(resultSetMock.getString("Role.name")).thenReturn("Admin");
+        Mockito.when(resultSetMock.getInt("roleID")).thenReturn(1);
 
         User result = authDao.validateToken("validToken");
 
         assertEquals(1, result.getId());
         assertEquals("user@email.com", result.getEmail());
-        assertEquals("Admin", result.getRole());
+        assertEquals(Role.ADMIN, result.getRole());
     }
 
     @Test
