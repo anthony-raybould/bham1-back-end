@@ -21,6 +21,10 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/DatabaseConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/DatabaseConnector.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/AuthController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/dao/AuthDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/dao/AuthDaoTest.java" afterDir="false" />
+    <list default="true" id="c411f47b-d192-4200-8b07-42e824d0a1de" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/create-database-script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/resources/create-database-script.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,12 +38,32 @@
       </list>
     </option>
   </component>
+<<<<<<< HEAD
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "settings.editor.selected.configurable": "preferences.keymap"
+=======
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2VI7iX3ooomxxUfjbZSEDDO5RZS" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "create-database-script",
+    "last_opened_file_path": "/Users/manpreet.mandair/Documents/academy-project/backend/bham1-back-end"
+>>>>>>> origin/main
   }
 }]]></component>
   <component name="RecentsManager">
@@ -145,6 +169,16 @@
     </recent_temporary>
   </component>
   <component name="TaskManager">
+<<<<<<< HEAD
+=======
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c411f47b-d192-4200-8b07-42e824d0a1de" name="Changes" comment="" />
+      <created>1694511868910</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1694511868910</updated>
+    </task>
+>>>>>>> origin/main
     <servers />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
