@@ -2,6 +2,7 @@ package org.kainos.ea.auth;
 
 import io.dropwizard.auth.AuthenticationException;
 import org.junit.jupiter.api.Test;
+import org.kainos.ea.cli.Role;
 import org.kainos.ea.cli.User;
 import org.kainos.ea.db.AuthDao;
 import org.mockito.Mockito;
@@ -16,34 +17,34 @@ public class TokenAuthorizerTest {
 
     @Test
     void tokenAuthorizer_shouldReturnTrue_whenUserHasRequiredRole() {
-        String requiredRole = "Employee";
+        Role requiredRole = Role.EMPLOYEE;
 
         User user = new User(1, "email", requiredRole);
 
-        boolean isPermitted = tokenAuthorizer.authorize(user, requiredRole);
+        boolean isPermitted = tokenAuthorizer.authorize(user, requiredRole.toString());
 
         assertTrue(isPermitted);
     }
 
     @Test
     void tokenAuthorizer_shouldReturnFalse_whenUserDoesNotHaveRequiredRole() {
-        String requiredRole = "Employee";
-        String userRole = "HR";
+        Role requiredRole = Role.ADMIN;
+        Role userRole = Role.EMPLOYEE;
 
         User user = new User(1, "email", userRole);
 
-        boolean isPermitted = tokenAuthorizer.authorize(user, requiredRole);
+        boolean isPermitted = tokenAuthorizer.authorize(user, requiredRole.toString());
 
         assertFalse(isPermitted);
     }
 
     @Test
     void tokenAuthorizer_shouldReturnTrue_whenUserIsAdmin() {
-        String requiredRole = "Employee";
+        Role requiredRole = Role.ADMIN;
 
-        User user = new User(1, "email", "Admin");
+        User user = new User(1, "email", requiredRole);
 
-        boolean isPermitted = tokenAuthorizer.authorize(user, requiredRole);
+        boolean isPermitted = tokenAuthorizer.authorize(user, requiredRole.toString());
 
         assertTrue(isPermitted);
     }
