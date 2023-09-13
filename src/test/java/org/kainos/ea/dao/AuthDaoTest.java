@@ -7,6 +7,7 @@ import org.kainos.ea.cli.Login;
 import org.kainos.ea.client.FailedToGetUserId;
 import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
+import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,9 +26,11 @@ import static org.mockito.Mockito.when;
 public class AuthDaoTest {
     DatabaseConnector databaseConnector = Mockito.mock(DatabaseConnector.class);
     AuthDao authDao = new AuthDao(databaseConnector);
+    String hashedPassword = BCrypt.hashpw("mySecurePassword", BCrypt.gensalt());
+    String invalidHashedPassword = BCrypt.hashpw("notTheExpectedPwd", BCrypt.gensalt());
     Login userLogin = new Login(
             "email@email.com",
-            "thisIsABadPassword"
+            hashedPassword
     );
     @Test
     public void ctor_shouldThrowNullPointerException_whenNullServiceInCTOR() throws  NullPointerException{
@@ -46,7 +49,7 @@ public class AuthDaoTest {
     }
 
     @Test
-    public void validLogin_shouldReturnTrue_whenValidLogin() throws SQLException {
+    public void validLogin_shouldReturnFalse_whenPasswordComparisonNotValid() throws SQLException {
         Connection connectionMock = mock(Connection.class);
         Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
 
@@ -56,11 +59,29 @@ public class AuthDaoTest {
         Mockito.when(connectionMock.createStatement()).thenReturn(statementMock);
         Mockito.when(statementMock.executeQuery(any(String.class))).thenReturn(resultSetMock);
         Mockito.when(resultSetMock.next()).thenReturn(true);
-        Mockito.when(resultSetMock.getString("password")).thenReturn("thisIsABadPassword");
+        Mockito.when(resultSetMock.getString("password")).thenReturn(invalidHashedPassword);
 
-        boolean result = authDao.validLogin(userLogin);
+        assertFalse(
+                () -> authDao.validLogin(userLogin)
+        );
+    }
+    @Test
+    public void validLogin_shouldReturnTrue_whenValidLogin() throws SQLException {
 
-        assertTrue(result);
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
+
+        Statement statementMock = mock(Statement.class);
+        ResultSet resultSetMock = mock(ResultSet.class);
+
+        Mockito.when(connectionMock.createStatement()).thenReturn(statementMock);
+        Mockito.when(statementMock.executeQuery(any(String.class))).thenReturn(resultSetMock);
+        Mockito.when(resultSetMock.next()).thenReturn(true);
+        Mockito.when(resultSetMock.getString("password")).thenReturn(hashedPassword);
+        userLogin.setPassword("mySecurePassword");
+        assertTrue(
+                () ->  authDao.validLogin(userLogin)
+        );
     }
 
     @Test

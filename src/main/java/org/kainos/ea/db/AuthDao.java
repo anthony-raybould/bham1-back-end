@@ -3,7 +3,7 @@ package org.kainos.ea.db;
 import org.apache.commons.lang3.time.DateUtils;
 import org.kainos.ea.cli.Login;
 import org.kainos.ea.client.FailedToGetUserId;
-
+import org.mindrot.jbcrypt.BCrypt;
 import java.sql.*;
 import java.util.Date;
 import java.util.UUID;
@@ -26,7 +26,7 @@ public class AuthDao {
             ResultSet rs = st.executeQuery("SELECT password FROM `User` WHERE email = '"
                     + login.getEmail() + "'");
             while (rs.next()) {
-                return rs.getString("password").equals(login.getPassword());
+                return BCrypt.checkpw(login.getPassword(), rs.getString("password"));
             }
 
         } catch (SQLException e) {
