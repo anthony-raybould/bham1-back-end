@@ -4,15 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="resolved comment.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/client/FailedToGetUserPassword.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/integration/LoginIntegrationTest.java" afterDir="false" />
+    <list default="true" id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="added integration tests">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/AuthDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/AuthDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/dao/AuthDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/dao/AuthDaoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/service/AuthServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/service/AuthServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/integration/LoginIntegrationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/integration/LoginIntegrationTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -257,7 +251,15 @@
       <option name="project" value="LOCAL" />
       <updated>1694611270920</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="added integration tests">
+      <option name="closed" value="true" />
+      <created>1694693786617</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1694693786617</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -277,6 +279,7 @@
     <MESSAGE value="added tests again" />
     <MESSAGE value="api now uses hashed password comparrison for login" />
     <MESSAGE value="resolved comment." />
-    <option name="LAST_COMMIT_MESSAGE" value="resolved comment." />
+    <MESSAGE value="added integration tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="added integration tests" />
   </component>
 </project>

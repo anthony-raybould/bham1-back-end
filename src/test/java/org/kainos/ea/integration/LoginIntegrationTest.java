@@ -1,5 +1,4 @@
 package org.kainos.ea.integration;
-
 import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
 import io.dropwizard.testing.junit5.DropwizardAppExtension;
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
 import org.kainos.ea.cli.Login;
-
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
