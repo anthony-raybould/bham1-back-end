@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.api.AuthService;
 import org.kainos.ea.cli.Login;
 import org.kainos.ea.client.FailedToGetUserId;
+import org.kainos.ea.client.FailedToGetUserPassword;
 import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.mindrot.jbcrypt.BCrypt;
@@ -33,7 +34,7 @@ public class AuthDaoTest {
             hashedPassword
     );
     @Test
-    public void ctor_shouldThrowNullPointerException_whenNullServiceInCTOR() throws  NullPointerException{
+    public void constructor_shouldThrowNullPointerException_whenNullServiceInConstructor() throws  NullPointerException{
         DatabaseConnector nullDatabaseConnector = null;
 
         assertThrows(NullPointerException.class,
@@ -41,51 +42,16 @@ public class AuthDaoTest {
     }
 
     @Test
-    public void validLogin_shouldReturnFalse_whenGetConnectionThrowSqlException() throws SQLException {
+    public void getUserPassword_shouldThrowFailedToGetUserPassword_whenGetConnectionThrowSqlException() throws SQLException {
         Mockito.when(databaseConnector.getConnection()).thenThrow(SQLException.class);
-        assertFalse(
-                () -> authDao.validLogin(userLogin)
+        assertThrows(FailedToGetUserPassword.class,
+                () -> authDao.getUserPassword(userLogin.getEmail())
         );
     }
 
-    @Test
-    public void validLogin_shouldReturnFalse_whenPasswordComparisonNotValid() throws SQLException {
-        Connection connectionMock = mock(Connection.class);
-        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
-
-        Statement statementMock = mock(Statement.class);
-        ResultSet resultSetMock = mock(ResultSet.class);
-
-        Mockito.when(connectionMock.createStatement()).thenReturn(statementMock);
-        Mockito.when(statementMock.executeQuery(any(String.class))).thenReturn(resultSetMock);
-        Mockito.when(resultSetMock.next()).thenReturn(true);
-        Mockito.when(resultSetMock.getString("password")).thenReturn(invalidHashedPassword);
-
-        assertFalse(
-                () -> authDao.validLogin(userLogin)
-        );
-    }
-    @Test
-    public void validLogin_shouldReturnTrue_whenValidLogin() throws SQLException {
-
-        Connection connectionMock = mock(Connection.class);
-        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
-
-        Statement statementMock = mock(Statement.class);
-        ResultSet resultSetMock = mock(ResultSet.class);
-
-        Mockito.when(connectionMock.createStatement()).thenReturn(statementMock);
-        Mockito.when(statementMock.executeQuery(any(String.class))).thenReturn(resultSetMock);
-        Mockito.when(resultSetMock.next()).thenReturn(true);
-        Mockito.when(resultSetMock.getString("password")).thenReturn(hashedPassword);
-        userLogin.setPassword("mySecurePassword");
-        assertTrue(
-                () ->  authDao.validLogin(userLogin)
-        );
-    }
 
     @Test
-    public void getUserId_shouldReturnNegative1_whenCantFindId() throws SQLException, FailedToGetUserId {
+    public void getUserId_shouldReturnNegative1_whenCantFindId() throws SQLException {
         Connection connectionMock = mock(Connection.class);
         Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
 
@@ -101,7 +67,7 @@ public class AuthDaoTest {
     }
 
     @Test
-    public void getUserId_shouldReturnUserId_whenValid() throws SQLException, FailedToGetUserId {
+    public void getUserId_shouldReturnUserId_whenValid() throws SQLException {
         Connection connectionMock = mock(Connection.class);
         Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
 
@@ -117,7 +83,7 @@ public class AuthDaoTest {
         assertEquals(result, 1);
     }
     @Test
-    public void generateToken_shouldThrowFailedToGetUserIdException_whenGetUserIdReturnNegative1() throws SQLException, FailedToGetUserId {
+    public void generateToken_shouldThrowFailedToGetUserIdException_whenGetUserIdReturnNegative1() throws SQLException {
         Connection connectionMock = mock(Connection.class);
         Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
 

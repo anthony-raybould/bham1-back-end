@@ -1,8 +1,10 @@
 package org.kainos.ea.db;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.eclipse.jetty.server.Authentication;
 import org.kainos.ea.cli.Login;
 import org.kainos.ea.client.FailedToGetUserId;
+import org.kainos.ea.client.FailedToGetUserPassword;
 import org.mindrot.jbcrypt.BCrypt;
 import java.sql.*;
 import java.util.Date;
@@ -12,34 +14,31 @@ public class AuthDao {
     private DatabaseConnector databaseConnector;
 
     public AuthDao(DatabaseConnector databaseConnector) {
-        if(databaseConnector == null)
-        {
-            throw new NullPointerException("Database connector passed in ctor is null");
+        if (databaseConnector == null) {
+            throw new NullPointerException("Database connector passed into constructor is null");
         }
         this.databaseConnector = databaseConnector;
     }
 
-    public boolean validLogin(Login login) {
+    public String getUserPassword(String userEmail) throws FailedToGetUserPassword {
         try (Connection c = databaseConnector.getConnection()) {
             Statement st = c.createStatement();
 
             ResultSet rs = st.executeQuery("SELECT password FROM `User` WHERE email = '"
-                    + login.getEmail() + "'");
+                    + userEmail + "'");
             while (rs.next()) {
-                return BCrypt.checkpw(login.getPassword(), rs.getString("password"));
+                return rs.getString("password");
             }
-
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
         }
-
-        return false;
+        catch (SQLException e)
+        {
+            throw new FailedToGetUserPassword();
+        }
+        return null;
     }
-
     public String generateToken(String email) throws SQLException, FailedToGetUserId {
         int userId = getUserId(email);
-        if(userId == -1)
-        {
+        if (userId == -1) {
             throw new FailedToGetUserId();
         }
 
