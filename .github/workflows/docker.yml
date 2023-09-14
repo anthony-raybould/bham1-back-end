@@ -4,7 +4,7 @@ name: AWS Deployment
 
 on:
   push:
-    branches: [ "main", "US036-deploy-api-aws" ]
+    branches: [ "main" ]
 
   workflow_dispatch:
 
