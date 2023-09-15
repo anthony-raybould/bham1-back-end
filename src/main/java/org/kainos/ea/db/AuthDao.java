@@ -1,8 +1,12 @@
 package org.kainos.ea.db;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
 import org.apache.commons.lang3.time.DateUtils;
 import org.eclipse.jetty.server.Authentication;
 import org.kainos.ea.cli.Login;
+import org.kainos.ea.client.FailedToGenerateTokenException;
 import org.kainos.ea.client.FailedToGetUserId;
 import org.kainos.ea.client.FailedToGetUserPassword;
 import org.mindrot.jbcrypt.BCrypt;
@@ -36,29 +40,24 @@ public class AuthDao {
         }
         return null;
     }
-    public String generateToken(String email) throws SQLException, FailedToGetUserId {
+    public String generateToken(String email) throws SQLException, FailedToGetUserId, FailedToGenerateTokenException {
         int userId = getUserId(email);
         if (userId == -1) {
             throw new FailedToGetUserId();
         }
 
-        String token = UUID.randomUUID().toString();
-        Date expiry = DateUtils.addHours(new Date(), 24);
+        try {
+            Algorithm algorithm = Algorithm.HMAC256("superSecretWords");
 
-        Connection c = databaseConnector.getConnection();
-
-        String insertStatement = "INSERT INTO Token (userID, token, expiry) " +
-                "VALUES (?, ?, ?)";
-
-        PreparedStatement st = c.prepareStatement(insertStatement);
-
-        st.setInt(1, userId);
-        st.setString(2, token);
-        st.setTimestamp(3, new java.sql.Timestamp(expiry.getTime()));
-
-        st.executeUpdate();
-
-        return token;
+            return JWT.create().withExpiresAt(DateUtils.addDays(new Date(), 1))
+                    .withClaim("userId", userId)
+                    .withClaim("email", email)
+                    .withIssuer("auth0")
+                    .sign(algorithm);
+        }
+        catch (JWTCreationException exception) {
+            throw new FailedToGenerateTokenException();
+        }
     }
 
     public int getUserId(String email) throws SQLException {

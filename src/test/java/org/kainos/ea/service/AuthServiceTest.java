@@ -45,7 +45,7 @@ public class AuthServiceTest {
 
 
     @Test
-    void login_shouldThrowFailedToLoginException_whenSQLExceptionThrown() throws SQLException, FailedToGetUserId, FailedToGetUserPassword {
+    void login_shouldThrowFailedToLoginException_whenSQLExceptionThrown() throws SQLException, FailedToGetUserId, FailedToGetUserPassword, FailedToGenerateTokenException {
         Mockito.when(authDao.getUserPassword((any(String.class)))).thenReturn(hashedPassword);
         Mockito.when(authDao.generateToken(any(String.class))).thenThrow(SQLException.class);
 
@@ -63,7 +63,7 @@ public class AuthServiceTest {
         assertEquals(result, "tokenString");
     }
     @Test
-    void login_shouldThrowFailedToGetUserPassword_whenGetUserPasswordReturnNull() throws FailedToGetUserPassword, FailedToGetUserId, SQLException {
+    void login_shouldThrowFailedToGetUserPassword_whenGetUserPasswordReturnNull() throws FailedToGetUserPassword, FailedToGetUserId, SQLException, FailedToGenerateTokenException {
         Mockito.when(authDao.getUserPassword((any(String.class)))).thenReturn(null );
         Mockito.when(authDao.generateToken(any(String.class))).thenReturn("tokenString");
 

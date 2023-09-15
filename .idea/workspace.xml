@@ -6,7 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="added integration tests">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/AuthDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/AuthDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/integration/LoginIntegrationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/integration/LoginIntegrationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/service/AuthServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/service/AuthServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,11 +46,6 @@
       </UrlAndAccount>
     </option>
   </component>
-  <component name="JavaAutoRunManager">
-    <enabled-run-configurations>
-      <run-configuration type="JUnit" name="AuthServiceTest" />
-    </enabled-run-configurations>
-  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -81,18 +79,17 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.LoginIntegrationTest.login_shouldReturn401_whenInValidLogin">
-    <configuration name="AuthDaoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.AuthDaoTest">
+    <configuration name="DropwizardWebServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.DropwizardWebServiceApplication" />
       <module name="bham1-backend" />
+      <option name="PROGRAM_PARAMETERS" value="server" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.kainos.ea.dao.*" />
+          <option name="PATTERN" value="org.kainos.ea.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="org.kainos.ea.dao" />
-      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.dao.AuthDaoTest" />
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -129,18 +126,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AuthServiceTest.login_shouldThrowFailedToGetUserPassword_whenGetUserPasswordReturnNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="LoginIntegrationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bham1-backend" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.kainos.ea.service.*" />
+          <option name="PATTERN" value="org.kainos.ea.integration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="org.kainos.ea.service" />
-      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.service.AuthServiceTest" />
-      <option name="METHOD_NAME" value="login_shouldThrowFailedToGetUserPassword_whenGetUserPasswordReturnNull" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="org.kainos.ea.integration" />
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.integration.LoginIntegrationTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -178,19 +174,20 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.DropwizardWebServiceApplication" />
+      <item itemvalue="JUnit.AuthDaoTest" />
       <item itemvalue="JUnit.AuthServiceTest" />
-      <item itemvalue="JUnit.AuthServiceTest.login_shouldThrowFailedToGetUserPassword_whenGetUserPasswordReturnNull" />
+      <item itemvalue="JUnit.LoginIntegrationTest" />
       <item itemvalue="JUnit.LoginIntegrationTest.login_shouldReturn200_whenValidLogin" />
       <item itemvalue="JUnit.LoginIntegrationTest.login_shouldReturn401_whenInValidLogin" />
-      <item itemvalue="JUnit.AuthDaoTest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.LoginIntegrationTest.login_shouldReturn401_whenInValidLogin" />
-        <item itemvalue="JUnit.LoginIntegrationTest.login_shouldReturn200_whenValidLogin" />
         <item itemvalue="JUnit.AuthDaoTest" />
-        <item itemvalue="JUnit.AuthServiceTest.login_shouldThrowFailedToGetUserPassword_whenGetUserPasswordReturnNull" />
+        <item itemvalue="Application.DropwizardWebServiceApplication" />
         <item itemvalue="JUnit.AuthServiceTest" />
+        <item itemvalue="JUnit.LoginIntegrationTest" />
+        <item itemvalue="JUnit.LoginIntegrationTest.login_shouldReturn401_whenInValidLogin" />
       </list>
     </recent_temporary>
   </component>
@@ -259,7 +256,15 @@
       <option name="project" value="LOCAL" />
       <updated>1694693786617</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="added integration tests">
+      <option name="closed" value="true" />
+      <created>1694694877721</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1694694877721</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
