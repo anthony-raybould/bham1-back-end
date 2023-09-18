@@ -1,20 +1,10 @@
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Java CI with Maven
+name: Run integration tests
 
 env:
   TARGET_DOMAIN: "http://localhost:8080"
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -38,5 +28,5 @@ jobs:
           echo "user=${{ secrets.DB_USER }}" >> db.properties &&
           echo "password=${{ secrets.DB_PASSWORD }}" >> db.properties
 
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml
+      - name: Run integration tests
+        run: mvn -B integration-test --file pom.xml
