@@ -11,3 +11,10 @@ Health Check
 ---
 
 To see your applications health enter url `http://localhost:8081/healthcheck`
+
+ENV Variables
+---
+1. Create the ENV variables below for the LoginIntegrationTest build configuration.
+TARGET_DOMAIN
+TEST_USERNAME=
+TEST_PASSWORD=

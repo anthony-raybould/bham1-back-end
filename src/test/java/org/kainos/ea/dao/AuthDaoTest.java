@@ -28,7 +28,6 @@ public class AuthDaoTest {
     AuthDao authDao = new AuthDao(databaseConnector);
     TokenService tokenService = new TokenService(authDao);
     String hashedPassword = BCrypt.hashpw("mySecurePassword", BCrypt.gensalt());
-    String invalidHashedPassword = BCrypt.hashpw("notTheExpectedPwd", BCrypt.gensalt());
     Login userLogin = new Login(
             "email@email.com",
             hashedPassword
@@ -40,7 +39,6 @@ public class AuthDaoTest {
         assertThrows(NullPointerException.class,
                 () -> new AuthDao(nullDatabaseConnector));
     }
-
     @Test
     public void getUserPassword_shouldThrowFailedToGetUserPassword_whenGetConnectionThrowSqlException() throws SQLException {
         Mockito.when(databaseConnector.getConnection()).thenThrow(SQLException.class);
@@ -48,8 +46,6 @@ public class AuthDaoTest {
                 () -> authDao.getUserPassword(userLogin.getEmail())
         );
     }
-
-
     @Test
     public void getUserId_shouldReturnNegative1_whenCantFindId() throws SQLException {
         Connection connectionMock = mock(Connection.class);
