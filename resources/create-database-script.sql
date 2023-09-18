@@ -53,8 +53,8 @@ CREATE TABLE `Roles` (
 );
 
 insert into Roles(jobRoleID, jobRoleName,jobSpecSummary,bandID,capabilityID,responsibilities,sharePoint)
- VALUES (1, 'Trainee Software Engineer', "Lorem ipsum super long words",1, ,2"lorem impsum some more", "https://kainossoftwareltd.sharepoint.com/:b:/r/people/Job%20Specifications/Engineering/Job%20profile%20-%20Software%20Engineer%20(Trainee).pdf?csf=1&web=1&e=nQzHld");
+ VALUES (1, 'Trainee Software Engineer', "Lorem ipsum super long words",1, ,2,"lorem impsum some more", "https://kainossoftwareltd.sharepoint.com/:b:/r/people/Job%20Specifications/Engineering/Job%20profile%20-%20Software%20Engineer%20(Trainee).pdf?csf=1&web=1&e=nQzHld");
 insert into Roles(jobRoleID, jobRoleName,jobSpecSummary,bandID,capabilityID,responsibilities,sharePoint)
- VALUES (2, 'Associate Software Engineer', "Lorem ipsum super long words",3, ,2"lorem impsum some more", "https://kainossoftwareltd.sharepoint.com/:b:/r/people/Job%20Specifications/Engineering/Job%20profile%20-%20Software%20Engineer%20(Associate).pdf?csf=1&web=1&e=GHWpmX");
+ VALUES (2, 'Associate Software Engineer', "Lorem ipsum super long words",3, ,2,"lorem impsum some more", "https://kainossoftwareltd.sharepoint.com/:b:/r/people/Job%20Specifications/Engineering/Job%20profile%20-%20Software%20Engineer%20(Associate).pdf?csf=1&web=1&e=GHWpmX");
 
 
