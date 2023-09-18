@@ -2,14 +2,13 @@ package org.kainos.ea.dao;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.kainos.ea.api.AuthService;
+import org.kainos.ea.auth.TokenService;
 import org.kainos.ea.cli.Login;
 import org.kainos.ea.client.FailedToGetUserId;
 import org.kainos.ea.client.FailedToGetUserPassword;
 import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.mindrot.jbcrypt.BCrypt;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -27,6 +26,7 @@ import static org.mockito.Mockito.when;
 public class AuthDaoTest {
     DatabaseConnector databaseConnector = Mockito.mock(DatabaseConnector.class);
     AuthDao authDao = new AuthDao(databaseConnector);
+    TokenService tokenService = new TokenService(authDao);
     String hashedPassword = BCrypt.hashpw("mySecurePassword", BCrypt.gensalt());
     String invalidHashedPassword = BCrypt.hashpw("notTheExpectedPwd", BCrypt.gensalt());
     Login userLogin = new Login(
@@ -95,6 +95,6 @@ public class AuthDaoTest {
         Mockito.when(resultSetMock.next()).thenReturn(false);
 
         assertThrows(FailedToGetUserId.class,
-                () -> authDao.generateToken("email@email.com"));
+                () -> tokenService.generateToken("email@email.com"));
     }
 }

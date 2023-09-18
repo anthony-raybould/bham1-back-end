@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="added integration tests">
+    <list default="true" id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="endpoint returns JWT on login">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/auth/TokenService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/auth/TokenServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/DropwizardWebServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/DropwizardWebServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/AuthService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/AuthDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/AuthDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/dao/AuthDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/dao/AuthDaoTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/integration/LoginIntegrationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/integration/LoginIntegrationTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/service/AuthServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/service/AuthServiceTest.java" afterDir="false" />
     </list>
@@ -79,115 +83,61 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.AuthDaoTest">
-    <configuration name="DropwizardWebServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.DropwizardWebServiceApplication" />
+  <component name="RunManager" selected="JUnit.service in bham1-backend">
+    <configuration name="auth in bham1-backend" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bham1-backend" />
-      <option name="PROGRAM_PARAMETERS" value="server" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.kainos.ea.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java/org/kainos/ea/auth" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AuthDaoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="dao in bham1-backend" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bham1-backend" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.kainos.ea.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.kainos.ea.dao" />
-      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.dao.AuthDaoTest" />
-      <option name="METHOD_NAME" value="" />
-      <option name="TEST_OBJECT" value="class" />
-      <dir value="$USER_HOME$/Downloads/java-dropwizard-swagger-jdbc/src/test" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java/org/kainos/ea/dao" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AuthServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="integration in bham1-backend" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bham1-backend" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.kainos.ea.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.kainos.ea.service" />
-      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.service.AuthServiceTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java/org/kainos/ea/integration" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LoginIntegrationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="java in bham1-backend" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bham1-backend" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.kainos.ea.integration.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.kainos.ea.integration" />
-      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.integration.LoginIntegrationTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LoginIntegrationTest.login_shouldReturn200_whenValidLogin" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="service in bham1-backend" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bham1-backend" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.kainos.ea.integration.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.kainos.ea.integration" />
-      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.integration.LoginIntegrationTest" />
-      <option name="METHOD_NAME" value="login_shouldReturn200_whenValidLogin" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="LoginIntegrationTest.login_shouldReturn401_whenInValidLogin" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="bham1-backend" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.kainos.ea.integration.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.kainos.ea.integration" />
-      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.integration.LoginIntegrationTest" />
-      <option name="METHOD_NAME" value="login_shouldReturn401_whenInValidLogin" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java/org/kainos/ea/service" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.DropwizardWebServiceApplication" />
-      <item itemvalue="JUnit.AuthDaoTest" />
-      <item itemvalue="JUnit.AuthServiceTest" />
-      <item itemvalue="JUnit.LoginIntegrationTest" />
-      <item itemvalue="JUnit.LoginIntegrationTest.login_shouldReturn200_whenValidLogin" />
-      <item itemvalue="JUnit.LoginIntegrationTest.login_shouldReturn401_whenInValidLogin" />
+      <item itemvalue="JUnit.auth in bham1-backend" />
+      <item itemvalue="JUnit.dao in bham1-backend" />
+      <item itemvalue="JUnit.integration in bham1-backend" />
+      <item itemvalue="JUnit.java in bham1-backend" />
+      <item itemvalue="JUnit.service in bham1-backend" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.AuthDaoTest" />
-        <item itemvalue="Application.DropwizardWebServiceApplication" />
-        <item itemvalue="JUnit.AuthServiceTest" />
-        <item itemvalue="JUnit.LoginIntegrationTest" />
-        <item itemvalue="JUnit.LoginIntegrationTest.login_shouldReturn401_whenInValidLogin" />
+        <item itemvalue="JUnit.service in bham1-backend" />
+        <item itemvalue="JUnit.integration in bham1-backend" />
+        <item itemvalue="JUnit.dao in bham1-backend" />
+        <item itemvalue="JUnit.auth in bham1-backend" />
+        <item itemvalue="JUnit.java in bham1-backend" />
       </list>
     </recent_temporary>
   </component>
@@ -264,7 +214,15 @@
       <option name="project" value="LOCAL" />
       <updated>1694694877721</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="endpoint returns JWT on login">
+      <option name="closed" value="true" />
+      <created>1694766291708</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1694766291708</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -285,6 +243,18 @@
     <MESSAGE value="api now uses hashed password comparrison for login" />
     <MESSAGE value="resolved comment." />
     <MESSAGE value="added integration tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="added integration tests" />
+    <MESSAGE value="endpoint returns JWT on login" />
+    <option name="LAST_COMMIT_MESSAGE" value="endpoint returns JWT on login" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/kainos/ea/api/AuthService.java</url>
+          <line>30</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

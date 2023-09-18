@@ -33,31 +33,10 @@ public class AuthDao {
             while (rs.next()) {
                 return rs.getString("password");
             }
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             throw new FailedToGetUserPassword();
         }
         return null;
-    }
-    public String generateToken(String email) throws SQLException, FailedToGetUserId, FailedToGenerateTokenException {
-        int userId = getUserId(email);
-        if (userId == -1) {
-            throw new FailedToGetUserId();
-        }
-
-        try {
-            Algorithm algorithm = Algorithm.HMAC256("superSecretWords");
-
-            return JWT.create().withExpiresAt(DateUtils.addDays(new Date(), 1))
-                    .withClaim("userId", userId)
-                    .withClaim("email", email)
-                    .withIssuer("auth0")
-                    .sign(algorithm);
-        }
-        catch (JWTCreationException exception) {
-            throw new FailedToGenerateTokenException();
-        }
     }
 
     public int getUserId(String email) throws SQLException {

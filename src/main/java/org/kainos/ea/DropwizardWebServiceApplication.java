@@ -6,6 +6,7 @@ import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import org.kainos.ea.api.AuthService;
+import org.kainos.ea.auth.TokenService;
 import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.resources.AuthController;
@@ -35,8 +36,8 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
     @Override
     public void run(final DropwizardWebServiceConfiguration configuration,
                     final Environment environment) {
-        environment.jersey().register(new AuthController(new AuthService(
-                new AuthDao(new DatabaseConnector()))));
+        AuthDao authDao = new AuthDao(new DatabaseConnector());
+        environment.jersey().register(new AuthController(new AuthService(authDao,new TokenService(authDao))));
     }
 
 }
