@@ -5,12 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="Using env variables.">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/auth/JWTService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/DropwizardWebServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/DropwizardWebServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/auth/TokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/auth/TokenService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/auth/TokenServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/auth/TokenServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/dao/AuthDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/dao/AuthDaoTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -76,6 +84,21 @@
     </key>
   </component>
   <component name="RunManager" selected="JUnit.LoginIntegrationTest">
+    <configuration name="AuthDaoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bham1-backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.kainos.ea.dao.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.kainos.ea.dao" />
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.dao.AuthDaoTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="LoginIntegrationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bham1-backend" />
       <extension name="coverage">
@@ -113,51 +136,51 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="dao in bham1-backend" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TokenServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bham1-backend" />
-      <option name="MAIN_CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="TEST_OBJECT" value="directory" />
-      <dir value="$PROJECT_DIR$/src/test/java/org/kainos/ea/dao" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.kainos.ea.auth.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.kainos.ea.auth" />
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.auth.TokenServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="integration in bham1-backend" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TokenServiceTest.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bham1-backend" />
-      <option name="TEST_OBJECT" value="directory" />
-      <dir value="$PROJECT_DIR$/src/test/java/org/kainos/ea/integration" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="service in bham1-backend" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="bham1-backend" />
-      <option name="MAIN_CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="TEST_OBJECT" value="directory" />
-      <envs>
-        <env name="TARGET_DOMAIN" value="http://localhost:8080" />
-      </envs>
-      <dir value="$PROJECT_DIR$/src/test/java/org/kainos/ea/service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.kainos.ea.auth.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.kainos.ea.auth" />
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.auth.TokenServiceTest" />
+      <option name="METHOD_NAME" value="test" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
+      <item itemvalue="JUnit.AuthDaoTest" />
+      <item itemvalue="JUnit.TokenServiceTest" />
+      <item itemvalue="JUnit.TokenServiceTest.test" />
       <item itemvalue="JUnit.LoginIntegrationTest.login_shouldReturn200_whenValidLogin" />
       <item itemvalue="JUnit.LoginIntegrationTest" />
-      <item itemvalue="JUnit.dao in bham1-backend" />
-      <item itemvalue="JUnit.integration in bham1-backend" />
-      <item itemvalue="JUnit.service in bham1-backend" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.LoginIntegrationTest" />
+        <item itemvalue="JUnit.AuthDaoTest" />
+        <item itemvalue="JUnit.TokenServiceTest" />
+        <item itemvalue="JUnit.TokenServiceTest.test" />
         <item itemvalue="JUnit.LoginIntegrationTest.login_shouldReturn200_whenValidLogin" />
-        <item itemvalue="JUnit.service in bham1-backend" />
-        <item itemvalue="JUnit.integration in bham1-backend" />
-        <item itemvalue="JUnit.dao in bham1-backend" />
       </list>
     </recent_temporary>
   </component>
@@ -258,7 +281,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695031090051</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Using env variables.">
+      <option name="closed" value="true" />
+      <created>1695031582614</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1695031582614</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

@@ -1,26 +1,26 @@
 package org.kainos.ea.auth;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import org.apache.commons.lang3.time.DateUtils;
 import org.kainos.ea.client.FailedToGenerateTokenException;
 import org.kainos.ea.client.FailedToGetUserId;
 import org.kainos.ea.db.AuthDao;
 
 import java.sql.SQLException;
-import java.util.Date;
 
 public class TokenService {
     private AuthDao authDao;
+    private JWTService jwtTokenService;
 
-    public TokenService(AuthDao authDao)
+
+    public TokenService(AuthDao authDao, JWTService jwtTokenService)
     {
-        if(authDao == null)
+        if(authDao == null || jwtTokenService == null)
         {
-            throw new NullPointerException("Auth dao service passed in is null.");
+            throw new NullPointerException("Null service passed into constructor.");
         }
+
         this.authDao = authDao;
+        this.jwtTokenService = jwtTokenService;
     }
     public String generateToken(String email) throws SQLException, FailedToGetUserId, FailedToGenerateTokenException {
         int userId = authDao.getUserId(email);
@@ -29,13 +29,7 @@ public class TokenService {
         }
 
         try {
-            Algorithm algorithm = Algorithm.HMAC256("superSecretWords");
-
-            return JWT.create().withExpiresAt(DateUtils.addDays(new Date(), 1))
-                    .withClaim("userId", userId)
-                    .withClaim("email", email)
-                    .withIssuer("auth0")
-                    .sign(algorithm);
+            return jwtTokenService.create(email,userId);
         }
         catch (JWTCreationException exception) {
             throw new FailedToGenerateTokenException();
