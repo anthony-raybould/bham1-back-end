@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.kainos.ea.api.JobRoleService;
+import org.kainos.ea.cli.JobRoleResponse;
 import org.kainos.ea.client.FailedJobRolesOperationException;
 
 import javax.annotation.security.RolesAllowed;
@@ -27,7 +28,7 @@ public class JobRoleController {
     @Path("/job-roles")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("Employee")
-    @ApiOperation(value = "Returns all job roles", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION))
+    @ApiOperation(value = "Returns all job roles", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION), response = JobRoleResponse.class)
     public Response getJobRoles() {
         try {
             return Response.ok(jobRoleService.getJobRoles()).build();

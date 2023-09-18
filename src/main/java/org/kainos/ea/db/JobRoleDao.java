@@ -1,6 +1,8 @@
 package org.kainos.ea.db;
 
-import org.kainos.ea.cli.JobRole;
+import org.kainos.ea.cli.JobBandResponse;
+import org.kainos.ea.cli.JobCapabilityResponse;
+import org.kainos.ea.cli.JobRoleResponse;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -20,17 +22,32 @@ public class JobRoleDao {
         this.databaseConnector = databaseConnector;
     }
 
-    public List<JobRole> getJobRoles() throws SQLException {
+    public List<JobRoleResponse> getJobRoles() throws SQLException {
         Connection c = databaseConnector.getConnection();
 
         Statement st = c.createStatement();
 
-        ResultSet rs = st.executeQuery("SELECT jobRoleID, name FROM JobRole");
+        ResultSet rs = st.executeQuery("SELECT jobRoleID, jobRoleName, jobSpecSummary, JobBands.bandID, bandName, JobCapability.capabilityID, capabilityName, responsibilities, sharePoint FROM JobRoles" +
+                " INNER JOIN JobBands ON JobRoles.bandID = JobBands.bandID" +
+                " INNER JOIN JobCapability ON JobRoles.capabilityID = JobCapability.capabilityID");
 
-        List<JobRole> jobRoles = new ArrayList<>();
+        List<JobRoleResponse> jobRoles = new ArrayList<>();
 
         while (rs.next()) {
-            jobRoles.add(new JobRole(rs.getInt("jobRoleID"), rs.getString("name")));
+            jobRoles.add(new JobRoleResponse(
+                    rs.getInt("jobRoleID"),
+                    rs.getString("jobRoleName"),
+                    rs.getString("jobSpecSummary"),
+                    new JobBandResponse(
+                            rs.getInt("JobBands.bandID"),
+                            rs.getString("bandName")
+                    ),
+                    new JobCapabilityResponse(
+                            rs.getInt("JobCapability.capabilityID"),
+                            rs.getString("capabilityName")
+                    ),
+                    rs.getString("responsibilities"),
+                    rs.getString("sharePoint")));
         }
 
         return jobRoles;
