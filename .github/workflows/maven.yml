@@ -7,6 +7,9 @@
 
 name: Java CI with Maven
 
+env:
+  TARGET_DOMAIN: "http://localhost:8080"
+
 on:
   push:
     branches: [ "main" ]
