@@ -21,6 +21,3 @@ mysql -h $host -P 3306 -u $user -p$password $name < resources/create-database-sc
 
 echo "[*] Inserting test users"
 mysql -h $host -P 3306 -u $user -p$password $name < resources/insert-test-users.sql
-
-echo "[*] Inserting test job roles"
-mysql -h $host -P 3306 -u $user -p$password $name < resources/insert-test-job-roles.sql
