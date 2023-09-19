@@ -1,9 +1,13 @@
 package org.kainos.ea.api;
 
+import org.eclipse.jetty.server.Authentication;
 import org.kainos.ea.cli.JobRoleResponse;
+import org.kainos.ea.cli.UpdateJobRoleRequest;
 import org.kainos.ea.client.FailedJobRolesOperationException;
+import org.kainos.ea.client.FailedToUpdateJobRoleException;
 import org.kainos.ea.db.JobRoleDao;
 
+import java.security.cert.CertPathBuilder;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
@@ -25,4 +29,16 @@ public class JobRoleService {
         }
     }
 
+    public int updateJobRole(Short id, UpdateJobRoleRequest jobRoleRequest) throws FailedJobRolesOperationException, FailedToUpdateJobRoleException {
+        try{
+             if(jobRoleDao.updateJobRole(id, jobRoleRequest) == id){
+                 return id;
+             }
+             else{
+                 throw new FailedToUpdateJobRoleException();
+            }
+        } catch (SQLException e) {
+            throw new FailedJobRolesOperationException("Failed to update job role", e);
+        }
+    }
 }
