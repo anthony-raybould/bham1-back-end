@@ -2,24 +2,26 @@ package org.kainos.ea.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.kainos.ea.cli.JobBandResponse;
+import org.kainos.ea.cli.JobCapabilityResponse;
 import org.kainos.ea.cli.JobRoleResponse;
+import org.kainos.ea.cli.UpdateJobRoleRequest;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 
 public class JobRoleDaoTest {
 
-    DatabaseConnector databaseConnector = Mockito.mock(DatabaseConnector.class);
+    DatabaseConnector databaseConnector = mock(DatabaseConnector.class);
 
     JobRoleDao jobRoleDao;
 
@@ -35,11 +37,11 @@ public class JobRoleDaoTest {
 
     @Test
     public void getJobRoles_shouldReturnJobRoles_whenThereAreJobRoles() throws SQLException {
-        Connection connectionMock = Mockito.mock(Connection.class);
+        Connection connectionMock = mock(Connection.class);
         Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
 
-        Statement statementMock = Mockito.mock(Statement.class);
-        ResultSet resultSetMock = Mockito.mock(ResultSet.class);
+        Statement statementMock = mock(Statement.class);
+        ResultSet resultSetMock = mock(ResultSet.class);
 
         Mockito.when(connectionMock.createStatement()).thenReturn(statementMock);
         Mockito.when(statementMock.executeQuery(any(String.class))).thenReturn(resultSetMock);
@@ -79,11 +81,11 @@ public class JobRoleDaoTest {
 
     @Test
     public void getJobRoles_shouldReturnEmptyJobRoles_whenThereAreNoJobRoles() throws SQLException {
-        Connection connectionMock = Mockito.mock(Connection.class);
+        Connection connectionMock = mock(Connection.class);
         Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
 
-        Statement statementMock = Mockito.mock(Statement.class);
-        ResultSet resultSetMock = Mockito.mock(ResultSet.class);
+        Statement statementMock = mock(Statement.class);
+        ResultSet resultSetMock = mock(ResultSet.class);
 
         Mockito.when(connectionMock.createStatement()).thenReturn(statementMock);
         Mockito.when(statementMock.executeQuery(any(String.class))).thenReturn(resultSetMock);
@@ -94,4 +96,36 @@ public class JobRoleDaoTest {
         assertEquals(jobRoles.size(), 0);
     }
 
+    @Test
+    public void updateJobRole_shouldReturnJobRoleID_whenValidUpdate() throws SQLException {
+        JobBandResponse jobBandResponse = new JobBandResponse(1, "jobBand");
+        JobCapabilityResponse jobCapabilityResponse = new JobCapabilityResponse(1, "jobCapability");
+        UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName", "jobSpecSummary",
+                jobBandResponse, jobCapabilityResponse,
+                "jobResponsibility", "sharepointLink");
+
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
+        PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
+        Mockito.when(connectionMock.prepareStatement(any(String.class))).thenReturn(mockPreparedStatement);
+        Mockito.when(mockPreparedStatement.executeUpdate()).thenReturn(1);
+        int id = jobRoleDao.updateJobRole(1, jobRoleRequest);
+        assertEquals(1, id, "Expected 1 row to be updated.");
+    }
+    @Test
+    public void updateJobRole_shouldReturnNegtive1_whenCantUpdate() throws SQLException {
+        JobBandResponse jobBandResponse = new JobBandResponse(1, "jobBand");
+        JobCapabilityResponse jobCapabilityResponse = new JobCapabilityResponse(1, "jobCapability");
+        UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName", "jobSpecSummary",
+                jobBandResponse, jobCapabilityResponse,
+                "jobResponsibility", "sharepointLink");
+
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
+        PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
+        Mockito.when(connectionMock.prepareStatement(any(String.class))).thenReturn(mockPreparedStatement);
+        Mockito.when(mockPreparedStatement.executeUpdate()).thenReturn(-1);
+        int id = jobRoleDao.updateJobRole(1, jobRoleRequest);
+        assertEquals(-1, -1);
+    }
 }
