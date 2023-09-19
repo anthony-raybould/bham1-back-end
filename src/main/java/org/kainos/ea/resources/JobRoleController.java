@@ -6,11 +6,11 @@ import io.swagger.annotations.Authorization;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.cli.JobRoleResponse;
 import org.kainos.ea.client.FailedJobRolesOperationException;
+import org.kainos.ea.client.FailedToDeleteJobRoleException;
+import org.kainos.ea.client.JobRoleDoesNotExistException;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -39,4 +39,41 @@ public class JobRoleController {
         }
     }
 
+    @GET
+    @Path("/job-roles/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("Employee")
+    @ApiOperation(value = "Returns a job role", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION))
+    public Response getJobRoleById(@PathParam("id") int id) {
+        try {
+            return Response.ok(jobRoleService.getJobRoleById(id)).build();
+        } catch (FailedJobRolesOperationException e) {
+            e.printStackTrace();
+
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        } catch (JobRoleDoesNotExistException e) {
+            System.err.println(e.getMessage());
+
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    @DELETE
+    @Path("/job-roles/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("Employee")
+    @ApiOperation(value = "Deletes a job role", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION))
+    public Response deleteJobRoleById(@PathParam("id") int id) {
+       try {
+           return Response.ok(jobRoleService.deleteJobRole(id)).build();
+       } catch (FailedToDeleteJobRoleException e) {
+           e.printStackTrace();
+
+           return Response.serverError().build();
+       } catch (JobRoleDoesNotExistException e) {
+           e.printStackTrace();
+
+           return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+       }
+    }
 }
