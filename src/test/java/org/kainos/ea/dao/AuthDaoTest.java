@@ -3,15 +3,21 @@ package org.kainos.ea.dao;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.kainos.ea.api.AuthService;
+import org.kainos.ea.auth.JWTService;
+import org.kainos.ea.auth.TokenService;
 import org.kainos.ea.cli.Login;
+<<<<<<< HEAD
 import org.kainos.ea.cli.Role;
 import org.kainos.ea.cli.User;
 import org.kainos.ea.client.FailedToGenerateTokenException;
 import org.kainos.ea.client.FailedToLoginException;
+=======
+import org.kainos.ea.client.FailedToGetUserId;
+import org.kainos.ea.client.FailedToGetUserPassword;
+>>>>>>> 040-login-system
 import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
-import org.mockito.Mock;
+import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -27,12 +33,16 @@ import static org.mockito.Mockito.when;
 public class AuthDaoTest {
     DatabaseConnector databaseConnector = Mockito.mock(DatabaseConnector.class);
     AuthDao authDao = new AuthDao(databaseConnector);
+    JWTService jwtService = new JWTService();
+    TokenService tokenService = new TokenService(authDao,jwtService);
+    String hashedPassword = BCrypt.hashpw("mySecurePassword", BCrypt.gensalt());
     Login userLogin = new Login(
             "email@email.com",
-            "thisIsABadPassword"
+            hashedPassword
     );
+
     @Test
-    public void ctor_shouldThrowNullPointerException_whenNullServiceInCTOR() throws  NullPointerException{
+    public void constructor_shouldThrowNullPointerException_whenNullServiceInConstructor() throws NullPointerException {
         DatabaseConnector nullDatabaseConnector = null;
 
         assertThrows(NullPointerException.class,
@@ -40,15 +50,31 @@ public class AuthDaoTest {
     }
 
     @Test
-    public void validLogin_shouldReturnFalse_whenGetConnectionThrowSqlException() throws SQLException {
+    public void getUserPassword_shouldThrowFailedToGetUserPassword_whenGetConnectionThrowSqlException() throws SQLException {
         Mockito.when(databaseConnector.getConnection()).thenThrow(SQLException.class);
-        assertFalse(
-                () -> authDao.validLogin(userLogin)
+        assertThrows(FailedToGetUserPassword.class,
+                () -> authDao.getUserPassword(userLogin.getEmail())
         );
     }
 
     @Test
-    public void validLogin_shouldReturnTrue_whenValidLogin() throws SQLException {
+    public void getUserId_shouldReturnNegative1_whenCantFindId() throws SQLException {
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
+
+        Statement statementMock = mock(Statement.class);
+        ResultSet resultSetMock = mock(ResultSet.class);
+
+        Mockito.when(connectionMock.createStatement()).thenReturn(statementMock);
+        Mockito.when(statementMock.executeQuery(any(String.class))).thenReturn(resultSetMock);
+        Mockito.when(resultSetMock.next()).thenReturn(false);
+
+        int result = authDao.getUserId("email@email.com");
+        assertEquals(result, -1);
+    }
+
+    @Test
+    public void getUserId_shouldReturnUserId_whenValid() throws SQLException {
         Connection connectionMock = mock(Connection.class);
         Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
 
@@ -58,11 +84,10 @@ public class AuthDaoTest {
         Mockito.when(connectionMock.createStatement()).thenReturn(statementMock);
         Mockito.when(statementMock.executeQuery(any(String.class))).thenReturn(resultSetMock);
         Mockito.when(resultSetMock.next()).thenReturn(true);
-        Mockito.when(resultSetMock.getString("password")).thenReturn("thisIsABadPassword");
+        Mockito.when(resultSetMock.getInt(1)).thenReturn(1);
 
-        boolean result = authDao.validLogin(userLogin);
-
-        assertTrue(result);
+        int result = authDao.getUserId("email@email.com");
+        assertEquals(result, 1);
     }
 
     @Test

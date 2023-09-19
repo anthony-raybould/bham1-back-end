@@ -8,6 +8,8 @@ import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import org.kainos.ea.api.AuthService;
+import org.kainos.ea.auth.JWTService;
+import org.kainos.ea.auth.TokenService;
 import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.resources.AuthController;
@@ -42,12 +44,13 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
     public void run(final DropwizardWebServiceConfiguration configuration,
                     final Environment environment) {
         final AuthDao authDao = new AuthDao(new DatabaseConnector());
-        final AuthService authService = new AuthService(authDao);
+        final TokenService tokenService = new TokenService(authDao, new JWTService());
+        final AuthService authService = new AuthService(authDao, tokenService);
 
         // Register authentication middleware
         environment.jersey().register(new AuthDynamicFeature(
                 new TokenAuthFilter.Builder()
-                        .setAuthenticator(new TokenAuthenticator(authDao))
+                        .setAuthenticator(new TokenAuthenticator(tokenService))
                         .setAuthorizer(new TokenAuthorizer())
                         .setPrefix("Bearer")
                         .buildAuthFilter()));

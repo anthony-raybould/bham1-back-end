@@ -1,82 +1,63 @@
 package org.kainos.ea.db;
 
-import org.apache.commons.lang3.time.DateUtils;
-import org.kainos.ea.cli.Login;
 import org.kainos.ea.cli.Role;
 import org.kainos.ea.cli.User;
+import org.kainos.ea.client.FailedToGetUserPassword;
 
 import java.sql.*;
-import java.util.Date;
-import java.util.UUID;
+import java.util.Objects;
 
 public class AuthDao {
     private DatabaseConnector databaseConnector;
 
     public AuthDao(DatabaseConnector databaseConnector) {
-        if(databaseConnector == null)
-        {
-            throw new NullPointerException("Database connector passed in ctor is null");
-        }
+        Objects.requireNonNull(databaseConnector);
         this.databaseConnector = databaseConnector;
     }
 
-    public boolean validLogin(Login login) {
+    public String getUserPassword(String userEmail) throws FailedToGetUserPassword {
         try (Connection c = databaseConnector.getConnection()) {
             Statement st = c.createStatement();
 
-            ResultSet rs = st.executeQuery("SELECT Password FROM `User` WHERE Email = '"
-                    + login.getEmail() + "'");
-
+            ResultSet rs = st.executeQuery("SELECT password FROM `User` WHERE email = '"
+                    + userEmail + "'");
             while (rs.next()) {
-                return rs.getString("password").equals(login.getPassword());
+                return rs.getString("password");
             }
-
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            throw new FailedToGetUserPassword();
         }
-
-        return false;
+        return null;
     }
 
-    public String generateToken(String username) throws SQLException {
-        String token = UUID.randomUUID().toString();
-        Date expiry = DateUtils.addHours(new Date(), 24);
-
+    public int getUserId(String email) throws SQLException {
         Connection c = databaseConnector.getConnection();
+        Statement st = c.createStatement();
 
-        String insertStatement = "INSERT INTO Token (Email, Token, Expiry) " +
-                "VALUES (?, ?, ?)";
+        ResultSet rs = st.executeQuery("SELECT userId FROM `User` WHERE email = '"
+                + email + "'");
 
-        PreparedStatement st = c.prepareStatement(insertStatement);
-
-        st.setString(1, username);
-        st.setString(2, token);
-        st.setTimestamp(3, new java.sql.Timestamp(expiry.getTime()));
-
-        st.executeUpdate();
-
-        return token;
+        while (rs.next()) {
+            return rs.getInt(1);
+        }
+        return -1;
     }
 
-    public User validateToken(String token) throws SQLException {
+    public User getUser(int userId) throws SQLException {
         Connection c = databaseConnector.getConnection();
 
-        PreparedStatement ps = c.prepareStatement("SELECT userID, email, roleID, expiry FROM `User` JOIN Token USING (userID) WHERE token=? JOIN Role USING (roleID)");
+        PreparedStatement ps = c.prepareStatement("SELECT userID, email, roleID FROM `User` WHERE userID = ?");
 
-        ps.setString(1, token);
+        ps.setInt(1, userId);
 
         ResultSet rs = ps.executeQuery();
 
-        while (rs.next()) {
-            Timestamp expiry = rs.getTimestamp("expiry");
-
-            if (expiry.after(new Date())) {
-                return new User(
-                        rs.getInt("userID"),
-                        rs.getString("email"),
-                        Role.fromRoleId(rs.getInt("roleID"))
-                );
-            }
+        if (rs.next()) {
+            return new User(
+                    rs.getInt("userID"),
+                    rs.getString("email"),
+                    Role.fromRoleId(rs.getInt("roleID"))
+            );
         }
 
         return null;
