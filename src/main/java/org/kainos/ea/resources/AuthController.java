@@ -13,13 +13,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Objects;
 
 @Api("Engineering Academy Brum Team 1")
 @Path("/api")
 public class AuthController {
     private AuthService authService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService)
+    {
+        Objects.requireNonNull(authService);
         this.authService = authService;
     }
 

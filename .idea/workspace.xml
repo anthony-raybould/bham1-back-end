@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="Abstracted JWTCrete into JWTService for more easier testing [mocks] and updated tests." />
+    <list default="true" id="c3ba2858-dac8-4234-bd06-92234c594750" name="Changes" comment="Abstracted JWTCrete into JWTService for more easier testing [mocks] and updated tests.">
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/auth/JWTServiceTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/api/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/auth/TokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/auth/TokenService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/AuthDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/db/AuthDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kainos/ea/resources/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/kainos/ea/auth/TokenServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/kainos/ea/auth/TokenServiceTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -77,17 +85,33 @@
     </key>
   </component>
   <component name="RunManager" selected="JUnit.LoginIntegrationTest">
-    <configuration name="AuthDaoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="JWTServiceTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bham1-backend" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.kainos.ea.dao.*" />
+          <option name="PATTERN" value="org.kainos.ea.auth.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="org.kainos.ea.dao" />
-      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.dao.AuthDaoTest" />
+      <option name="PACKAGE_NAME" value="org.kainos.ea.auth" />
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.auth.JWTServiceTests" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JWTServiceTests.create_WhenValidInputs_shouldReturnValidJWT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bham1-backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.kainos.ea.auth.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.kainos.ea.auth" />
+      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.auth.JWTServiceTests" />
+      <option name="METHOD_NAME" value="create_WhenValidInputs_shouldReturnValidJWT" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -113,22 +137,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LoginIntegrationTest.login_shouldReturn200_whenValidLogin" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="bham1-backend" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.kainos.ea.integration.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.kainos.ea.integration" />
-      <option name="MAIN_CLASS_NAME" value="org.kainos.ea.integration.LoginIntegrationTest" />
-      <option name="METHOD_NAME" value="login_shouldReturn200_whenValidLogin" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="TokenServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bham1-backend" />
       <extension name="coverage">
@@ -144,7 +152,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TokenServiceTest.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TokenServiceTest.generateToken_whenSuccess_shouldReturnValidJWT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bham1-backend" />
       <extension name="coverage">
         <pattern>
@@ -154,26 +162,26 @@
       </extension>
       <option name="PACKAGE_NAME" value="org.kainos.ea.auth" />
       <option name="MAIN_CLASS_NAME" value="org.kainos.ea.auth.TokenServiceTest" />
-      <option name="METHOD_NAME" value="test" />
+      <option name="METHOD_NAME" value="generateToken_whenSuccess_shouldReturnValidJWT" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.AuthDaoTest" />
+      <item itemvalue="JUnit.JWTServiceTests" />
+      <item itemvalue="JUnit.JWTServiceTests.create_WhenValidInputs_shouldReturnValidJWT" />
+      <item itemvalue="JUnit.TokenServiceTest.generateToken_whenSuccess_shouldReturnValidJWT" />
       <item itemvalue="JUnit.TokenServiceTest" />
-      <item itemvalue="JUnit.TokenServiceTest.test" />
-      <item itemvalue="JUnit.LoginIntegrationTest.login_shouldReturn200_whenValidLogin" />
       <item itemvalue="JUnit.LoginIntegrationTest" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.LoginIntegrationTest" />
-        <item itemvalue="JUnit.AuthDaoTest" />
+        <item itemvalue="JUnit.JWTServiceTests" />
         <item itemvalue="JUnit.TokenServiceTest" />
-        <item itemvalue="JUnit.TokenServiceTest.test" />
-        <item itemvalue="JUnit.LoginIntegrationTest.login_shouldReturn200_whenValidLogin" />
+        <item itemvalue="JUnit.TokenServiceTest.generateToken_whenSuccess_shouldReturnValidJWT" />
+        <item itemvalue="JUnit.JWTServiceTests.create_WhenValidInputs_shouldReturnValidJWT" />
       </list>
     </recent_temporary>
   </component>
@@ -315,17 +323,23 @@
     <MESSAGE value="abstracted method to follow 3NF. Created tests for abstracted method." />
     <MESSAGE value="Using env variables." />
     <MESSAGE value="Abstracted JWTCrete into JWTService for more easier testing [mocks] and updated tests." />
-    <option name="LAST_COMMIT_MESSAGE" value="Abstracted JWTCrete into JWTService for more easier testing [mocks] and updated tests." />
+    <MESSAGE value="job" />
+    <option name="LAST_COMMIT_MESSAGE" value="job" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/org/kainos/ea/api/AuthService.java</url>
-          <line>30</line>
+          <line>27</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="com.auth0.jwt.JWTDecoder" memberName="header" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>

@@ -10,18 +10,15 @@ import org.kainos.ea.db.AuthDao;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class AuthService {
     private TokenService tokenService;
     private AuthDao authDao;
 
     public AuthService(AuthDao authDao, TokenService tokenService) {
-        if(tokenService == null){
-            throw new NullPointerException("Token Service provided is null");
-        }
-        if (authDao == null) {
-            throw new NullPointerException("AuthDao service provided is null");
-        }
+        Objects.requireNonNull(authDao);
+        Objects.requireNonNull(tokenService);
         this.authDao = authDao;
         this.tokenService = tokenService;
     }

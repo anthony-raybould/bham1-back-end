@@ -1,26 +1,18 @@
 package org.kainos.ea.db;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
-import org.apache.commons.lang3.time.DateUtils;
-import org.eclipse.jetty.server.Authentication;
-import org.kainos.ea.cli.Login;
-import org.kainos.ea.client.FailedToGenerateTokenException;
-import org.kainos.ea.client.FailedToGetUserId;
 import org.kainos.ea.client.FailedToGetUserPassword;
-import org.mindrot.jbcrypt.BCrypt;
-import java.sql.*;
-import java.util.Date;
-import java.util.UUID;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Objects;
 
 public class AuthDao {
     private DatabaseConnector databaseConnector;
 
     public AuthDao(DatabaseConnector databaseConnector) {
-        if (databaseConnector == null) {
-            throw new NullPointerException("Database connector passed into constructor is null");
-        }
+        Objects.requireNonNull(databaseConnector);
         this.databaseConnector = databaseConnector;
     }
 

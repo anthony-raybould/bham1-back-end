@@ -6,6 +6,7 @@ import org.kainos.ea.client.FailedToGetUserId;
 import org.kainos.ea.db.AuthDao;
 
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class TokenService {
     private AuthDao authDao;
@@ -14,11 +15,8 @@ public class TokenService {
 
     public TokenService(AuthDao authDao, JWTService jwtTokenService)
     {
-        if(authDao == null || jwtTokenService == null)
-        {
-            throw new NullPointerException("Null service passed into constructor.");
-        }
-
+        Objects.requireNonNull(authDao);
+        Objects.requireNonNull(jwtTokenService);
         this.authDao = authDao;
         this.jwtTokenService = jwtTokenService;
     }
