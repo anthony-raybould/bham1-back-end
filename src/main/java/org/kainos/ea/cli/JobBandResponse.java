@@ -1,10 +1,12 @@
 package org.kainos.ea.cli;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class JobBandResponse {
-
+    @JsonProperty("bandID")
     private int bandID;
+    @JsonProperty("bandName")
     private String bandName;
 
     @JsonCreator
