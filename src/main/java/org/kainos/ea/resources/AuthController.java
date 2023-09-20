@@ -5,7 +5,10 @@ import io.swagger.annotations.*;
 import org.kainos.ea.api.AuthService;
 import org.kainos.ea.cli.Login;
 import org.kainos.ea.cli.User;
+import org.kainos.ea.cli.UserResponse;
 import org.kainos.ea.client.FailedToGenerateTokenException;
+import org.kainos.ea.client.FailedToGetUserId;
+import org.kainos.ea.client.FailedToGetUserPassword;
 import org.kainos.ea.client.FailedToLoginException;
 
 import javax.annotation.security.PermitAll;
@@ -16,6 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Objects;
 
 @Api("Authentication API")
 @Path("/api")
@@ -33,7 +37,9 @@ import javax.ws.rs.core.Response;
 public class AuthController {
     private final AuthService authService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService)
+    {
+        Objects.requireNonNull(authService);
         this.authService = authService;
     }
 
@@ -44,13 +50,11 @@ public class AuthController {
     public Response login(Login login) {
         try {
             return Response.ok(authService.login(login)).build();
-        } catch (FailedToLoginException e) {
+        } catch (FailedToLoginException | FailedToGetUserPassword e) {
             System.err.println(e.getMessage());
-
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
-        } catch (FailedToGenerateTokenException e) {
+        } catch (FailedToGenerateTokenException | FailedToGetUserId e) {
             System.err.println(e.getMessage());
-
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
@@ -59,10 +63,10 @@ public class AuthController {
     @Path("/whoami")
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Returns the user that is currently logged in", response = User.class, authorizations = {
+    @ApiOperation(value = "Returns the user that is currently logged in", response = UserResponse.class, authorizations = {
         @Authorization(value = HttpHeaders.AUTHORIZATION)
     })
     public Response whoami(@Auth @ApiParam(hidden = true) User user) {
-        return Response.ok().entity(user).build();
+        return Response.ok().entity(new UserResponse(user)).build();
     }
 }

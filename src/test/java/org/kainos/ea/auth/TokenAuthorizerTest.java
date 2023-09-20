@@ -1,15 +1,11 @@
 package org.kainos.ea.auth;
 
-import io.dropwizard.auth.AuthenticationException;
 import org.junit.jupiter.api.Test;
 import org.kainos.ea.cli.Role;
 import org.kainos.ea.cli.User;
-import org.kainos.ea.db.AuthDao;
-import org.mockito.Mockito;
 
-import java.sql.SQLException;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TokenAuthorizerTest {
 
