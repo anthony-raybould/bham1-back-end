@@ -5,8 +5,11 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.kainos.ea.cli.Role;
+import org.kainos.ea.cli.User;
 import org.kainos.ea.client.FailedToGenerateTokenException;
 import org.kainos.ea.client.FailedToGetUserId;
+import org.kainos.ea.client.FailedToValidateTokenException;
 import org.kainos.ea.db.AuthDao;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -14,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
@@ -67,6 +69,25 @@ public class TokenServiceTest {
         assertEquals(decodedJWT.getClaim("email").asString().equals("email@email.com"), true);
         assertSame(decodedJWT.getClaim("userId").asInt(), 1);
         assertNotNull(decodedJWT.getClaim("expiry"));
+    }
+
+    @Test
+    public void validateToken_whenJWTTokenServiceThrowError_shouldCatchAndThrowFailedToValidateToken() {
+        Mockito.when(jwtService.verify(any(String.class))).thenThrow(JWTCreationException.class);
+
+        assertThrows(FailedToValidateTokenException.class,
+                () -> tokenService.validateToken("token"));
+    }
+
+    @Test
+    public void validateToken_whenSuccess_shouldReturnValidUser() throws SQLException, FailedToValidateTokenException {
+        Mockito.when(jwtService.verify(any(String.class))).thenReturn(1);
+        Mockito.when(authDao.getUser(any(int.class))).thenReturn(new User(1, "email", Role.ADMIN));
+
+        User user = tokenService.validateToken("token");
+        assertEquals(user.getEmail(), "email");
+        assertSame(user.getId(), 1);
+        assertSame(user.getRole(), Role.ADMIN);
     }
 }
 

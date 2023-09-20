@@ -41,7 +41,7 @@ public class TokenService {
         try {
             int userId = jwtTokenService.verify(token);
             return authDao.getUser(userId);
-        } catch (JWTVerificationException | SQLException exception) {
+        } catch (JWTCreationException | JWTVerificationException | SQLException exception) {
             throw new FailedToValidateTokenException();
         }
     }
