@@ -1,18 +1,19 @@
-create table `Role` (
+CREATE TABLE `Role` (
 	roleID SMALLINT NOT NULL,
-    name varchar(64) NOT NULL,
+    name   varchar(64) NOT NULL,
     PRIMARY KEY (roleID)
-    );
+);
 
-insert into Role(roleID, name) VALUES (1, 'Admin');
-insert into Role(roleID, name) VALUES (2, 'Employee');
+INSERT INTO Role(roleID, name) VALUES (1, 'Admin');
+INSERT INTO Role(roleID, name) VALUES (2, 'Employee');
 
-create table `User` (
-	userID SMALLINT NOT NULL,
-    email varchar(320) UNIQUE NOT NULL,
+CREATE TABLE `User` (
+	userID   SMALLINT NOT NULL AUTO_INCREMENT,
+    email    varchar(320) UNIQUE NOT NULL,
     password varchar(255) NOT NULL,
-    roleID SMALLINT NOT NULL,
+    roleID   SMALLINT NOT NULL,
     PRIMARY KEY (userID),
+    UNIQUE (email),
     FOREIGN KEY (roleID) REFERENCES Role(roleID)
 );
 
@@ -65,5 +66,3 @@ insert into JobRoles(jobRoleID, jobRoleName,jobSpecSummary,bandID,capabilityID,r
  "Your responsibilities include actively participating in real projects, learning development languages, and technologies, with support from experienced colleagues and mentors. You'll demonstrate a passion for technology, strong teamwork skills, and creative problem-solving abilities, contributing to innovative solutions and approaches within Kainos.",
  3 ,2,
  "As an Apprentice Software Engineer at Kainos, you'll contribute to meaningful projects, receive comprehensive training, and collaborate within tight-knit teams, all while exploring diverse development technologies and finding your niche in Software Engineering.", "https://kainossoftwareltd.sharepoint.com/:b:/r/people/Job%20Specifications/Engineering/Job%20profile%20-%20Software%20Engineer%20(Associate).pdf?csf=1&web=1&e=GHWpmX");
-
-
