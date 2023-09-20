@@ -7,10 +7,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
-import org.kainos.ea.api.AuthService;
-import org.kainos.ea.auth.JWTService;
-import org.kainos.ea.auth.TokenService;
-import org.kainos.ea.db.AuthDao;
+import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.resources.AuthController;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
@@ -20,6 +17,8 @@ import org.kainos.ea.auth.TokenAuthorizer;
 import org.kainos.ea.cli.User;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.db.JobRoleDao;
+import org.kainos.ea.resources.BandController;
+import org.kainos.ea.resources.CapabilityController;
 import org.kainos.ea.resources.JobRoleController;
 
 public class DropwizardWebServiceApplication extends Application<DropwizardWebServiceConfiguration> {
@@ -56,19 +55,9 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         final AuthService authService = new AuthService(authDao, tokenService);
         final JobRoleService jobRoleService = new JobRoleService(jobRoleDao);
 
-        // Register authentication middleware
-        environment.jersey().register(new AuthDynamicFeature(
-                new TokenAuthFilter.Builder()
-                        .setAuthenticator(new TokenAuthenticator(tokenService))
-                        .setAuthorizer(new TokenAuthorizer())
-                        .setPrefix("Bearer")
-                        .buildAuthFilter()));
-        environment.jersey().register(RolesAllowedDynamicFeature.class);
-        environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
-
-        // Register endpoint controllers
-        environment.jersey().register(new AuthController(authService));
         environment.jersey().register(new JobRoleController(jobRoleService));
+        environment.jersey().register(new BandController(bandService));
+        environment.jersey().register(new CapabilityController(capabilityService));
     }
 
 }

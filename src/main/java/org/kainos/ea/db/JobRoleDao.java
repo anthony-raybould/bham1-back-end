@@ -6,6 +6,7 @@ import org.kainos.ea.cli.JobRoleResponse;
 import org.kainos.ea.cli.UpdateJobRoleRequest;
 import org.kainos.ea.client.FailedToUpdateJobRoleException;
 
+import javax.ws.rs.sse.Sse;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,15 +55,14 @@ public class JobRoleDao {
 
     public int updateJobRole(int id, UpdateJobRoleRequest jobRoleRequest) throws SQLException, FailedToUpdateJobRoleException {
         Connection c = databaseConnector.getConnection();
-        String updateQuery = "UPDATE JobRoles" +
-                "SET jobRoleName = ?," +
-                "jobSpecSummary = ?," +
-                "bandID = ?," +
-                "capabilityID = ?," +
-                "responsibilities = ?," +
-                "sharePoint = ?," +
+        String updateQuery = "UPDATE JobRoles " +
+                "SET jobRoleName = ? , " +
+                "jobSpecSummary = ? , " +
+                "bandID = ? , " +
+                "capabilityID = ? , " +
+                "responsibilities = ? , " +
+                "sharePoint = ? " +
                 "WHERE jobRoleID = ?;";
-
         PreparedStatement preparedStatement = c.prepareStatement(updateQuery);
         preparedStatement.setString(1, jobRoleRequest.getJobRoleName());
         preparedStatement.setString(2, jobRoleRequest.getJobSpecSummary());
@@ -75,6 +75,7 @@ public class JobRoleDao {
         int rowsUpdated = preparedStatement.executeUpdate();
         if(rowsUpdated > 0)
         {
+            System.err.println("hi ho ");
             return id;
         }
         else {

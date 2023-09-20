@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class JobCapabilityResponse {
-    @JsonProperty("capabilityID")
     private int capabilityID;
-    @JsonProperty("capabilityName")
+
     private String capabilityName;
 
     @JsonCreator
-    public JobCapabilityResponse(int capabilityID, String capabilityName) {
+    public JobCapabilityResponse(@JsonProperty("capabilityID") int capabilityID,
+                                 @JsonProperty("capabilityName") String capabilityName) {
         this.capabilityID = capabilityID;
         this.capabilityName = capabilityName;
     }
