@@ -1,15 +1,9 @@
 package org.kainos.ea.cli;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UpdateJobRoleRequest {
-    private String jobRoleName;
-    private String jobSpecSummary;
-    private JobBandResponse band;
-    private JobCapabilityResponse capability;
-    private String responsibilities;
-    private String sharePoint;
-
     @JsonCreator
     public UpdateJobRoleRequest(String jobRoleName, String jobSpecSummary, JobBandResponse band, JobCapabilityResponse capability, String responsibilities, String sharePoint) {
         this.jobRoleName = jobRoleName;
@@ -19,6 +13,18 @@ public class UpdateJobRoleRequest {
         this.responsibilities = responsibilities;
         this.sharePoint = sharePoint;
     }
+    @JsonProperty("jobRoleName")
+    private String jobRoleName;
+    @JsonProperty("jobSpecSummary")
+    private String jobSpecSummary;
+    @JsonProperty("band")
+    private JobBandResponse band;
+    @JsonProperty("capability")
+    private JobCapabilityResponse capability;
+    @JsonProperty("responsibilities")
+    private String responsibilities;
+    @JsonProperty("sharePoint")
+    private String sharePoint;
 
     public String getJobRoleName() {
         return jobRoleName;

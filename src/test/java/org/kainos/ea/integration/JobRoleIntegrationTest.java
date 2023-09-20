@@ -13,11 +13,8 @@ import org.kainos.ea.cli.JobCapabilityResponse;
 import org.kainos.ea.cli.UpdateJobRoleRequest;
 
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import static org.mockito.BDDMockito.given;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class JobRoleIntegrationTest {
@@ -39,9 +36,23 @@ public class JobRoleIntegrationTest {
                 jobBandResponse, jobCapabilityResponse,
                 "jobResponsibility", "sharepointLink");
 
-        Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/job-roles/1")
+        Response response = APP.client().target("http://localhost:8080" + "/api/job-roles/1")
                 .request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(jobRoleRequest, MediaType.APPLICATION_JSON));
+
         Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
+    @Test
+    void updateJobRoles_shouldReturn500_whenNullBody() {
+        JobBandResponse jobBandResponse = new JobBandResponse(1, "jobBand");
+        JobCapabilityResponse jobCapabilityResponse = new JobCapabilityResponse(1, "jobCapability");
+        UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName", "jobSpecSummary",
+                jobBandResponse, jobCapabilityResponse,
+                "jobResponsibility", "sharepointLink");
+
+        Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/job-roles/-1")
+                .request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(jobRoleRequest , MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
 }

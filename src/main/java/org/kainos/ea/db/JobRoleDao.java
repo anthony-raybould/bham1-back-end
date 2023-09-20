@@ -4,6 +4,7 @@ import org.kainos.ea.cli.JobBandResponse;
 import org.kainos.ea.cli.JobCapabilityResponse;
 import org.kainos.ea.cli.JobRoleResponse;
 import org.kainos.ea.cli.UpdateJobRoleRequest;
+import org.kainos.ea.client.FailedToUpdateJobRoleException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class JobRoleDao {
         return jobRoles;
     }
 
-    public int updateJobRole(int id, UpdateJobRoleRequest jobRoleRequest) throws SQLException {
+    public int updateJobRole(int id, UpdateJobRoleRequest jobRoleRequest) throws SQLException, FailedToUpdateJobRoleException {
         Connection c = databaseConnector.getConnection();
         String updateQuery = "UPDATE JobRoles" +
                 "SET jobRoleName = ?," +
@@ -77,7 +78,7 @@ public class JobRoleDao {
             return id;
         }
         else {
-            return -1;
+            throw new FailedToUpdateJobRoleException();
         }
     }
 }

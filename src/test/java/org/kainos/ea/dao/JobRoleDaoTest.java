@@ -6,11 +6,13 @@ import org.kainos.ea.cli.JobBandResponse;
 import org.kainos.ea.cli.JobCapabilityResponse;
 import org.kainos.ea.cli.JobRoleResponse;
 import org.kainos.ea.cli.UpdateJobRoleRequest;
+import org.kainos.ea.client.FailedToUpdateJobRoleException;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import java.nio.file.FileAlreadyExistsException;
 import java.sql.*;
 import java.util.List;
 
@@ -20,7 +22,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
 public class JobRoleDaoTest {
-
     DatabaseConnector databaseConnector = mock(DatabaseConnector.class);
 
     JobRoleDao jobRoleDao;
@@ -97,7 +98,7 @@ public class JobRoleDaoTest {
     }
 
     @Test
-    public void updateJobRole_shouldReturnJobRoleID_whenValidUpdate() throws SQLException {
+    public void updateJobRole_shouldReturnJobRoleID_whenValidUpdate() throws SQLException, FailedToUpdateJobRoleException {
         JobBandResponse jobBandResponse = new JobBandResponse(1, "jobBand");
         JobCapabilityResponse jobCapabilityResponse = new JobCapabilityResponse(1, "jobCapability");
         UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName", "jobSpecSummary",
@@ -113,7 +114,7 @@ public class JobRoleDaoTest {
         assertEquals(1, id, "Expected 1 row to be updated.");
     }
     @Test
-    public void updateJobRole_shouldReturnNegtive1_whenCantUpdate() throws SQLException {
+    public void updateJobRole_shouldReturnNegative1_whenCantUpdate() throws SQLException, FailedToUpdateJobRoleException {
         JobBandResponse jobBandResponse = new JobBandResponse(1, "jobBand");
         JobCapabilityResponse jobCapabilityResponse = new JobCapabilityResponse(1, "jobCapability");
         UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName", "jobSpecSummary",
@@ -125,7 +126,7 @@ public class JobRoleDaoTest {
         PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
         Mockito.when(connectionMock.prepareStatement(any(String.class))).thenReturn(mockPreparedStatement);
         Mockito.when(mockPreparedStatement.executeUpdate()).thenReturn(-1);
-        int id = jobRoleDao.updateJobRole(1, jobRoleRequest);
-        assertEquals(-1, -1);
+        assertThrows(FailedToUpdateJobRoleException.class,
+                () -> jobRoleDao.updateJobRole(1,jobRoleRequest));
     }
 }

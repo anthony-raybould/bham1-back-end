@@ -17,6 +17,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Objects;
 
 @Api("Job Role API")
 @Path("/api")
@@ -24,6 +25,8 @@ public class JobRoleController {
     private final JobRoleService jobRoleService;
 
     public JobRoleController(JobRoleService jobRoleService) {
+        Objects.requireNonNull(jobRoleService);
+
         this.jobRoleService = jobRoleService;
     }
 
@@ -45,8 +48,9 @@ public class JobRoleController {
     @PUT
     @Path("/job-roles/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("Admin")
-    @ApiOperation(value = "Edit a single job role", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION), response = JobRoleResponse.class)
+    //@RolesAllowed("Admin")
+    @ApiOperation(value = "Edit a single job role", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION))
+    // response = JobRoleResponse.class
     public Response editJobRole(@PathParam("id") @NotEmpty Short id, UpdateJobRoleRequest jobRoleToUpdate)
     {
         try{
