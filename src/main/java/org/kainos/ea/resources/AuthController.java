@@ -4,12 +4,14 @@ import io.dropwizard.auth.Auth;
 import io.swagger.annotations.*;
 import org.kainos.ea.api.AuthService;
 import org.kainos.ea.cli.Login;
+import org.kainos.ea.cli.RegisterRequest;
 import org.kainos.ea.cli.User;
 import org.kainos.ea.cli.UserResponse;
 import org.kainos.ea.client.FailedToGenerateTokenException;
 import org.kainos.ea.client.FailedToGetUserId;
 import org.kainos.ea.client.FailedToGetUserPassword;
 import org.kainos.ea.client.FailedToLoginException;
+import org.kainos.ea.client.FailedToRegisterException;
 
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.GET;
@@ -56,6 +58,22 @@ public class AuthController {
         } catch (FailedToGenerateTokenException | FailedToGetUserId e) {
             System.err.println(e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
+    }
+
+    @POST
+    @Path("/register")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Registers a user")
+    public Response register(RegisterRequest request) {
+        try {
+            authService.register(request);
+
+            return Response.status(Response.Status.CREATED).build();
+        } catch (FailedToRegisterException e) {
+            System.err.println(e.getMessage());
+
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 

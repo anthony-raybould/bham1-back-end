@@ -1,7 +1,5 @@
 package org.kainos.ea.service;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.api.AuthService;
@@ -12,16 +10,13 @@ import org.kainos.ea.client.FailedToGetUserId;
 import org.kainos.ea.client.FailedToGetUserPassword;
 import org.kainos.ea.client.FailedToLoginException;
 import org.kainos.ea.db.AuthDao;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.SQLException;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthServiceTest {

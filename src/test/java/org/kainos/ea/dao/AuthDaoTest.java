@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.auth.JWTService;
 import org.kainos.ea.auth.TokenService;
 import org.kainos.ea.cli.Login;
+import org.kainos.ea.client.FailedToGenerateTokenException;
 import org.kainos.ea.client.FailedToGetUserPassword;
 import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;

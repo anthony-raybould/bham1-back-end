@@ -2,10 +2,12 @@ package org.kainos.ea.api;
 
 import org.kainos.ea.auth.TokenService;
 import org.kainos.ea.cli.Login;
+import org.kainos.ea.cli.RegisterRequest;
 import org.kainos.ea.client.FailedToGenerateTokenException;
 import org.kainos.ea.client.FailedToGetUserId;
 import org.kainos.ea.client.FailedToGetUserPassword;
 import org.kainos.ea.client.FailedToLoginException;
+import org.kainos.ea.client.FailedToRegisterException;
 import org.kainos.ea.db.AuthDao;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -37,4 +39,15 @@ public class AuthService {
             throw new FailedToGenerateTokenException();
         }
     }
+
+    public void register(RegisterRequest request) throws FailedToRegisterException {
+        String salt = BCrypt.gensalt(10);
+        String hashedPassword = BCrypt.hashpw(request.getPassword(), salt);
+        try {
+            authDao.register(request.getEmail(), hashedPassword, request.getRole());
+        } catch (SQLException e) {
+            throw new FailedToRegisterException();
+        }
+    }
+
 }

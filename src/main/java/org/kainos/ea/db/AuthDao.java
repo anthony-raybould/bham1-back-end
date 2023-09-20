@@ -43,6 +43,21 @@ public class AuthDao {
         return -1;
     }
 
+    public void register(String username, String password, Role role) throws SQLException {
+        Connection c = databaseConnector.getConnection();
+
+        String insertStatement = "INSERT INTO `User` (email, password, roleID) " +
+                "VALUES (?, ?, ?)";
+
+        PreparedStatement st = c.prepareStatement(insertStatement);
+
+        st.setString(1, username);
+        st.setString(2, password);
+        st.setInt(3, role.getRoleId());
+
+        st.executeUpdate();
+    }
+
     public User getUser(int userId) throws SQLException {
         Connection c = databaseConnector.getConnection();
 
