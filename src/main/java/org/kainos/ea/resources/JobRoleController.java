@@ -13,6 +13,7 @@ import org.kainos.ea.client.FailedToUpdateJobRoleException;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -51,7 +52,7 @@ public class JobRoleController {
     //@RolesAllowed("Admin")
     @ApiOperation(value = "Edit a single job role", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION))
     // response = JobRoleResponse.class
-    public Response editJobRole(@PathParam("id") @NotEmpty Short id, UpdateJobRoleRequest jobRoleToUpdate)
+    public Response editJobRole(@PathParam("id") @NotNull Short id, UpdateJobRoleRequest jobRoleToUpdate)
     {
         try{
             return Response.ok(jobRoleService.updateJobRole(id, jobRoleToUpdate)).build();

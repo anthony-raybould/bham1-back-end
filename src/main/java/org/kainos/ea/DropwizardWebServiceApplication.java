@@ -5,9 +5,15 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
+import org.kainos.ea.api.BandService;
+import org.kainos.ea.api.CapabilityService;
 import org.kainos.ea.api.JobRoleService;
+import org.kainos.ea.db.BandDao;
+import org.kainos.ea.db.CapabilityDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
+import org.kainos.ea.resources.BandController;
+import org.kainos.ea.resources.CapabilityController;
 import org.kainos.ea.resources.JobRoleController;
 
 public class DropwizardWebServiceApplication extends Application<DropwizardWebServiceConfiguration> {
@@ -38,8 +44,13 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         final DatabaseConnector databaseConnector = new DatabaseConnector();
         final JobRoleDao jobRoleDao = new JobRoleDao(databaseConnector);
         final JobRoleService jobRoleService = new JobRoleService(jobRoleDao);
-
+        final CapabilityDao capabilityDao = new CapabilityDao(databaseConnector);
+        final BandDao bandDao = new BandDao(databaseConnector);
+        final CapabilityService capabilityService = new CapabilityService(capabilityDao);
+        final BandService bandService = new BandService(bandDao);
         environment.jersey().register(new JobRoleController(jobRoleService));
+        environment.jersey().register(new BandController(bandService));
+        environment.jersey().register(new CapabilityController(capabilityService));
     }
 
 }

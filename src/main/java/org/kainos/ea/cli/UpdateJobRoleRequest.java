@@ -5,7 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UpdateJobRoleRequest {
     @JsonCreator
-    public UpdateJobRoleRequest(String jobRoleName, String jobSpecSummary, JobBandResponse band, JobCapabilityResponse capability, String responsibilities, String sharePoint) {
+    public UpdateJobRoleRequest(@JsonProperty("jobRoleName") String jobRoleName,
+                                @JsonProperty("jobSpecSummary") String jobSpecSummary,
+                                @JsonProperty("band") JobBandResponse band,
+                                @JsonProperty("capability") JobCapabilityResponse capability,
+                                @JsonProperty("responsibilities") String responsibilities,
+                                @JsonProperty("sharePoint") String sharePoint)
+    {
         this.jobRoleName = jobRoleName;
         this.jobSpecSummary = jobSpecSummary;
         this.band = band;
@@ -13,17 +19,11 @@ public class UpdateJobRoleRequest {
         this.responsibilities = responsibilities;
         this.sharePoint = sharePoint;
     }
-    @JsonProperty("jobRoleName")
     private String jobRoleName;
-    @JsonProperty("jobSpecSummary")
     private String jobSpecSummary;
-    @JsonProperty("band")
     private JobBandResponse band;
-    @JsonProperty("capability")
     private JobCapabilityResponse capability;
-    @JsonProperty("responsibilities")
     private String responsibilities;
-    @JsonProperty("sharePoint")
     private String sharePoint;
 
     public String getJobRoleName() {
