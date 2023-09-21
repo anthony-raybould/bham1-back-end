@@ -31,6 +31,7 @@ public class JobRoleService {
 
     public int updateJobRole(Short id, UpdateJobRoleRequest jobRoleRequest) throws FailedJobRolesOperationException, FailedToUpdateJobRoleException {
         try {
+            // validator
             return jobRoleDao.updateJobRole(id, jobRoleRequest);
         } catch (SQLException e) {
             throw new FailedJobRolesOperationException("Failed to update job role", e);

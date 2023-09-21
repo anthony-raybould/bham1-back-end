@@ -7,8 +7,8 @@ public class UpdateJobRoleRequest {
     @JsonCreator
     public UpdateJobRoleRequest(@JsonProperty("jobRoleName") String jobRoleName,
                                 @JsonProperty("jobSpecSummary") String jobSpecSummary,
-                                @JsonProperty("band") JobBandResponse band,
-                                @JsonProperty("capability") JobCapabilityResponse capability,
+                                @JsonProperty("band") int band,
+                                @JsonProperty("capability") int capability,
                                 @JsonProperty("responsibilities") String responsibilities,
                                 @JsonProperty("sharePoint") String sharePoint)
     {
@@ -21,8 +21,8 @@ public class UpdateJobRoleRequest {
     }
     private String jobRoleName;
     private String jobSpecSummary;
-    private JobBandResponse band;
-    private JobCapabilityResponse capability;
+    private int band;
+    private int capability;
     private String responsibilities;
     private String sharePoint;
 
@@ -58,19 +58,19 @@ public class UpdateJobRoleRequest {
         this.sharePoint = sharePoint;
     }
 
-    public JobBandResponse getBand() {
+    public int getBandID() {
         return band;
     }
 
     public void setBand(JobBandResponse band) {
-        this.band = band;
+        this.band = band.getBandID();
     }
 
-    public JobCapabilityResponse getCapability() {
+    public int getCapabilityID() {
         return capability;
     }
 
     public void setCapability(JobCapabilityResponse capability) {
-        this.capability = capability;
+        this.capability = capability.getCapabilityID();
     }
 }
