@@ -13,7 +13,7 @@ public class TokenAuthorizerTest {
 
     @Test
     void tokenAuthorizer_shouldReturnTrue_whenUserHasRequiredRole() {
-        Role requiredRole = Role.EMPLOYEE;
+        Role requiredRole = new Role(1, "Employee");
 
         User user = new User(1, "email", requiredRole);
 
@@ -24,8 +24,8 @@ public class TokenAuthorizerTest {
 
     @Test
     void tokenAuthorizer_shouldReturnFalse_whenUserDoesNotHaveRequiredRole() {
-        Role requiredRole = Role.ADMIN;
-        Role userRole = Role.EMPLOYEE;
+        Role requiredRole = new Role(1, "Admin");
+        Role userRole = new Role(2, "Employee");
 
         User user = new User(1, "email", userRole);
 
@@ -36,9 +36,10 @@ public class TokenAuthorizerTest {
 
     @Test
     void tokenAuthorizer_shouldReturnTrue_whenUserIsAdmin() {
-        Role requiredRole = Role.ADMIN;
+        Role requiredRole = new Role(2, "Employee");
+        Role adminRole = new Role(1, "Admin");
 
-        User user = new User(1, "email", requiredRole);
+        User user = new User(1, "email", adminRole);
 
         boolean isPermitted = tokenAuthorizer.authorize(user, requiredRole.toString());
 

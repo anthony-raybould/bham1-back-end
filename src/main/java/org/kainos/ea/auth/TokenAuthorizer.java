@@ -8,7 +8,7 @@ public class TokenAuthorizer implements Authorizer<User> {
 
     @Override
     public boolean authorize(User user, String role) {
-        return Role.ADMIN.toString().equals(user.getRole().toString()) || role.equals(user.getRole().toString());
+        return "Admin".equals(user.getRole().toString()) || role.equals(user.getRole().toString());
     }
 
 }
