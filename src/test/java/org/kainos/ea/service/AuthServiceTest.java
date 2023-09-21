@@ -5,15 +5,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.api.AuthService;
 import org.kainos.ea.auth.TokenService;
 import org.kainos.ea.cli.Login;
-import org.kainos.ea.client.FailedToGenerateTokenException;
-import org.kainos.ea.client.FailedToGetUserId;
-import org.kainos.ea.client.FailedToGetUserPassword;
-import org.kainos.ea.client.FailedToLoginException;
+import org.kainos.ea.cli.RegisterRequest;
+import org.kainos.ea.cli.Role;
+import org.kainos.ea.client.*;
 import org.kainos.ea.db.AuthDao;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -76,6 +77,50 @@ public class AuthServiceTest {
 
         assertThrows(FailedToGetUserPassword.class,
         () -> authService.login(userLogin));
+    }
+
+    @Test
+    void register_shouldThrowFailedToRegisterException_whenSQLExceptionThrown() throws SQLException {
+        Mockito.when(authDao.register(any(String.class), any(String.class), any(int.class))).thenThrow(SQLException.class);
+
+        assertThrows(FailedToRegisterException.class,
+                () -> authService.register(new RegisterRequest("email", "password", 1)));
+    }
+
+    @Test
+    void register_shouldThrowDuplicateRegistrationException_whenDuplicateRegistration() throws SQLException {
+        Mockito.when(authDao.register(any(String.class), any(String.class), any(int.class))).thenThrow(new SQLException("Duplicate entry 'email' for key 'email'", "23000", 1062, null));
+
+        assertThrows(DuplicateRegistrationException.class,
+                () -> authService.register(new RegisterRequest("email", "password", 1)));
+    }
+
+    @Test
+    void register_shouldReturn_whenValid() throws SQLException, FailedToRegisterException, DuplicateRegistrationException {
+        Mockito.when(authDao.register(any(String.class), any(String.class), any(int.class))).thenReturn(true);
+
+        authService.register(new RegisterRequest("email", "password", 1));
+    }
+
+    @Test
+    void getRoles_shouldThrowFailedToGetRolesException_whenSQLExceptionThrown() throws SQLException {
+        Mockito.when(authDao.getRoles()).thenThrow(SQLException.class);
+
+        assertThrows(FailedToGetRolesException.class,
+                () -> authService.getRoles());
+    }
+
+    @Test
+    void getRoles_shouldReturn_whenValid() throws SQLException, FailedToGetRolesException {
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role(1, "Admin"));
+        roles.add(new Role(2, "Employee"));
+
+        Mockito.when(authDao.getRoles()).thenReturn(roles);
+
+        List<Role> returnedRoles = authService.getRoles();
+
+        assertEquals(roles, returnedRoles);
     }
 }
 

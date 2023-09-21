@@ -46,7 +46,7 @@ public class AuthDao {
         return -1;
     }
 
-    public void register(String username, String password, int role) throws SQLException {
+    public boolean register(String username, String password, int role) throws SQLException {
         Connection c = databaseConnector.getConnection();
 
         String insertStatement = "INSERT INTO `User` (email, password, roleID) " +
@@ -59,6 +59,7 @@ public class AuthDao {
         st.setInt(3, role);
 
         st.executeUpdate();
+        return true;
     }
 
     public List<Role> getRoles() throws SQLException {

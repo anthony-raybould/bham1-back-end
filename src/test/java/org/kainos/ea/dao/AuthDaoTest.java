@@ -5,7 +5,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.auth.JWTService;
 import org.kainos.ea.auth.TokenService;
 import org.kainos.ea.cli.Login;
+import org.kainos.ea.cli.Role;
 import org.kainos.ea.client.FailedToGenerateTokenException;
+import org.kainos.ea.client.FailedToGetRolesException;
 import org.kainos.ea.client.FailedToGetUserPassword;
 import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
@@ -17,6 +19,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -83,4 +86,34 @@ public class AuthDaoTest {
         int result = authDao.getUserId("email@email.com");
         assertEquals(result, 1);
     }
+
+    @Test
+    public void register_shouldThrowFailedToRegisterException_whenGetConnectionThrowSqlException() throws SQLException {
+        Mockito.when(databaseConnector.getConnection()).thenThrow(SQLException.class);
+        assertThrows(FailedToGenerateTokenException.class,
+                () -> authDao.register(userLogin.getEmail(), userLogin.getPassword(), 1)
+        );
+    }
+
+    @Test
+    public void getRoles_shouldReturnListOfRoles_whenValid() throws SQLException {
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
+
+        Statement statementMock = mock(Statement.class);
+        ResultSet resultSetMock = mock(ResultSet.class);
+
+        Mockito.when(connectionMock.createStatement()).thenReturn(statementMock);
+        Mockito.when(statementMock.executeQuery(any(String.class))).thenReturn(resultSetMock);
+        Mockito.when(resultSetMock.next()).thenReturn(true).thenReturn(false);
+        Mockito.when(resultSetMock.getInt("roleID")).thenReturn(1);
+        Mockito.when(resultSetMock.getString("name")).thenReturn("Admin");
+
+        List<Role> roles = authDao.getRoles();
+
+        assertEquals(roles.size(), 1);
+        assertEquals(roles.get(0).getRoleId(), 1);
+        assertEquals(roles.get(0).getRoleName(), "Admin");
+    }
+
 }
