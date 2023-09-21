@@ -10,6 +10,7 @@ import org.kainos.ea.cli.JobRoleResponse;
 import org.kainos.ea.cli.UpdateJobRoleRequest;
 import org.kainos.ea.client.FailedJobRolesOperationException;
 import org.kainos.ea.client.FailedToUpdateJobRoleException;
+import org.kainos.ea.validator.UpdateJobRoleValidator;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotEmpty;
@@ -24,10 +25,13 @@ import java.util.Objects;
 @Path("/api")
 public class JobRoleController {
     private final JobRoleService jobRoleService;
+    private final UpdateJobRoleValidator jobRoleValidator;
 
-    public JobRoleController(JobRoleService jobRoleService) {
+    public JobRoleController(JobRoleService jobRoleService, UpdateJobRoleValidator jobRoleValidator) {
         Objects.requireNonNull(jobRoleService);
+        Objects.requireNonNull(jobRoleValidator);
 
+        this.jobRoleValidator = jobRoleValidator;
         this.jobRoleService = jobRoleService;
     }
 
@@ -49,16 +53,20 @@ public class JobRoleController {
     @PUT
     @Path("/job-roles/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    //@RolesAllowed("Admin")
+    @RolesAllowed("Admin")
     @ApiOperation(value = "Edit a single job role", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION))
-    // response = JobRoleResponse.class
     public Response editJobRole(@PathParam("id") @NotNull Short id, UpdateJobRoleRequest jobRoleToUpdate)
     {
         try{
-            return Response.ok(jobRoleService.updateJobRole(id, jobRoleToUpdate)).build();
+            if(jobRoleValidator.validate(jobRoleToUpdate))
+            {
+                return Response.ok(jobRoleService.updateJobRole(id, jobRoleToUpdate)).build();
+            }
+            return Response.status(400, "Fields not in correct format.").build();
         }
         catch(FailedJobRolesOperationException | FailedToUpdateJobRoleException e)
         {
+            System.err.println(e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }

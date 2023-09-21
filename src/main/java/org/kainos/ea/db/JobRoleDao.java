@@ -63,11 +63,12 @@ public class JobRoleDao {
                 "responsibilities = ? , " +
                 "sharePoint = ? " +
                 "WHERE jobRoleID = ?;";
+
         PreparedStatement preparedStatement = c.prepareStatement(updateQuery);
         preparedStatement.setString(1, jobRoleRequest.getJobRoleName());
         preparedStatement.setString(2, jobRoleRequest.getJobSpecSummary());
-        preparedStatement.setInt(3, jobRoleRequest.getBand().getBandID());
-        preparedStatement.setInt(4, jobRoleRequest.getCapability().getCapabilityID());
+        preparedStatement.setInt(3, jobRoleRequest.getBandID());
+        preparedStatement.setInt(4, jobRoleRequest.getCapabilityID());
         preparedStatement.setString(5, jobRoleRequest.getResponsibilities());
         preparedStatement.setString(6, jobRoleRequest.getSharePoint());
         preparedStatement.setInt(7, id);
@@ -75,7 +76,6 @@ public class JobRoleDao {
         int rowsUpdated = preparedStatement.executeUpdate();
         if(rowsUpdated > 0)
         {
-            System.err.println("hi ho ");
             return id;
         }
         else {

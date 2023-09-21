@@ -14,10 +14,10 @@ public class UpdateJobRoleValidator {
         if (jobRole.getJobSpecSummary() == null) {
             return false;
         }
-        if (jobRole.getBand() == null || jobRole.getBand().getBandID() > 32767) {
+        if (jobRole.getBandID() > 32767) {
             return false;
         }
-        if (jobRole.getCapability() == null || jobRole.getCapability().getCapabilityID() > 32767) {
+        if (jobRole.getCapabilityID() > 32767) {
             return false;
         }
         if (jobRole.getResponsibilities() == null) {
