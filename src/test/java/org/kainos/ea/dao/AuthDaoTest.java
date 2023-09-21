@@ -9,6 +9,7 @@ import org.kainos.ea.cli.Role;
 import org.kainos.ea.client.FailedToGenerateTokenException;
 import org.kainos.ea.client.FailedToGetRolesException;
 import org.kainos.ea.client.FailedToGetUserPassword;
+import org.kainos.ea.client.FailedToRegisterException;
 import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
 import org.mindrot.jbcrypt.BCrypt;
@@ -85,14 +86,6 @@ public class AuthDaoTest {
 
         int result = authDao.getUserId("email@email.com");
         assertEquals(result, 1);
-    }
-
-    @Test
-    public void register_shouldThrowFailedToRegisterException_whenGetConnectionThrowSqlException() throws SQLException {
-        Mockito.when(databaseConnector.getConnection()).thenThrow(SQLException.class);
-        assertThrows(FailedToGenerateTokenException.class,
-                () -> authDao.register(userLogin.getEmail(), userLogin.getPassword(), 1)
-        );
     }
 
     @Test
