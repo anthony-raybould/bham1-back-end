@@ -6,19 +6,19 @@ public class UserResponse {
 
     private int userID;
     private String email;
-    private String role;
+    private RoleResponse role;
 
     @JsonCreator
-    public UserResponse(int userID, String email, String role) {
+    public UserResponse(int userID, String email, Role role) {
         this.userID = userID;
         this.email = email;
-        this.role = role;
+        this.role = new RoleResponse(role);
     }
 
     public UserResponse(User user) {
         this.userID = user.getId();
         this.email = user.getEmail();
-        this.role = user.getRole().toString();
+        this.role = new RoleResponse(user.getRole());
     }
 
     public int getUserID() {
@@ -37,11 +37,12 @@ public class UserResponse {
         this.email = email;
     }
 
-    public String getRole() {
+    public RoleResponse getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(RoleResponse role) {
         this.role = role;
     }
+
 }

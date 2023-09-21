@@ -46,7 +46,9 @@ public class AuthDao {
     public User getUser(int userId) throws SQLException {
         Connection c = databaseConnector.getConnection();
 
-        PreparedStatement ps = c.prepareStatement("SELECT userID, email, roleID FROM `User` WHERE userID = ?");
+        PreparedStatement ps = c.prepareStatement("SELECT userID, email, Role.roleID, Role.name FROM `User`" +
+                " JOIN Role ON User.roleID = Role.roleID" +
+                " WHERE userID = ?");
 
         ps.setInt(1, userId);
 
@@ -56,7 +58,10 @@ public class AuthDao {
             return new User(
                     rs.getInt("userID"),
                     rs.getString("email"),
-                    Role.fromRoleId(rs.getInt("roleID"))
+                    new Role(
+                            rs.getInt("roleID"),
+                            rs.getString("name")
+                    )
             );
         }
 

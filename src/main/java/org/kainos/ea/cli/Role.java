@@ -1,14 +1,12 @@
 package org.kainos.ea.cli;
 
-public enum Role {
-
-    ADMIN(1, "Admin"),
-    EMPLOYEE(2, "Employee");
+public class Role {
 
     private final int roleId;
+
     private final String roleName;
 
-    Role(int roleId, String roleName) {
+    public Role(int roleId, String roleName) {
         this.roleId = roleId;
         this.roleName = roleName;
     }
@@ -17,19 +15,27 @@ public enum Role {
         return roleId;
     }
 
+    public String getRoleName() {
+        return roleName;
+    }
+
     @Override
     public String toString() {
         return roleName;
     }
 
-    public static Role fromRoleId(int roleId) {
-        switch (roleId) {
-            case 1:
-                return ADMIN;
-            case 2:
-                return EMPLOYEE;
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Role) {
+            Role role = (Role) obj;
+            return role.getRoleId() == roleId && role.getRoleName().equals(roleName);
         }
-        return null;
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return roleId;
     }
 
 }

@@ -82,12 +82,13 @@ public class TokenServiceTest {
     @Test
     public void validateToken_whenSuccess_shouldReturnValidUser() throws SQLException, FailedToValidateTokenException {
         Mockito.when(jwtService.verify(any(String.class))).thenReturn(1);
-        Mockito.when(authDao.getUser(any(int.class))).thenReturn(new User(1, "email", Role.ADMIN));
+        Mockito.when(authDao.getUser(any(int.class))).thenReturn(new User(1, "email", new Role(1, "Employee")));
 
         User user = tokenService.validateToken("token");
         assertEquals(user.getEmail(), "email");
         assertSame(user.getId(), 1);
-        assertSame(user.getRole(), Role.ADMIN);
+        assertSame(user.getRole().getRoleId(), 1);
+        assertEquals(user.getRole().getRoleName(), "Employee");
     }
 }
 

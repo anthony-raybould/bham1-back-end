@@ -18,7 +18,8 @@ public class TokenAuthenticatorTest {
 
     @Test
     void tokenAuthenticator_shouldValidateLogin_whenValidToken() throws AuthenticationException, FailedToValidateTokenException {
-        Mockito.when(tokenService.validateToken("validToken")).thenReturn(new User(1, "user@email.com", Role.ADMIN));
+        Mockito.when(tokenService.validateToken("validToken")).thenReturn(new User(1, "user@email.com", new Role(
+                1, "Employee")));
 
         boolean hasUser = tokenAuthenticator.authenticate("validToken").isPresent();
         assertTrue(hasUser);
