@@ -3,15 +3,8 @@ package org.kainos.ea.resources;
 import io.dropwizard.auth.Auth;
 import io.swagger.annotations.*;
 import org.kainos.ea.api.AuthService;
-import org.kainos.ea.cli.Login;
-import org.kainos.ea.cli.RegisterRequest;
-import org.kainos.ea.cli.User;
-import org.kainos.ea.cli.UserResponse;
-import org.kainos.ea.client.FailedToGenerateTokenException;
-import org.kainos.ea.client.FailedToGetUserId;
-import org.kainos.ea.client.FailedToGetUserPassword;
-import org.kainos.ea.client.FailedToLoginException;
-import org.kainos.ea.client.FailedToRegisterException;
+import org.kainos.ea.cli.*;
+import org.kainos.ea.client.*;
 
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.GET;
@@ -21,7 +14,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Api("Authentication API")
 @Path("/api")
@@ -74,6 +69,8 @@ public class AuthController {
             System.err.println(e.getMessage());
 
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        } catch (DuplicateRegistrationException e) {
+            return Response.status(Response.Status.CONFLICT).entity(e.getMessage()).build();
         }
     }
 
@@ -86,5 +83,22 @@ public class AuthController {
     })
     public Response whoami(@Auth @ApiParam(hidden = true) User user) {
         return Response.ok().entity(new UserResponse(user)).build();
+    }
+
+    @GET
+    @Path("/roles")
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Returns a list of available user roles", response = RoleResponse.class, responseContainer = "List")
+    public Response roles() {
+        try {
+            List<RoleResponse> roles = authService.getRoles().stream().map(RoleResponse::new).collect(Collectors.toList());
+
+            return Response.ok().entity(roles).build();
+        } catch (FailedToGetRolesException e) {
+            System.err.println(e.getMessage());
+
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
 }

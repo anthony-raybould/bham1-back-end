@@ -6,13 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class RegisterRequest {
     private String email;
     private String password;
-    private Role role;
+    private int role;
 
     @JsonCreator
     public RegisterRequest(
             @JsonProperty("email") String email,
             @JsonProperty("password") String password,
-            @JsonProperty("role") Role role) {
+            @JsonProperty("role") int role) {
         this.email = email;
         this.password = password;
         this.role = role;
@@ -34,11 +34,11 @@ public class RegisterRequest {
         this.password = password;
     }
 
-    public Role getRole() {
+    public int getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(int role) {
         this.role = role;
     }
 }

@@ -3,15 +3,13 @@ package org.kainos.ea.api;
 import org.kainos.ea.auth.TokenService;
 import org.kainos.ea.cli.Login;
 import org.kainos.ea.cli.RegisterRequest;
-import org.kainos.ea.client.FailedToGenerateTokenException;
-import org.kainos.ea.client.FailedToGetUserId;
-import org.kainos.ea.client.FailedToGetUserPassword;
-import org.kainos.ea.client.FailedToLoginException;
-import org.kainos.ea.client.FailedToRegisterException;
+import org.kainos.ea.cli.Role;
+import org.kainos.ea.client.*;
 import org.kainos.ea.db.AuthDao;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 
 public class AuthService {
@@ -40,13 +38,24 @@ public class AuthService {
         }
     }
 
-    public void register(RegisterRequest request) throws FailedToRegisterException {
+    public void register(RegisterRequest request) throws FailedToRegisterException, DuplicateRegistrationException {
         String salt = BCrypt.gensalt(10);
         String hashedPassword = BCrypt.hashpw(request.getPassword(), salt);
         try {
             authDao.register(request.getEmail(), hashedPassword, request.getRole());
         } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                throw new DuplicateRegistrationException();
+            }
             throw new FailedToRegisterException();
+        }
+    }
+
+    public List<Role> getRoles() throws FailedToGetRolesException {
+        try {
+            return authDao.getRoles();
+        } catch (SQLException e) {
+            throw new FailedToGetRolesException();
         }
     }
 
