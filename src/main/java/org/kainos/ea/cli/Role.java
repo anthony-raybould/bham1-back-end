@@ -1,5 +1,7 @@
 package org.kainos.ea.cli;
 
+import java.util.Objects;
+
 public class Role {
 
     private final int roleId;
@@ -35,7 +37,7 @@ public class Role {
 
     @Override
     public int hashCode() {
-        return roleId;
+        return Objects.hash(roleId, roleName);
     }
 
 }
