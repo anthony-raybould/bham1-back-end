@@ -79,6 +79,22 @@ public class AuthDao {
         return roles;
     }
 
+    public Role getRole(int roleId) throws SQLException {
+        Connection c = databaseConnector.getConnection();
+        Statement st = c.createStatement();
+
+        ResultSet rs = st.executeQuery("SELECT roleID, name FROM Role WHERE roleID = " + roleId);
+
+        if (rs.next()) {
+            return new Role(
+                    rs.getInt("roleID"),
+                    rs.getString("name")
+            );
+        }
+
+        return null;
+    }
+
     public User getUser(int userId) throws SQLException {
         Connection c = databaseConnector.getConnection();
 

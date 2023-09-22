@@ -7,6 +7,7 @@ import org.kainos.ea.cli.*;
 import org.kainos.ea.client.*;
 
 import javax.annotation.security.PermitAll;
+import javax.validation.Validation;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -65,12 +66,13 @@ public class AuthController {
             authService.register(request);
 
             return Response.status(Response.Status.CREATED).build();
-        } catch (FailedToRegisterException e) {
-            System.err.println(e.getMessage());
-
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (DuplicateRegistrationException e) {
             return Response.status(Response.Status.CONFLICT).entity(e.getMessage()).build();
+        } catch (ValidationFailedException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        } catch (FailedToValidateRegisterRequestException | FailedToRegisterException e) {
+            System.err.println(e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
 

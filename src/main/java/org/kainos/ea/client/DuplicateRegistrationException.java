@@ -1,8 +1,9 @@
 package org.kainos.ea.client;
 
-public class DuplicateRegistrationException extends Exception {
-    @Override
-    public String getMessage(){
-        return "User with this email already exists";
+public class DuplicateRegistrationException extends ValidationFailedException {
+
+    public DuplicateRegistrationException() {
+        super("User with this email already exists");
     }
+
 }
