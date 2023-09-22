@@ -53,7 +53,7 @@ public class JobRoleService {
 
             return jobRoleDao.deleteJobRole(id);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
 
             throw new FailedToDeleteJobRoleException();
         }
