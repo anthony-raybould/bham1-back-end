@@ -19,8 +19,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
@@ -107,5 +106,22 @@ public class AuthDaoTest {
         assertEquals(user.getId(), 1);
         assertEquals(user.getRole().getRoleId(), 1);
         assertEquals(user.getRole().getRoleName(), "Admin");
+    }
+
+    @Test
+    public void getUser_shouldReturnNull_whenInvalid() throws SQLException {
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
+
+        PreparedStatement statementMock = mock(PreparedStatement.class);
+        ResultSet resultSetMock = mock(ResultSet.class);
+
+        Mockito.when(connectionMock.prepareStatement(any(String.class))).thenReturn(statementMock);
+        Mockito.when(statementMock.executeQuery()).thenReturn(resultSetMock);
+        Mockito.when(resultSetMock.next()).thenReturn(false);
+
+        User user = authDao.getUser(1);
+
+        assertNull(user);
     }
 }
