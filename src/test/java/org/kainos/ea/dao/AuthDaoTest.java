@@ -107,6 +107,7 @@ public class AuthDaoTest {
         assertEquals(roles.get(0).getRoleName(), "Admin");
     }
 
+    @Test
     public void getUser_shouldReturnUser_whenValid() throws SQLException {
         Connection connectionMock = mock(Connection.class);
         Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);

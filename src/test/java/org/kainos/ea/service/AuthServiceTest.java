@@ -96,7 +96,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    void register_shouldReturn_whenValid() throws SQLException, FailedToRegisterException, DuplicateRegistrationException {
+    void register_shouldReturn_whenValid() throws SQLException, FailedToRegisterException, ValidationFailedException, FailedToValidateRegisterRequestException {
         Mockito.when(authDao.register(any(String.class), any(String.class), any(int.class))).thenReturn(true);
 
         authService.register(new RegisterRequest("email", "password", 1));
