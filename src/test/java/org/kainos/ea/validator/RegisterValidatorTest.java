@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 
 public class RegisterValidatorTest {
 
@@ -99,7 +99,7 @@ public class RegisterValidatorTest {
 
     @Test
     public void validateRole_shouldReturnError_whenRoleIsInvalid() throws FailedToValidateRegisterRequestException, SQLException {
-        Mockito.when(authDao.getRole(any())).thenReturn(null);
+        Mockito.when(authDao.getRole(anyInt())).thenReturn(null);
         String result = registerValidator.validateRole(1);
         assertEquals(result, "Role must be valid");
     }

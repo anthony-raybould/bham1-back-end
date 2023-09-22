@@ -24,7 +24,7 @@ public class RegisterIntegrationTest {
             new ResourceConfigurationSourceProvider()
     );
 
-    RegisterRequest registerRequest = new RegisterRequest("email", "password", 1);
+    RegisterRequest registerRequest = new RegisterRequest("email@test.com", "Test123!", 1);
     RegisterRequest duplicateRequest = new RegisterRequest(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"), 1);
 
     @Test
@@ -32,6 +32,27 @@ public class RegisterIntegrationTest {
         Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/register").request()
                 .post(Entity.entity(registerRequest, MediaType.APPLICATION_JSON));
         Assertions.assertEquals(201, response.getStatus());
+    }
+
+    @Test
+    void register_shouldReturn400_whenEmptyRegistration() {
+        Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/register").request()
+                .post(Entity.entity(new RegisterRequest(null, null, 0), MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(400, response.getStatus());
+    }
+
+    @Test
+    void register_shouldReturn400_whenInvalidRegistration() {
+        Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/register").request()
+                .post(Entity.entity(new RegisterRequest("a", "a", 0), MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(400, response.getStatus());
+    }
+
+    @Test
+    void register_shouldReturn400_whenInvalidRole() {
+        Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/register").request()
+                .post(Entity.entity(new RegisterRequest("admin@test.com", "test", -1), MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(400, response.getStatus());
     }
 
     @Test
