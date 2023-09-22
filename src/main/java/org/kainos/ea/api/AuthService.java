@@ -20,13 +20,14 @@ public class AuthService {
     private AuthDao authDao;
     private RegisterValidator registerValidator;
 
-    public AuthService(AuthDao authDao, TokenService tokenService) {
+    public AuthService(AuthDao authDao, TokenService tokenService, RegisterValidator registerValidator) {
         Objects.requireNonNull(authDao);
         Objects.requireNonNull(tokenService);
+        Objects.requireNonNull(registerValidator);
 
         this.authDao = authDao;
         this.tokenService = tokenService;
-        this.registerValidator = new RegisterValidator(authDao);
+        this.registerValidator = registerValidator;
     }
 
     public String login(Login login) throws FailedToGenerateTokenException, FailedToGetUserPassword, FailedToGetUserId, FailedToLoginException {

@@ -147,4 +147,20 @@ public class AuthDaoTest {
 
         assertNull(user);
     }
+
+    @Test
+    public void register_shouldReturnTrue_whenSuccess() throws SQLException {
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
+
+        PreparedStatement statementMock = mock(PreparedStatement.class);
+
+        Mockito.when(connectionMock.prepareStatement(any(String.class))).thenReturn(statementMock);
+        Mockito.when(statementMock.executeUpdate()).thenReturn(1);
+
+        boolean result = authDao.register("email", "password", 1);
+
+        assertTrue(result);
+    }
+
 }

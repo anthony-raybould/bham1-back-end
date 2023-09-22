@@ -21,6 +21,7 @@ import org.kainos.ea.cli.User;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.db.JobRoleDao;
 import org.kainos.ea.resources.JobRoleController;
+import org.kainos.ea.validator.RegisterValidator;
 
 public class DropwizardWebServiceApplication extends Application<DropwizardWebServiceConfiguration> {
 
@@ -51,9 +52,11 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         final JobRoleDao jobRoleDao = new JobRoleDao(databaseConnector);
         final AuthDao authDao = new AuthDao(databaseConnector);
 
+        final RegisterValidator registerValidator = new RegisterValidator(authDao);
+
         final JWTService jwtService = new JWTService();
         final TokenService tokenService = new TokenService(authDao, jwtService);
-        final AuthService authService = new AuthService(authDao, tokenService);
+        final AuthService authService = new AuthService(authDao, tokenService, registerValidator);
         final JobRoleService jobRoleService = new JobRoleService(jobRoleDao);
 
         // Register authentication middleware
