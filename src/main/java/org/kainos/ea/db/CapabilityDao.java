@@ -1,11 +1,9 @@
 package org.kainos.ea.db;
 
+import org.kainos.ea.cli.JobBandResponse;
 import org.kainos.ea.cli.JobCapabilityResponse;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -35,5 +33,29 @@ public class CapabilityDao {
         ;}
 
         return capability;
+    }
+
+    public int deleteCapability(int capabilityID) throws SQLException{
+        Connection c = databaseConnector.getConnection();
+        String query = "DELETE FROM JobCapability WHERE capabilityID = ?";
+        PreparedStatement ps = c.prepareStatement(query);
+        ps.setInt(1, capabilityID);
+        int result = ps.executeUpdate();
+
+        return result;
+    }
+
+    public ArrayList<Integer> getCapabilityReferences(int capabilityID) throws  SQLException{
+        Connection c = databaseConnector.getConnection();
+        String query = ("SELECT * FROM JobRoles\n" +
+                "WHERE capabilityID = ?;\n");
+        ArrayList<Integer> capabilityReferences = null;
+        PreparedStatement ps = c.prepareStatement(query);
+        ps.setInt(1, capabilityID);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            capabilityReferences.add(rs.getInt("jobRoleID"));
+            ;}
+        return capabilityReferences;
     }
 }

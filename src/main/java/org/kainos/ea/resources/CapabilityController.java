@@ -4,17 +4,20 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.kainos.ea.cli.JobCapabilityResponse;
+import org.kainos.ea.client.FailedToDeleteCapabilityException;
 import org.kainos.ea.client.FailedToGetCapabilitiesException;
 import org.kainos.ea.api.CapabilityService;
+import org.kainos.ea.client.FailedToGetCapabilityReferences;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Api("Job Capability API")
@@ -39,6 +42,27 @@ public class CapabilityController {
 
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @DELETE
+    @Path("/capability/{capabilityID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("Admin")
+    @ApiOperation(value = "Deletes a capability", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION))
+    public Response deleteCapabilities(@PathParam("capabilityID") short capabilityID) {
+        try {
+            ArrayList<Integer> references;
+            references = capabilityService.getCapabilityReferences(capabilityID);
+            if(references == null)
+            {
+                return Response.ok(capabilityService.deleteCapability(capabilityID)).build();
+            }
+            return Response.status(409, "Tables reference the capability you wish to delete.").entity(references).build();
+        } catch (FailedToDeleteCapabilityException | SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        } catch (FailedToGetCapabilityReferences e) {
             throw new RuntimeException(e);
         }
     }
