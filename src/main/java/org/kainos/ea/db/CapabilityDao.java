@@ -41,9 +41,8 @@ public class CapabilityDao {
         String query = "DELETE FROM JobCapability WHERE capabilityID = ?";
         PreparedStatement ps = c.prepareStatement(query);
         ps.setInt(1, capabilityID);
-        int result = ps.executeUpdate();
 
-        return result;
+        return ps.executeUpdate();
     }
 
     public ArrayList<Integer> getCapabilityReferences(int capabilityID) throws  SQLException{

@@ -67,4 +67,9 @@ public class CapabilityDaoTest {
 
         assert(response.size() > 1);
     }
+
+    @Test
+    public void deleteCapability_whenSuccess_returnDeletedID(){
+
+    }
 }
