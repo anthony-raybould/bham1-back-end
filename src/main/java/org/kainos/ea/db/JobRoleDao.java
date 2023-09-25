@@ -52,6 +52,26 @@ public class JobRoleDao {
 
         return jobRoles;
     }
+    public boolean doesJobRoleExist(int id) throws SQLException {
+        Connection c = databaseConnector.getConnection();
+        String updateQuery = "SELECT COUNT(*) AS roleExists\n" +
+                "FROM JobRoles\n" +
+                "WHERE jobRoleID = ?";
+
+        PreparedStatement preparedStatement = c.prepareStatement(updateQuery);
+        preparedStatement.setInt(1, id);
+
+        ResultSet rs = preparedStatement.executeQuery();
+        while (rs.next())
+        {
+            if(rs.getInt("roleExists") == 1)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public int updateJobRole(int id, UpdateJobRoleRequest jobRoleRequest) throws SQLException, FailedToUpdateJobRoleException {
         Connection c = databaseConnector.getConnection();

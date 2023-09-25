@@ -33,7 +33,7 @@ public class JobRoleIntegrationTest {
         UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName",
                 "jobSpecSummary",
                 1,
-                1,
+                2,
                 "jobResponsibility",
                 "https://www.something.com/");
 
@@ -42,6 +42,17 @@ public class JobRoleIntegrationTest {
                 .put(Entity.entity(jobRoleRequest, MediaType.APPLICATION_JSON));
 
         Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
+    @Test
+    void updateJobRoles_whenIdSuppliedNotExist_Return400() {
+        UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName", "jobSpecSummary",
+                1, 1,
+                "jobResponsibility", "invalidURL");
+
+        Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/job-roles/999")
+                .request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(jobRoleRequest , MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
     @Test
     void updateJobRoles_whenValidationExceptionThrow_Return400() {

@@ -1,4 +1,4 @@
-package org.kainos.ea.cllient;
+package org.kainos.ea.client;
 
 public class FailedToGetBandsException extends Throwable{
     @Override

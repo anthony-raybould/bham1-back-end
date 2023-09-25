@@ -10,6 +10,7 @@ import org.kainos.ea.cli.JobRoleResponse;
 import org.kainos.ea.cli.UpdateJobRoleRequest;
 import org.kainos.ea.client.FailedJobRolesOperationException;
 import org.kainos.ea.client.FailedToUpdateJobRoleException;
+import org.kainos.ea.client.UpdateJobRoleIDDoesNotExistException;
 import org.kainos.ea.validator.UpdateJobRoleValidator;
 
 import javax.annotation.security.RolesAllowed;
@@ -58,7 +59,7 @@ public class JobRoleController {
         try{
                 return Response.ok(jobRoleService.updateJobRole(id, jobRoleToUpdate)).build();
         }
-        catch(ValidationException e)
+        catch(ValidationException | UpdateJobRoleIDDoesNotExistException e)
         {
             System.err.println(e);
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();

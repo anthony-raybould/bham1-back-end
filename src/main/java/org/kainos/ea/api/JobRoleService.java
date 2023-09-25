@@ -5,9 +5,11 @@ import org.kainos.ea.cli.JobRoleResponse;
 import org.kainos.ea.cli.UpdateJobRoleRequest;
 import org.kainos.ea.client.FailedJobRolesOperationException;
 import org.kainos.ea.client.FailedToUpdateJobRoleException;
+import org.kainos.ea.client.UpdateJobRoleIDDoesNotExistException;
 import org.kainos.ea.db.JobRoleDao;
 import org.kainos.ea.validator.UpdateJobRoleValidator;
 
+import javax.validation.Valid;
 import javax.validation.ValidationException;
 import java.security.cert.CertPathBuilder;
 import java.sql.SQLException;
@@ -18,7 +20,7 @@ public class JobRoleService {
     private final JobRoleDao jobRoleDao;
     private final UpdateJobRoleValidator updateJobRoleValidator;
 
-    public JobRoleService(JobRoleDao jobRoleDao, UpdateJobRoleValidator  updateJobRoleValidator) {
+    public JobRoleService(JobRoleDao jobRoleDao, UpdateJobRoleValidator updateJobRoleValidator) {
         Objects.requireNonNull(jobRoleDao);
         Objects.requireNonNull(updateJobRoleValidator);
 
@@ -34,13 +36,14 @@ public class JobRoleService {
         }
     }
 
-    public int updateJobRole(Short id, UpdateJobRoleRequest jobRoleRequest) throws FailedJobRolesOperationException, FailedToUpdateJobRoleException {
+    public int updateJobRole(Short id, UpdateJobRoleRequest jobRoleRequest) throws UpdateJobRoleIDDoesNotExistException, ValidationException, FailedToUpdateJobRoleException, FailedJobRolesOperationException {
         try {
-            if(updateJobRoleValidator.validate(jobRoleRequest))
-            {
+            if (jobRoleDao.doesJobRoleExist(id)) {
+                updateJobRoleValidator.validate(jobRoleRequest);
+
                 return jobRoleDao.updateJobRole(id, jobRoleRequest);
             }
-            throw new ValidationException();
+            throw new UpdateJobRoleIDDoesNotExistException();
         } catch (SQLException e) {
             throw new FailedJobRolesOperationException("Failed to update job role", e);
         }

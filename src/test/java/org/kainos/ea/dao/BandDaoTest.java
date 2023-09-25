@@ -36,6 +36,12 @@ public class BandDaoTest {
     }
 
     @Test
+    public void getBand_whenDbError_shouldThrowSQLException() throws SQLException {
+        Mockito.when(databaseConnector.getConnection()).thenReturn(null);
+        assertThrows(SQLException.class, () -> bandDao.getBands());
+    }
+
+    @Test
     public void getBand_whenBandsExist_shouldReturn() throws SQLException {
         Connection connectionMock = mock(Connection.class);
         Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
