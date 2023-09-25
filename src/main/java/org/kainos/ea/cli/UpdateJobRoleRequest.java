@@ -4,6 +4,22 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UpdateJobRoleRequest {
+    public int getBand() {
+        return band;
+    }
+
+    public void setBand(int band) {
+        this.band = band;
+    }
+
+    public int getCapability() {
+        return capability;
+    }
+
+    public void setCapability(int capability) {
+        this.capability = capability;
+    }
+
     @JsonCreator
     public UpdateJobRoleRequest(@JsonProperty("jobRoleName") String jobRoleName,
                                 @JsonProperty("jobSpecSummary") String jobSpecSummary,
@@ -25,7 +41,10 @@ public class UpdateJobRoleRequest {
     private int capability;
     private String responsibilities;
     private String sharePoint;
-
+    public int getCapabilityID(){return capability;}
+    public void setCapabilityID(int capability){ this.capability = capability;}
+    public int getBandId(){return band;}
+    public void setBandID(int band){ this.band = band;}
     public String getJobRoleName() {
         return jobRoleName;
     }
@@ -56,21 +75,5 @@ public class UpdateJobRoleRequest {
 
     public void setSharePoint(String sharePoint) {
         this.sharePoint = sharePoint;
-    }
-
-    public int getBandID() {
-        return band;
-    }
-
-    public void setBand(JobBandResponse band) {
-        this.band = band.getBandID();
-    }
-
-    public int getCapabilityID() {
-        return capability;
-    }
-
-    public void setCapability(JobCapabilityResponse capability) {
-        this.capability = capability.getCapabilityID();
     }
 }

@@ -19,7 +19,7 @@ public class CapabilityIntegrationTest {
     );
 
     @Test
-    void band_shouldReturn200() {
+    void capability_shouldReturn200() {
         Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/capabilities").request().get();
         Assertions.assertEquals(200, response.getStatus());
     }

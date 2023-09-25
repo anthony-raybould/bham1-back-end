@@ -67,7 +67,7 @@ public class JobRoleDao {
         PreparedStatement preparedStatement = c.prepareStatement(updateQuery);
         preparedStatement.setString(1, jobRoleRequest.getJobRoleName());
         preparedStatement.setString(2, jobRoleRequest.getJobSpecSummary());
-        preparedStatement.setInt(3, jobRoleRequest.getBandID());
+        preparedStatement.setInt(3, jobRoleRequest.getBand());
         preparedStatement.setInt(4, jobRoleRequest.getCapabilityID());
         preparedStatement.setString(5, jobRoleRequest.getResponsibilities());
         preparedStatement.setString(6, jobRoleRequest.getSharePoint());
