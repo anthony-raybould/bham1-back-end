@@ -4,13 +4,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.kainos.ea.cli.JobBandResponse;
-import org.kainos.ea.cli.JobCapabilityResponse;
 import org.kainos.ea.cli.UpdateJobRoleRequest;
 import org.kainos.ea.validator.UpdateJobRoleValidator;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import javax.validation.ValidationException;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UpdateJobRoleValidatorTests {
     private UpdateJobRoleValidator validator;
@@ -28,50 +26,51 @@ public class UpdateJobRoleValidatorTests {
     }
 
     @Test
-    public void testValidate_NullObject_ReturnsFalse() {
-        assertFalse(validator.validate(null));
+    public void testValidate_NullObject_ThrowsException() {
+        assertThrows(ValidationException.class, () -> validator.validate(null));
     }
 
     @Test
     public void testValidate_NullJobRoleName_ReturnsFalse() {
         validJobRole.setJobRoleName(null);
-        assertFalse(validator.validate(validJobRole));
+        assertThrows(ValidationException.class, () -> validator.validate(validJobRole));
     }
 
     @Test
     public void testValidate_LongJobRoleName_ReturnsFalse() {
         validJobRole.setJobRoleName("ThisIsAReallyLongJobRoleNameThatExceedsTheMaximumAllowedLength ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength");
-        assertFalse(validator.validate(validJobRole));
+        assertThrows(ValidationException.class, () -> validator.validate(validJobRole));
     }
 
     @Test
     public void testValidate_NullJobSpecSummary_ReturnsFalse() {
         validJobRole.setJobSpecSummary(null);
-        assertFalse(validator.validate(validJobRole));
+        assertThrows(ValidationException.class, () -> validator.validate(validJobRole));
     }
 
     @Test
     public void testValidate_BandIDGreaterThanMax_ReturnsFalse() {
         validJobRole.setBand(32768);
-        assertFalse(validator.validate(validJobRole));
+        assertThrows(ValidationException.class, () -> validator.validate(validJobRole));
     }
 
     @Test
     public void testValidate_CapabilityIDGreaterThanMax_ReturnsFalse() {
         validJobRole.setCapability(32768);
-        assertFalse(validator.validate(validJobRole));
+        assertThrows(ValidationException.class, () -> validator.validate(validJobRole));
     }
 
     @Test
     public void testValidate_NullResponsibilities_ReturnsFalse() {
         validJobRole.setResponsibilities(null);
-        assertFalse(validator.validate(validJobRole));
+        assertThrows(ValidationException.class, () -> validator.validate(validJobRole));
+
     }
 
     @Test
     public void testValidate_LongSharePoint_ReturnsFalse() {
         validJobRole.setSharePoint("ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength");
-        assertFalse(validator.validate(validJobRole));
+        assertThrows(ValidationException.class, () -> validator.validate(validJobRole));
     }
 
     @ParameterizedTest
@@ -85,7 +84,7 @@ public class UpdateJobRoleValidatorTests {
     public void testValidate_InvalidUrls_ReturnsFalse(String url)
     {
         validJobRole.setSharePoint(url);
-        assertFalse(validator.validate(validJobRole));
+        assertThrows(ValidationException.class, () -> validator.validate(validJobRole));
     }
     @ParameterizedTest
     @ValueSource(strings = {
@@ -100,10 +99,10 @@ public class UpdateJobRoleValidatorTests {
     public void testValidate_validUrls_ReturnsTrue(String url)
     {
         validJobRole.setSharePoint(url);
-        assertTrue(validator.validate(validJobRole));
+        assertDoesNotThrow(() -> validator.validate(validJobRole));
     }
     @Test
     public void testValidate_ValidObject_ReturnsTrue() {
-        assertTrue(validator.validate(validJobRole));
+        assertDoesNotThrow(() -> validator.validate(validJobRole));
     }
 }

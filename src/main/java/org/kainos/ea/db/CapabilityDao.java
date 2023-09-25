@@ -20,20 +20,29 @@ public class CapabilityDao {
     }
 
     public List<JobCapabilityResponse> getCapabilities() throws SQLException {
-        Connection c = databaseConnector.getConnection();
+        try {
 
-        Statement st = c.createStatement();
 
-        ResultSet rs = st.executeQuery("SELECT capabilityID, capabilityName FROM JobCapability;");
+            Connection c = databaseConnector.getConnection();
 
-        List<JobCapabilityResponse> capability = new ArrayList<>();
+            Statement st = c.createStatement();
 
-        while (rs.next()) {
-            capability.add(new JobCapabilityResponse(
-                    rs.getInt("capabilityID"),
-                    rs.getString("capabilityName")))
-        ;}
+            ResultSet rs = st.executeQuery("SELECT capabilityID, capabilityName FROM JobCapability;");
 
-        return capability;
+            List<JobCapabilityResponse> capability = new ArrayList<>();
+
+            while (rs.next()) {
+                capability.add(new JobCapabilityResponse(
+                        rs.getInt("capabilityID"),
+                        rs.getString("capabilityName")))
+                ;
+            }
+
+            return capability;
+        }
+        catch (Exception e)
+        {
+            throw new SQLException(e);
+        }
     }
 }

@@ -9,6 +9,7 @@ import org.kainos.ea.cli.JobRoleResponse;
 import org.kainos.ea.cli.UpdateJobRoleRequest;
 import org.kainos.ea.client.FailedJobRolesOperationException;
 import org.kainos.ea.client.FailedToUpdateJobRoleException;
+import org.kainos.ea.client.UpdateJobRoleIDDoesNotExistException;
 import org.kainos.ea.db.JobRoleDao;
 import org.kainos.ea.validator.UpdateJobRoleValidator;
 import org.mockito.Mock;
@@ -84,21 +85,28 @@ public class JobRoleServiceTest {
     }
     @Test
     public void updateJobRole_shouldThrowFailedJobRolesException_whenDaoThrowsSqlException() throws SQLException, FailedToUpdateJobRoleException {
-        Mockito.when(updateJobRoleValidator.validate(any(UpdateJobRoleRequest.class))).thenReturn(true);
         Mockito.when(jobRoleDao.updateJobRole(any(int.class), any(UpdateJobRoleRequest.class))).thenThrow(SQLException.class);
+        Mockito.when(jobRoleDao.doesJobRoleExist(any(int.class))).thenReturn(true);
         assertThrows(FailedJobRolesOperationException.class,
                 () -> jobRoleService.updateJobRole((short) 1,jobRoleRequest));
     }
     @Test
-    public void updateJobRole_shouldThrowValidationException_whenInvalidJobRoleRequest() throws ValidationException, FailedToUpdateJobRoleException, SQLException {
-        Mockito.when(updateJobRoleValidator.validate(any(UpdateJobRoleRequest.class))).thenReturn(false);
-        assertThrows(ValidationException.class,
+    public void updateJobRole_shouldThrowUpdateJobRoleIDDoesNotExistException_whenUserIdNotInDB() throws SQLException, FailedToUpdateJobRoleException {
+        Mockito.when(jobRoleDao.updateJobRole(any(int.class), any(UpdateJobRoleRequest.class))).thenThrow(SQLException.class);
+        Mockito.when(jobRoleDao.doesJobRoleExist(any(int.class))).thenReturn(false);
+        assertThrows(UpdateJobRoleIDDoesNotExistException.class,
                 () -> jobRoleService.updateJobRole((short) 1,jobRoleRequest));
     }
     @Test
-    public void updateJobRole_shouldReturnID_whenSuccess() throws SQLException, FailedToUpdateJobRoleException, FailedJobRolesOperationException {
-        Mockito.when(updateJobRoleValidator.validate(any(UpdateJobRoleRequest.class))).thenReturn(true);
+    public void updateJobRole_shouldThrowValidationException_whenInvalidJobRoleRequest() throws ValidationException, FailedToUpdateJobRoleException, SQLException {
+        Mockito.when(jobRoleDao.doesJobRoleExist(any(int.class))).thenReturn(true);
+        assertThrows(ValidationException.class,
+                () -> new JobRoleService(jobRoleDao, new UpdateJobRoleValidator()).updateJobRole((short)1, jobRoleRequest));
+    }
+    @Test
+    public void updateJobRole_shouldReturnID_whenSuccess() throws SQLException, FailedToUpdateJobRoleException, FailedJobRolesOperationException, UpdateJobRoleIDDoesNotExistException {
         Mockito.when(jobRoleDao.updateJobRole(any(int.class), any(UpdateJobRoleRequest.class))).thenReturn(1);
+        Mockito.when(jobRoleDao.doesJobRoleExist(any(int.class))).thenReturn(true);
         assertEquals(1, jobRoleService.updateJobRole((short) 1, jobRoleRequest));
     }
 }
