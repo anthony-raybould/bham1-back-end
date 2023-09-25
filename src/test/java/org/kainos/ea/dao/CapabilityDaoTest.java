@@ -1,5 +1,6 @@
 package org.kainos.ea.dao;
 
+import io.swagger.models.auth.In;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.kainos.ea.cli.JobCapabilityResponse;
@@ -52,5 +53,23 @@ public class CapabilityDaoTest {
 
         assertEquals(response.get(0).getCapabilityID(), 12);
         assertEquals(response.get(0).getCapabilityName(), "summary");
+    }
+
+    @Test
+    public void getCapabilityReference_shouldReturnCapabilityReferences_whenExist() throws SQLException {
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
+
+        Statement statementMock = mock(Statement.class);
+        ResultSet resultSetMock = mock(ResultSet.class);
+
+        Mockito.when(connectionMock.createStatement()).thenReturn(statementMock);
+        Mockito.when(statementMock.executeQuery(any(String.class))).thenReturn(resultSetMock);
+        Mockito.when(resultSetMock.next()).thenReturn(true).thenReturn(false);
+        Mockito.when(resultSetMock.getInt("jobRoleID")).thenReturn(1);
+
+        List<Integer> response =  capabilityDao.getCapabilityReferences(1);
+
+        assert(response.size() > 1);
     }
 }

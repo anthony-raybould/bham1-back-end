@@ -1,5 +1,6 @@
 package org.kainos.ea.db;
 
+import io.swagger.models.auth.In;
 import org.kainos.ea.cli.JobBandResponse;
 import org.kainos.ea.cli.JobCapabilityResponse;
 
@@ -49,7 +50,7 @@ public class CapabilityDao {
         Connection c = databaseConnector.getConnection();
         String query = ("SELECT * FROM JobRoles\n" +
                 "WHERE capabilityID = ?;\n");
-        ArrayList<Integer> capabilityReferences = null;
+        ArrayList<Integer> capabilityReferences = new ArrayList<>();
         PreparedStatement ps = c.prepareStatement(query);
         ps.setInt(1, capabilityID);
         ResultSet rs = ps.executeQuery();
