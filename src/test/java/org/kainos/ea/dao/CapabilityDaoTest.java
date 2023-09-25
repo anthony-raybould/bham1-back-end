@@ -1,18 +1,13 @@
 package org.kainos.ea.dao;
 
-import io.swagger.models.auth.In;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.kainos.ea.cli.JobCapabilityResponse;
 import org.kainos.ea.db.CapabilityDao;
 import org.kainos.ea.db.DatabaseConnector;
-import org.kainos.ea.db.JobRoleDao;
 import org.mockito.Mockito;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -60,11 +55,11 @@ public class CapabilityDaoTest {
         Connection connectionMock = mock(Connection.class);
         Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
 
-        Statement statementMock = mock(Statement.class);
+        Statement preparedStatementMock = mock(PreparedStatement.class);
         ResultSet resultSetMock = mock(ResultSet.class);
 
-        Mockito.when(connectionMock.createStatement()).thenReturn(statementMock);
-        Mockito.when(statementMock.executeQuery(any(String.class))).thenReturn(resultSetMock);
+        Mockito.when(connectionMock.createStatement()).thenReturn(preparedStatementMock);
+        Mockito.when(preparedStatementMock.executeQuery(any(String.class))).thenReturn(resultSetMock);
         Mockito.when(resultSetMock.next()).thenReturn(true).thenReturn(false);
         Mockito.when(resultSetMock.getInt("jobRoleID")).thenReturn(1);
 
