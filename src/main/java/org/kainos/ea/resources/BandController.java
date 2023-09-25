@@ -34,12 +34,10 @@ public class BandController {
     public Response getJobRoles() {
         try {
             return Response.ok(bandService.getBands()).build();
-        } catch (FailedToGetBandsException e) {
+        } catch (FailedToGetBandsException | SQLException e) {
             e.printStackTrace();
 
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 }

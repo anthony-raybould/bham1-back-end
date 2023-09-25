@@ -2,6 +2,8 @@ package validator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.kainos.ea.cli.JobBandResponse;
 import org.kainos.ea.cli.JobCapabilityResponse;
 import org.kainos.ea.cli.UpdateJobRoleRequest;
@@ -18,10 +20,10 @@ public class UpdateJobRoleValidatorTests {
         validator = new UpdateJobRoleValidator();
         validJobRole = new UpdateJobRoleRequest("ValidName",
                 "ValidSummary",
-                new JobBandResponse(1, "ValidBand"),
-                new JobCapabilityResponse(1, "ValidCapability"),
+                1,
+                1,
                 "ValidResponsibilities",
-                "ValidSharePoint"
+                "http://www.valid_url.com"
         );
     }
 
@@ -50,13 +52,13 @@ public class UpdateJobRoleValidatorTests {
 
     @Test
     public void testValidate_BandIDGreaterThanMax_ReturnsFalse() {
-        validJobRole.setBand(new JobBandResponse(32768, "InvalidBand"));
+        validJobRole.setBand(32768);
         assertFalse(validator.validate(validJobRole));
     }
 
     @Test
     public void testValidate_CapabilityIDGreaterThanMax_ReturnsFalse() {
-        validJobRole.setCapability(new JobCapabilityResponse(32768, "InvalidCapability"));
+        validJobRole.setCapability(32768);
         assertFalse(validator.validate(validJobRole));
     }
 
@@ -72,6 +74,34 @@ public class UpdateJobRoleValidatorTests {
         assertFalse(validator.validate(validJobRole));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "",
+            "  ",
+            "ftp://www.example.com",
+            "http://example",
+            "http://www.example@"
+    })
+    public void testValidate_InvalidUrls_ReturnsFalse(String url)
+    {
+        validJobRole.setSharePoint(url);
+        assertFalse(validator.validate(validJobRole));
+    }
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "https://www.something.com/",
+            "http://www.something.com/",
+            "https://www.something.edu.co.in",
+            "http://www.url-with-path.com/path",
+            "https://www.url-with-querystring.com/?url=has-querystring",
+            "http://url-without-www-subdomain.com/",
+            "https://mail.google.com"
+    })
+    public void testValidate_validUrls_ReturnsTrue(String url)
+    {
+        validJobRole.setSharePoint(url);
+        assertTrue(validator.validate(validJobRole));
+    }
     @Test
     public void testValidate_ValidObject_ReturnsTrue() {
         assertTrue(validator.validate(validJobRole));

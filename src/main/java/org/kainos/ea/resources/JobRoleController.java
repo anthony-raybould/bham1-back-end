@@ -13,6 +13,8 @@ import org.kainos.ea.client.FailedToUpdateJobRoleException;
 import org.kainos.ea.validator.UpdateJobRoleValidator;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.ValidationException;
+import javax.validation.constraints.Negative;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
@@ -25,13 +27,9 @@ import java.util.Objects;
 @Path("/api")
 public class JobRoleController {
     private final JobRoleService jobRoleService;
-    private final UpdateJobRoleValidator jobRoleValidator;
 
-    public JobRoleController(JobRoleService jobRoleService, UpdateJobRoleValidator jobRoleValidator) {
+    public JobRoleController(JobRoleService jobRoleService) {
         Objects.requireNonNull(jobRoleService);
-        Objects.requireNonNull(jobRoleValidator);
-
-        this.jobRoleValidator = jobRoleValidator;
         this.jobRoleService = jobRoleService;
     }
 
@@ -58,11 +56,12 @@ public class JobRoleController {
     public Response editJobRole(@PathParam("id") @NotNull Short id, UpdateJobRoleRequest jobRoleToUpdate)
     {
         try{
-            if(jobRoleValidator.validate(jobRoleToUpdate))
-            {
                 return Response.ok(jobRoleService.updateJobRole(id, jobRoleToUpdate)).build();
-            }
-            return Response.status(400, "Fields not in correct format.").build();
+        }
+        catch(ValidationException e)
+        {
+            System.err.println(e);
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
         catch(FailedJobRolesOperationException | FailedToUpdateJobRoleException e)
         {

@@ -99,10 +99,8 @@ public class JobRoleDaoTest {
 
     @Test
     public void updateJobRole_shouldReturnJobRoleID_whenValidUpdate() throws SQLException, FailedToUpdateJobRoleException {
-        JobBandResponse jobBandResponse = new JobBandResponse(1, "jobBand");
-        JobCapabilityResponse jobCapabilityResponse = new JobCapabilityResponse(1, "jobCapability");
         UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName", "jobSpecSummary",
-                jobBandResponse, jobCapabilityResponse,
+                1, 1,
                 "jobResponsibility", "sharepointLink");
 
         Connection connectionMock = mock(Connection.class);
@@ -114,11 +112,9 @@ public class JobRoleDaoTest {
         assertEquals(1, id, "Expected 1 row to be updated.");
     }
     @Test
-    public void updateJobRole_shouldReturnNegative1_whenCantUpdate() throws SQLException, FailedToUpdateJobRoleException {
-        JobBandResponse jobBandResponse = new JobBandResponse(1, "jobBand");
-        JobCapabilityResponse jobCapabilityResponse = new JobCapabilityResponse(1, "jobCapability");
+    public void updateJobRole_shouldThrowFailedToUpdateJobRoleException_whenCantUpdate() throws SQLException, FailedToUpdateJobRoleException {
         UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName", "jobSpecSummary",
-                jobBandResponse, jobCapabilityResponse,
+                1, 1,
                 "jobResponsibility", "sharepointLink");
 
         Connection connectionMock = mock(Connection.class);

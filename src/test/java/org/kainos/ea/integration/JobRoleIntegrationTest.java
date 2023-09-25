@@ -30,27 +30,26 @@ public class JobRoleIntegrationTest {
     }
     @Test
     void updateJobRoles_shouldReturn200() {
-        JobBandResponse jobBandResponse = new JobBandResponse(1, "jobBand");
-        JobCapabilityResponse jobCapabilityResponse = new JobCapabilityResponse(1, "jobCapability");
-        UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName", "jobSpecSummary",
-                jobBandResponse, jobCapabilityResponse,
-                "jobResponsibility", "sharepointLink");
+        UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName",
+                "jobSpecSummary",
+                1,
+                1,
+                "jobResponsibility",
+                "https://www.something.com/");
 
-        Response response = APP.client().target("http://localhost:8080" + "/api/job-roles/1")
+        Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/job-roles/1")
                 .request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(jobRoleRequest, MediaType.APPLICATION_JSON));
 
         Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
     @Test
-    void updateJobRoles_shouldReturn500_whenNullBody() {
-        JobBandResponse jobBandResponse = new JobBandResponse(1, "jobBand");
-        JobCapabilityResponse jobCapabilityResponse = new JobCapabilityResponse(1, "jobCapability");
+    void updateJobRoles_whenValidationExceptionThrow_Return400() {
         UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName", "jobSpecSummary",
-                jobBandResponse, jobCapabilityResponse,
-                "jobResponsibility", "sharepointLink");
+                1, 1,
+                "jobResponsibility", "invalidURL");
 
-        Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/job-roles/-1")
+        Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/job-roles/1")
                 .request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(jobRoleRequest , MediaType.APPLICATION_JSON));
         Assertions.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());

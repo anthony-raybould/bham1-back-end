@@ -6,7 +6,9 @@ import org.kainos.ea.cli.UpdateJobRoleRequest;
 import org.kainos.ea.client.FailedJobRolesOperationException;
 import org.kainos.ea.client.FailedToUpdateJobRoleException;
 import org.kainos.ea.db.JobRoleDao;
+import org.kainos.ea.validator.UpdateJobRoleValidator;
 
+import javax.validation.ValidationException;
 import java.security.cert.CertPathBuilder;
 import java.sql.SQLException;
 import java.util.List;
@@ -14,10 +16,13 @@ import java.util.Objects;
 
 public class JobRoleService {
     private final JobRoleDao jobRoleDao;
+    private final UpdateJobRoleValidator updateJobRoleValidator;
 
-    public JobRoleService(JobRoleDao jobRoleDao) {
+    public JobRoleService(JobRoleDao jobRoleDao, UpdateJobRoleValidator  updateJobRoleValidator) {
         Objects.requireNonNull(jobRoleDao);
+        Objects.requireNonNull(updateJobRoleValidator);
 
+        this.updateJobRoleValidator = updateJobRoleValidator;
         this.jobRoleDao = jobRoleDao;
     }
 
@@ -31,8 +36,11 @@ public class JobRoleService {
 
     public int updateJobRole(Short id, UpdateJobRoleRequest jobRoleRequest) throws FailedJobRolesOperationException, FailedToUpdateJobRoleException {
         try {
-            // validator
-            return jobRoleDao.updateJobRole(id, jobRoleRequest);
+            if(updateJobRoleValidator.validate(jobRoleRequest))
+            {
+                return jobRoleDao.updateJobRole(id, jobRoleRequest);
+            }
+            throw new ValidationException();
         } catch (SQLException e) {
             throw new FailedJobRolesOperationException("Failed to update job role", e);
         }
