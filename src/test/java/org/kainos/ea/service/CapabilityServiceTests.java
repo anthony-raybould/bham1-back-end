@@ -2,18 +2,12 @@ package org.kainos.ea.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.kainos.ea.api.BandService;
 import org.kainos.ea.api.CapabilityService;
-import org.kainos.ea.api.JobRoleService;
-import org.kainos.ea.cli.JobBandResponse;
 import org.kainos.ea.cli.JobCapabilityResponse;
 import org.kainos.ea.client.FailedToDeleteCapabilityException;
 import org.kainos.ea.client.FailedToGetCapabilitiesException;
 import org.kainos.ea.client.FailedToGetCapabilityReferences;
-import org.kainos.ea.cllient.FailedToGetBandsException;
-import org.kainos.ea.db.BandDao;
 import org.kainos.ea.db.CapabilityDao;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.sql.SQLException;

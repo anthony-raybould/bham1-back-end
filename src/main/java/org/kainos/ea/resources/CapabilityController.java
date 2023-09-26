@@ -47,7 +47,7 @@ public class CapabilityController {
     }
 
     @DELETE
-    @Path("/capability/{capabilityID}")
+    @Path("/capabilities/{capabilityID}")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("Admin")
     @ApiOperation(value = "Deletes a capability", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION))
@@ -55,15 +55,13 @@ public class CapabilityController {
         try {
             ArrayList<Integer> references;
             references = capabilityService.getCapabilityReferences(capabilityID);
-            if(references == null)
+            if(Objects.requireNonNull(references).isEmpty())
             {
                 return Response.ok(capabilityService.deleteCapability(capabilityID)).build();
             }
-            return Response.status(409, "Tables reference the capability you wish to delete.").entity(references).build();
-        } catch (FailedToDeleteCapabilityException | SQLException e) {
+            return Response.status(409, "Tables reference the capability you wish to delete. Please delete the references before proceeding.").entity(references).build();
+        } catch (FailedToDeleteCapabilityException | FailedToGetCapabilityReferences | SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        } catch (FailedToGetCapabilityReferences e) {
-            throw new RuntimeException(e);
         }
     }
 }

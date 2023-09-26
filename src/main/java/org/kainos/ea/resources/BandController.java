@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.kainos.ea.cli.JobBandResponse;
-import org.kainos.ea.cllient.FailedToGetBandsException;
+import org.kainos.ea.client.FailedToGetBandsException;
 import org.kainos.ea.api.BandService;
 
 import javax.annotation.security.RolesAllowed;

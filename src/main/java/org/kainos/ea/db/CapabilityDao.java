@@ -47,8 +47,8 @@ public class CapabilityDao {
 
     public ArrayList<Integer> getCapabilityReferences(int capabilityID) throws  SQLException{
         Connection c = databaseConnector.getConnection();
-        String query = ("SELECT * FROM JobRoles\n" +
-                "WHERE capabilityID = ?;\n");
+        String query = ("SELECT * FROM JobRoles" +
+                " WHERE capabilityID = ?;");
         ArrayList<Integer> capabilityReferences = new ArrayList<>();
         PreparedStatement ps = c.prepareStatement(query);
         ps.setInt(1, capabilityID);
