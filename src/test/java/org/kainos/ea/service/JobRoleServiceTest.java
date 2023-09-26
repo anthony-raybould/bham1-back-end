@@ -3,13 +3,13 @@ package org.kainos.ea.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.kainos.ea.api.JobRoleService;
-import org.kainos.ea.cli.JobBandResponse;
-import org.kainos.ea.cli.JobCapabilityResponse;
-import org.kainos.ea.cli.JobRoleResponse;
-import org.kainos.ea.cli.UpdateJobRoleRequest;
+import org.kainos.ea.cli.*;
 import org.kainos.ea.client.FailedJobRolesOperationException;
+import org.kainos.ea.client.FailedToCreateJobRoleRequestException;
 import org.kainos.ea.client.FailedToUpdateJobRoleException;
+import org.kainos.ea.client.InvalidJobRoleException;
 import org.kainos.ea.db.JobRoleDao;
+import org.kainos.ea.validator.CreateJobRoleValidator;
 import org.kainos.ea.validator.UpdateJobRoleValidator;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -28,13 +28,22 @@ public class JobRoleServiceTest {
 
     JobRoleDao jobRoleDao = Mockito.mock(JobRoleDao.class);
     UpdateJobRoleValidator updateJobRoleValidator = Mockito.mock(UpdateJobRoleValidator.class);
+    CreateJobRoleValidator createJobRoleValidator = Mockito.mock(CreateJobRoleValidator.class);
     JobRoleService jobRoleService;
     UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName", "jobSpecSummary",1,1,
             "jobResponsibility", "sharepointLink");
 
+    CreateJobRoleRequest createJobRoleRequest = new CreateJobRoleRequest("testName",
+            "testJobSpec",
+            1,
+            1,
+            "testResponsibilities",
+            "https://kainossoftwareltd.sharepoint.com/:b:/r/people/Job%20Specifications/Engineering/Job%20profile%20-%20Software%20Engineer%20(Trainee).pdf?csf=1&web=1&e=nQzHld"
+    );
+
     @BeforeEach
     public void setup() {
-        jobRoleService = new JobRoleService(jobRoleDao,updateJobRoleValidator);
+        jobRoleService = new JobRoleService(jobRoleDao,updateJobRoleValidator, createJobRoleValidator);
     }
 
     @Test
@@ -100,5 +109,31 @@ public class JobRoleServiceTest {
         Mockito.when(updateJobRoleValidator.validate(any(UpdateJobRoleRequest.class))).thenReturn(true);
         Mockito.when(jobRoleDao.updateJobRole(any(int.class), any(UpdateJobRoleRequest.class))).thenReturn(1);
         assertEquals(1, jobRoleService.updateJobRole((short) 1, jobRoleRequest));
+    }
+
+    @Test
+    public void createJobRole_shouldReturnID__whenDaoReturnsId() throws SQLException, FailedToCreateJobRoleRequestException, InvalidJobRoleException {
+        int expectedResult = 1;
+        Mockito.when(createJobRoleValidator.isValidJobRole(any(CreateJobRoleRequest.class))).thenReturn(null);
+        Mockito.when(jobRoleDao.createJobRole(createJobRoleRequest)).thenReturn(expectedResult);
+
+        int result = jobRoleService.createJobRole(createJobRoleRequest);
+        assertEquals(result, expectedResult);
+    }
+
+    @Test
+    public void createJobRole_shouldThrowFailedToCreateJobRoleRequestException_whenDaoThrowsSQLException() throws SQLException, FailedToCreateJobRoleRequestException {
+
+        Mockito.when(createJobRoleValidator.isValidJobRole(any(CreateJobRoleRequest.class))).thenReturn(null);
+        Mockito.when(jobRoleDao.createJobRole(createJobRoleRequest)).thenThrow(FailedToCreateJobRoleRequestException.class);
+
+        assertThrows(FailedToCreateJobRoleRequestException.class, () -> jobRoleService.createJobRole(createJobRoleRequest));
+    }
+
+    @Test
+    public void createJobRole_shouldThrowInvalidJobRoleException_whenInvalidJobRoleRequest() throws InvalidJobRoleException {
+        Mockito.when(createJobRoleValidator.isValidJobRole(any(CreateJobRoleRequest.class))).thenReturn("Test invalid job role");
+        assertThrows(InvalidJobRoleException.class,
+                () -> jobRoleService.createJobRole(createJobRoleRequest));
     }
 }

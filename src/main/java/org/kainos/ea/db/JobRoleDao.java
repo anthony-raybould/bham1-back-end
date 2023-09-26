@@ -1,12 +1,9 @@
 package org.kainos.ea.db;
 
-import org.kainos.ea.cli.JobBandResponse;
-import org.kainos.ea.cli.JobCapabilityResponse;
-import org.kainos.ea.cli.JobRoleResponse;
-import org.kainos.ea.cli.UpdateJobRoleRequest;
+import org.kainos.ea.cli.*;
+import org.kainos.ea.client.FailedToCreateJobRoleRequestException;
 import org.kainos.ea.client.FailedToUpdateJobRoleException;
 
-import javax.ws.rs.sse.Sse;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +77,37 @@ public class JobRoleDao {
         }
         else {
             throw new FailedToUpdateJobRoleException();
+        }
+    }
+
+    public int createJobRole(CreateJobRoleRequest jobRoleRequest) throws SQLException, FailedToCreateJobRoleRequestException {
+        Connection c = databaseConnector.getConnection();
+
+        try {
+            String insertJobRoleQuery = "INSERT INTO JobRoles (jobRoleName, jobSpecSummary, bandID, capabilityID, responsibilities, sharePoint) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement insertJobRole = c.prepareStatement(insertJobRoleQuery, Statement.RETURN_GENERATED_KEYS);
+            insertJobRole.setString(1, jobRoleRequest.getJobRoleName());
+            insertJobRole.setString(2, jobRoleRequest.getJobSpecSummary());
+            insertJobRole.setInt(3, jobRoleRequest.getBand());
+            insertJobRole.setInt(4, jobRoleRequest.getCapability());
+            insertJobRole.setString(5, jobRoleRequest.getResponsibilities());
+            insertJobRole.setString(6, jobRoleRequest.getSharePoint());
+
+            insertJobRole.executeUpdate();
+
+            ResultSet jobRoleResult = insertJobRole.getGeneratedKeys();
+
+            int insertedId;
+            if (jobRoleResult.next()) {
+                insertedId = jobRoleResult.getInt(1);
+                return insertedId;
+            } else {
+                return -1;
+            }
+        } catch (SQLException e) {
+            throw e;
         }
     }
 }

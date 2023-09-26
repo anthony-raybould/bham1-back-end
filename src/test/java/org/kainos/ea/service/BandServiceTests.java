@@ -5,7 +5,6 @@ import org.kainos.ea.api.BandService;
 import org.kainos.ea.cli.JobBandResponse;
 import org.kainos.ea.cllient.FailedToGetBandsException;
 import org.kainos.ea.db.BandDao;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.sql.SQLException;

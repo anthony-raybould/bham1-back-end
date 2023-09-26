@@ -1,13 +1,9 @@
 package org.kainos.ea.service;
 
 import org.junit.jupiter.api.Test;
-import org.kainos.ea.api.BandService;
 import org.kainos.ea.api.CapabilityService;
-import org.kainos.ea.cli.JobBandResponse;
 import org.kainos.ea.cli.JobCapabilityResponse;
 import org.kainos.ea.client.FailedToGetCapabilitiesException;
-import org.kainos.ea.cllient.FailedToGetBandsException;
-import org.kainos.ea.db.BandDao;
 import org.kainos.ea.db.CapabilityDao;
 import org.mockito.Mockito;
 

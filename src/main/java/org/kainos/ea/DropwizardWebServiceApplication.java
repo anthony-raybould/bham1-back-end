@@ -16,6 +16,7 @@ import org.kainos.ea.db.JobRoleDao;
 import org.kainos.ea.resources.BandController;
 import org.kainos.ea.resources.CapabilityController;
 import org.kainos.ea.resources.JobRoleController;
+import org.kainos.ea.validator.CreateJobRoleValidator;
 import org.kainos.ea.validator.UpdateJobRoleValidator;
 
 public class DropwizardWebServiceApplication extends Application<DropwizardWebServiceConfiguration> {
@@ -46,7 +47,8 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         final DatabaseConnector databaseConnector = new DatabaseConnector();
         final JobRoleDao jobRoleDao = new JobRoleDao(databaseConnector);
         final UpdateJobRoleValidator updateJobRoleValidator = new UpdateJobRoleValidator();
-        final JobRoleService jobRoleService = new JobRoleService(jobRoleDao, updateJobRoleValidator);
+        final CreateJobRoleValidator createJobRoleValidator = new CreateJobRoleValidator();
+        final JobRoleService jobRoleService = new JobRoleService(jobRoleDao, updateJobRoleValidator, createJobRoleValidator);
         final CapabilityDao capabilityDao = new CapabilityDao(databaseConnector);
         final BandDao bandDao = new BandDao(databaseConnector);
         final CapabilityService capabilityService = new CapabilityService(capabilityDao);

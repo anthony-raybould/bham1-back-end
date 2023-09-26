@@ -6,10 +6,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.checkerframework.checker.units.qual.A;
 import org.kainos.ea.api.JobRoleService;
+import org.kainos.ea.cli.CreateJobRoleRequest;
 import org.kainos.ea.cli.JobRoleResponse;
 import org.kainos.ea.cli.UpdateJobRoleRequest;
 import org.kainos.ea.client.FailedJobRolesOperationException;
+import org.kainos.ea.client.FailedToCreateJobRoleRequestException;
 import org.kainos.ea.client.FailedToUpdateJobRoleException;
+import org.kainos.ea.client.InvalidJobRoleException;
 import org.kainos.ea.validator.UpdateJobRoleValidator;
 
 import javax.annotation.security.RolesAllowed;
@@ -67,6 +70,25 @@ public class JobRoleController {
         {
             System.err.println(e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
+    }
+
+    @POST
+    @Path("/job-roles")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("Admin")
+    @ApiOperation(value = "Create a job role", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION))
+    public Response createJobRole(CreateJobRoleRequest jobRoleRequest) {
+        try {
+            return Response.ok(jobRoleService.createJobRole(jobRoleRequest)).build();
+        } catch (FailedToCreateJobRoleRequestException e) {
+            System.err.println(e.getMessage());
+
+            return Response.serverError().build();
+        } catch (InvalidJobRoleException e) {
+            System.err.println(e.getMessage());
+
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 }

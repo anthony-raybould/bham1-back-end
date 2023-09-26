@@ -1,24 +1,25 @@
 package org.kainos.ea.dao;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.kainos.ea.cli.JobBandResponse;
-import org.kainos.ea.cli.JobCapabilityResponse;
-import org.kainos.ea.cli.JobRoleResponse;
-import org.kainos.ea.cli.UpdateJobRoleRequest;
+import org.kainos.ea.cli.*;
+import org.kainos.ea.client.FailedToCreateJobRoleRequestException;
 import org.kainos.ea.client.FailedToUpdateJobRoleException;
 import org.kainos.ea.db.DatabaseConnector;
 import org.kainos.ea.db.JobRoleDao;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 import java.nio.file.FileAlreadyExistsException;
 import java.sql.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 
 public class JobRoleDaoTest {
@@ -124,5 +125,45 @@ public class JobRoleDaoTest {
         Mockito.when(mockPreparedStatement.executeUpdate()).thenReturn(-1);
         assertThrows(FailedToUpdateJobRoleException.class,
                 () -> jobRoleDao.updateJobRole(1,jobRoleRequest));
+    }
+
+    @Test
+    public void createJobRole_shouldReturnId_whenValidJobRole() throws SQLException, FailedToCreateJobRoleRequestException {
+        CreateJobRoleRequest jobRoleRequest = new CreateJobRoleRequest("testName",
+                                                                            "testJobSpec",
+                                                                            1,
+                                                                            1,
+                                                                            "testResponsibilities",
+                                                                            "https://kainossoftwareltd.sharepoint.com/:b:/r/people/Job%20Specifications/Engineering/Job%20profile%20-%20Software%20Engineer%20(Trainee).pdf?csf=1&web=1&e=nQzHld"
+        );
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
+        PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
+        Mockito.when(connectionMock.prepareStatement(any(String.class), eq(Statement.RETURN_GENERATED_KEYS)))
+                .thenReturn(mockPreparedStatement);
+
+
+        ResultSet resultSet = mock(ResultSet.class);
+        Mockito.when(mockPreparedStatement.getGeneratedKeys()).thenReturn(resultSet);
+
+        Mockito.when(resultSet.next()).thenReturn(true);
+        Mockito.when(resultSet.getInt(anyInt())).thenReturn(1);
+        int id = jobRoleDao.createJobRole(jobRoleRequest);
+        Assertions.assertEquals(1,id);
+    }
+
+    @Test
+    public void createJobRole_shouldThrowSQLException_whenCantCreate() throws SQLException {
+        CreateJobRoleRequest jobRoleRequest = new CreateJobRoleRequest("jobRoleName", "jobSpecSummary",
+                1, 1,
+                "jobResponsibility", "sharepointLink");
+
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenThrow(SQLException.class);
+        PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
+        Mockito.when(connectionMock.prepareStatement(any(String.class))).thenReturn(mockPreparedStatement);
+        Mockito.when(mockPreparedStatement.executeUpdate()).thenReturn(-1);
+        assertThrows(SQLException.class,
+                () -> jobRoleDao.createJobRole(jobRoleRequest));
     }
 }
