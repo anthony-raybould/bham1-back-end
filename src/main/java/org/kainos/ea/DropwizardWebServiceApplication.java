@@ -1,18 +1,21 @@
 package org.kainos.ea;
 
 import io.dropwizard.Application;
+import io.dropwizard.auth.Auth;
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
-import org.kainos.ea.api.BandService;
-import org.kainos.ea.api.CapabilityService;
+import org.checkerframework.checker.units.qual.A;
+import org.kainos.ea.api.*;
+import org.kainos.ea.auth.*;
+import org.kainos.ea.db.*;
+import org.kainos.ea.resources.AuthController;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
+import org.kainos.ea.cli.User;
 import org.kainos.ea.api.JobRoleService;
-import org.kainos.ea.cli.UpdateJobRoleRequest;
-import org.kainos.ea.db.BandDao;
-import org.kainos.ea.db.CapabilityDao;
-import org.kainos.ea.db.DatabaseConnector;
-import org.kainos.ea.db.JobRoleDao;
 import org.kainos.ea.resources.BandController;
 import org.kainos.ea.resources.CapabilityController;
 import org.kainos.ea.resources.JobRoleController;
@@ -32,7 +35,7 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
 
     @Override
     public void initialize(final Bootstrap<DropwizardWebServiceConfiguration> bootstrap) {
-        bootstrap.addBundle(new SwaggerBundle<DropwizardWebServiceConfiguration>(){
+        bootstrap.addBundle(new SwaggerBundle<DropwizardWebServiceConfiguration>() {
             @Override
             protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(DropwizardWebServiceConfiguration configuration) {
                 return configuration.getSwagger();
@@ -43,19 +46,35 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
     @Override
     public void run(final DropwizardWebServiceConfiguration configuration,
                     final Environment environment) {
-        // TODO: implement application
+
         final DatabaseConnector databaseConnector = new DatabaseConnector();
+        final UpdateJobRoleValidator jobRoleValidator = new UpdateJobRoleValidator();
         final JobRoleDao jobRoleDao = new JobRoleDao(databaseConnector);
-        final UpdateJobRoleValidator updateJobRoleValidator = new UpdateJobRoleValidator();
-        final JobRoleService jobRoleService = new JobRoleService(jobRoleDao, updateJobRoleValidator);
+        final JobRoleService jobRoleService = new JobRoleService(jobRoleDao, jobRoleValidator);
         final CapabilityDao capabilityDao = new CapabilityDao(databaseConnector);
         final BandDao bandDao = new BandDao(databaseConnector);
         final CapabilityValidator capabilityValidator = new CapabilityValidator();
         final CapabilityService capabilityService = new CapabilityService(capabilityDao, capabilityValidator);
         final BandService bandService = new BandService(bandDao);   
+        final AuthDao authDao = new AuthDao(databaseConnector);
+        final JWTService jwtService = new JWTService();
+        final TokenService tokenService = new TokenService(authDao, jwtService);
+        final AuthService authService = new AuthService(authDao, tokenService);
+        environment.jersey().register(new AuthController(authService));
         environment.jersey().register(new JobRoleController(jobRoleService));
         environment.jersey().register(new BandController(bandService));
         environment.jersey().register(new CapabilityController(capabilityService));
+
+        environment.jersey().register(new AuthDynamicFeature(
+                new TokenAuthFilter.Builder()
+                        .setAuthenticator(new TokenAuthenticator(tokenService))
+                        .setAuthorizer(new TokenAuthorizer())
+                        .setPrefix("Bearer")
+                        .buildAuthFilter()));
+        environment.jersey().register(RolesAllowedDynamicFeature.class);
+        environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
+        environment.jersey().register(RolesAllowedDynamicFeature.class);
+        environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
     }
 
 }

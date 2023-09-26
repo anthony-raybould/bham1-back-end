@@ -8,13 +8,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
-import org.kainos.ea.cli.JobBandResponse;
-import org.kainos.ea.cli.JobCapabilityResponse;
 import org.kainos.ea.cli.UpdateJobRoleRequest;
+import org.kainos.ea.client.FailedToGenerateTokenException;
+import org.kainos.ea.client.FailedToGetUserId;
+import org.kainos.ea.integration.helpers.AuthenticateUser;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.SQLException;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class JobRoleIntegrationTest {
@@ -23,13 +25,16 @@ public class JobRoleIntegrationTest {
             DropwizardWebServiceApplication.class, null,
             new ResourceConfigurationSourceProvider()
     );
+    private final AuthenticateUser authenticateUser = new AuthenticateUser();
+
     @Test
-    void jobRoles_shouldReturn200() {
-        Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/job-roles").request().get();
+    void jobRoles_shouldReturn200() throws FailedToGetUserId, SQLException, FailedToGenerateTokenException {
+        Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/job-roles").request()
+                .header("Authorization", "Bearer " + authenticateUser.loginAdmin()).get();
         Assertions.assertEquals(200, response.getStatus());
     }
     @Test
-    void updateJobRoles_shouldReturn200() {
+    void updateJobRoles_shouldReturn200() throws FailedToGetUserId, SQLException, FailedToGenerateTokenException {
         UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName",
                 "jobSpecSummary",
                 1,
@@ -39,29 +44,32 @@ public class JobRoleIntegrationTest {
 
         Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/job-roles/1")
                 .request(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + authenticateUser.loginAdmin())
                 .put(Entity.entity(jobRoleRequest, MediaType.APPLICATION_JSON));
 
         Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
     @Test
-    void updateJobRoles_whenIdSuppliedNotExist_Return400() {
+    void updateJobRoles_whenIdSuppliedNotExist_Return400() throws FailedToGetUserId, SQLException, FailedToGenerateTokenException {
         UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName", "jobSpecSummary",
                 1, 1,
                 "jobResponsibility", "invalidURL");
 
         Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/job-roles/999")
                 .request(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + authenticateUser.loginAdmin())
                 .put(Entity.entity(jobRoleRequest , MediaType.APPLICATION_JSON));
         Assertions.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
     @Test
-    void updateJobRoles_whenValidationExceptionThrow_Return400() {
+    void updateJobRoles_whenValidationExceptionThrow_Return400() throws FailedToGetUserId, SQLException, FailedToGenerateTokenException {
         UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName", "jobSpecSummary",
                 1, 1,
                 "jobResponsibility", "invalidURL");
 
         Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/job-roles/1")
                 .request(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + authenticateUser.loginAdmin())
                 .put(Entity.entity(jobRoleRequest , MediaType.APPLICATION_JSON));
         Assertions.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
