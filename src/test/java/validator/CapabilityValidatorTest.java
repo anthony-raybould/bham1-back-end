@@ -31,6 +31,12 @@ public class CapabilityValidatorTest {
     }
 
     @Test
+    public void validate_emptyCapabilityName_shouldThrowValidationException() {
+        CreateCapabilityRequest request = new CreateCapabilityRequest("");
+        assertThrows(ValidationException.class, () -> capabilityValidator.validate(request));
+    }
+
+    @Test
     public void validate_tooLongCapabilityName_shouldThrowValidationException() {
         CreateCapabilityRequest request = new CreateCapabilityRequest("TooLongTooLongTooLongTooLongTooLongTooLongTooLongTooLongTooLongTooLong");
         assertThrows(ValidationException.class, () -> capabilityValidator.validate(request));
