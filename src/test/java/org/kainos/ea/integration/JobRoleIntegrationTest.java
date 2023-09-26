@@ -66,7 +66,7 @@ public class JobRoleIntegrationTest {
 
     public int createTestUser() throws SQLException {
         DatabaseConnector connector = new DatabaseConnector();
-        String query = "INSERT into JobRoles(jobRoleID, jobRoleName,jobSpecSummary,bandID,capabilityID,responsibilities,sharePoint) VALUES (1, 'testName', 'testSummary', 1, 1, 'responsibilities', 'sharePoint')";
+        String query = "INSERT into JobRoles(jobRoleID, jobRoleName,jobSpecSummary,bandID,capabilityID,responsibilities,sharePoint) VALUES (10, 'testName', 'testSummary', 1, 1, 'responsibilities', 'sharePoint')";
 
         Statement st = connector.getConnection().createStatement();
         int affectedRows = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
