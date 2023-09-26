@@ -7,7 +7,6 @@ import org.kainos.ea.cli.JobCapabilityResponse;
 import org.kainos.ea.client.FailedToCreateCapabilityException;
 import org.kainos.ea.db.CapabilityDao;
 import org.kainos.ea.db.DatabaseConnector;
-import org.kainos.ea.db.JobRoleDao;
 import org.mockito.Mockito;
 
 import java.sql.*;

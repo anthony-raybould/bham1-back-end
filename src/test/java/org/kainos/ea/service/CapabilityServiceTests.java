@@ -2,7 +2,6 @@ package org.kainos.ea.service;
 
 import org.junit.jupiter.api.Test;
 import org.kainos.ea.api.CapabilityService;
-import org.kainos.ea.cli.CreateCapabilityRequest;
 import org.kainos.ea.cli.JobCapabilityResponse;
 import org.kainos.ea.client.FailedToCreateCapabilityException;
 import org.kainos.ea.client.FailedToGetCapabilitiesException;
@@ -10,7 +9,6 @@ import org.kainos.ea.db.CapabilityDao;
 import org.kainos.ea.validator.CapabilityValidator;
 import org.mockito.Mockito;
 
-import javax.validation.Valid;
 import javax.validation.ValidationException;
 import java.sql.SQLException;
 import java.util.ArrayList;
