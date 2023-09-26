@@ -13,11 +13,10 @@ public class DropwizardWebServiceConfiguration extends Configuration {
     private final SwaggerBundleConfiguration swagger = new SwaggerBundleConfiguration();
 
     @JsonProperty("swagger")
-    public SwaggerBundleConfiguration getSwagger(){
+    public SwaggerBundleConfiguration getSwagger() {
         swagger.setResourcePackage("org.kainos.ea.resources");
         String[] schemes = {"http", "https"};
         swagger.setSchemes(schemes);
         return swagger;
     }
-    // TODO: implement service configuration
 }

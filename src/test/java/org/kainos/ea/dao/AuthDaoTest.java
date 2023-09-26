@@ -5,7 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.auth.JWTService;
 import org.kainos.ea.auth.TokenService;
 import org.kainos.ea.cli.Login;
-import org.kainos.ea.client.FailedToGetUserId;
+import org.kainos.ea.cli.User;
 import org.kainos.ea.client.FailedToGetUserPassword;
 import org.kainos.ea.db.AuthDao;
 import org.kainos.ea.db.DatabaseConnector;
@@ -17,11 +17,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthDaoTest {
@@ -82,5 +82,46 @@ public class AuthDaoTest {
 
         int result = authDao.getUserId("email@email.com");
         assertEquals(result, 1);
+    }
+
+    @Test
+    public void getUser_shouldReturnUser_whenValid() throws SQLException {
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
+
+        PreparedStatement statementMock = mock(PreparedStatement.class);
+        ResultSet resultSetMock = mock(ResultSet.class);
+
+        Mockito.when(connectionMock.prepareStatement(any(String.class))).thenReturn(statementMock);
+        Mockito.when(statementMock.executeQuery()).thenReturn(resultSetMock);
+        Mockito.when(resultSetMock.next()).thenReturn(true).thenReturn(false);
+        Mockito.when(resultSetMock.getInt("userID")).thenReturn(1);
+        Mockito.when(resultSetMock.getString("email")).thenReturn("email");
+        Mockito.when(resultSetMock.getInt("roleID")).thenReturn(1);
+        Mockito.when(resultSetMock.getString("name")).thenReturn("Admin");
+
+        User user = authDao.getUser(1);
+
+        assertEquals(user.getEmail(), "email");
+        assertEquals(user.getId(), 1);
+        assertEquals(user.getRole().getRoleId(), 1);
+        assertEquals(user.getRole().getRoleName(), "Admin");
+    }
+
+    @Test
+    public void getUser_shouldReturnNull_whenInvalid() throws SQLException {
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
+
+        PreparedStatement statementMock = mock(PreparedStatement.class);
+        ResultSet resultSetMock = mock(ResultSet.class);
+
+        Mockito.when(connectionMock.prepareStatement(any(String.class))).thenReturn(statementMock);
+        Mockito.when(statementMock.executeQuery()).thenReturn(resultSetMock);
+        Mockito.when(resultSetMock.next()).thenReturn(false);
+
+        User user = authDao.getUser(1);
+
+        assertNull(user);
     }
 }
