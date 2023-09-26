@@ -166,4 +166,29 @@ public class JobRoleDaoTest {
         assertThrows(SQLException.class,
                 () -> jobRoleDao.createJobRole(jobRoleRequest));
     }
+
+    @Test
+    public void createJobRole_shouldReturnNegative1_whenCantCreate() throws SQLException, FailedToCreateJobRoleRequestException {
+        CreateJobRoleRequest jobRoleRequest = new CreateJobRoleRequest("testName",
+                "testJobSpec",
+                1,
+                1,
+                "testResponsibilities",
+                "https://kainossoftwareltd.sharepoint.com/:b:/r/people/Job%20Specifications/Engineering/Job%20profile%20-%20Software%20Engineer%20(Trainee).pdf?csf=1&web=1&e=nQzHld"
+        );
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
+        PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
+        Mockito.when(connectionMock.prepareStatement(any(String.class), eq(Statement.RETURN_GENERATED_KEYS)))
+                .thenReturn(mockPreparedStatement);
+
+
+        ResultSet resultSet = mock(ResultSet.class);
+        Mockito.when(mockPreparedStatement.getGeneratedKeys()).thenReturn(resultSet);
+
+        Mockito.when(resultSet.next()).thenReturn(true);
+        Mockito.when(resultSet.getInt(anyInt())).thenReturn(-1);
+        int id = jobRoleDao.createJobRole(jobRoleRequest);
+        Assertions.assertEquals(-1,id);
+    }
 }

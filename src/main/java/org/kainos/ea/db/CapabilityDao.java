@@ -1,5 +1,6 @@
 package org.kainos.ea.db;
 
+import org.kainos.ea.cli.CreateJobRoleRequest;
 import org.kainos.ea.cli.JobCapabilityResponse;
 
 import java.sql.Connection;
@@ -35,5 +36,16 @@ public class CapabilityDao {
         ;}
 
         return capability;
+    }
+
+    public boolean doesCapabilityExist(int capabilityId) throws SQLException {
+        Connection c = databaseConnector.getConnection();
+        Statement st = c.createStatement();
+
+        ResultSet rs = st.executeQuery("SELECT * " +
+                "FROM JobCapability " +
+                "WHERE capabilityID = " + capabilityId);
+
+        return rs.next();
     }
 }

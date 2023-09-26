@@ -8,6 +8,8 @@ import org.kainos.ea.client.FailedJobRolesOperationException;
 import org.kainos.ea.client.FailedToCreateJobRoleRequestException;
 import org.kainos.ea.client.FailedToUpdateJobRoleException;
 import org.kainos.ea.client.InvalidJobRoleException;
+import org.kainos.ea.db.BandDao;
+import org.kainos.ea.db.CapabilityDao;
 import org.kainos.ea.db.JobRoleDao;
 import org.kainos.ea.validator.CreateJobRoleValidator;
 import org.kainos.ea.validator.UpdateJobRoleValidator;
@@ -20,15 +22,19 @@ import java.util.Objects;
 
 public class JobRoleService {
     private final JobRoleDao jobRoleDao;
+    private final BandDao bandDao;
+    private final CapabilityDao capabilityDao;
     private final UpdateJobRoleValidator updateJobRoleValidator;
     private final CreateJobRoleValidator createJobRoleValidator;
 
-    public JobRoleService(JobRoleDao jobRoleDao, UpdateJobRoleValidator  updateJobRoleValidator, CreateJobRoleValidator createJobRoleValidator) {
+    public JobRoleService(JobRoleDao jobRoleDao, UpdateJobRoleValidator  updateJobRoleValidator, CreateJobRoleValidator createJobRoleValidator, BandDao bandDao, CapabilityDao capabilityDao) {
         Objects.requireNonNull(jobRoleDao);
         Objects.requireNonNull(updateJobRoleValidator);
 
         this.updateJobRoleValidator = updateJobRoleValidator;
         this.jobRoleDao = jobRoleDao;
+        this.bandDao = bandDao;
+        this.capabilityDao = capabilityDao;
         this.createJobRoleValidator = createJobRoleValidator;
     }
 
@@ -54,6 +60,10 @@ public class JobRoleService {
 
     public int createJobRole(CreateJobRoleRequest jobRoleRequest) throws FailedToCreateJobRoleRequestException, InvalidJobRoleException {
         try {
+            if ((!(bandDao.doesBandExist(jobRoleRequest.getBand()))) || (!(capabilityDao.doesCapabilityExist(jobRoleRequest.getCapability())))) {
+                throw new InvalidJobRoleException("Band or Capability does not exist");
+            }
+
             String validation = createJobRoleValidator.isValidJobRole(jobRoleRequest);
 
             if (validation != null) {

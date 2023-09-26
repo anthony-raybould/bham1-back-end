@@ -8,6 +8,8 @@ import org.kainos.ea.client.FailedJobRolesOperationException;
 import org.kainos.ea.client.FailedToCreateJobRoleRequestException;
 import org.kainos.ea.client.FailedToUpdateJobRoleException;
 import org.kainos.ea.client.InvalidJobRoleException;
+import org.kainos.ea.db.BandDao;
+import org.kainos.ea.db.CapabilityDao;
 import org.kainos.ea.db.JobRoleDao;
 import org.kainos.ea.validator.CreateJobRoleValidator;
 import org.kainos.ea.validator.UpdateJobRoleValidator;
@@ -27,6 +29,8 @@ import static org.mockito.ArgumentMatchers.any;
 public class JobRoleServiceTest {
 
     JobRoleDao jobRoleDao = Mockito.mock(JobRoleDao.class);
+    BandDao bandDao = Mockito.mock(BandDao.class);
+    CapabilityDao capabilityDao = Mockito.mock(CapabilityDao.class);
     UpdateJobRoleValidator updateJobRoleValidator = Mockito.mock(UpdateJobRoleValidator.class);
     CreateJobRoleValidator createJobRoleValidator = Mockito.mock(CreateJobRoleValidator.class);
     JobRoleService jobRoleService;
@@ -43,7 +47,7 @@ public class JobRoleServiceTest {
 
     @BeforeEach
     public void setup() {
-        jobRoleService = new JobRoleService(jobRoleDao,updateJobRoleValidator, createJobRoleValidator);
+        jobRoleService = new JobRoleService(jobRoleDao,updateJobRoleValidator, createJobRoleValidator, bandDao, capabilityDao);
     }
 
     @Test
@@ -115,6 +119,8 @@ public class JobRoleServiceTest {
     public void createJobRole_shouldReturnID__whenDaoReturnsId() throws SQLException, FailedToCreateJobRoleRequestException, InvalidJobRoleException {
         int expectedResult = 1;
         Mockito.when(createJobRoleValidator.isValidJobRole(any(CreateJobRoleRequest.class))).thenReturn(null);
+        Mockito.when(bandDao.doesBandExist(any(int.class))).thenReturn(true);
+        Mockito.when(capabilityDao.doesCapabilityExist(any(int.class))).thenReturn(true);
         Mockito.when(jobRoleDao.createJobRole(createJobRoleRequest)).thenReturn(expectedResult);
 
         int result = jobRoleService.createJobRole(createJobRoleRequest);
@@ -125,15 +131,31 @@ public class JobRoleServiceTest {
     public void createJobRole_shouldThrowFailedToCreateJobRoleRequestException_whenDaoThrowsSQLException() throws SQLException, FailedToCreateJobRoleRequestException {
 
         Mockito.when(createJobRoleValidator.isValidJobRole(any(CreateJobRoleRequest.class))).thenReturn(null);
+        Mockito.when(bandDao.doesBandExist(any(int.class))).thenReturn(true);
+        Mockito.when(capabilityDao.doesCapabilityExist(any(int.class))).thenReturn(true);
         Mockito.when(jobRoleDao.createJobRole(createJobRoleRequest)).thenThrow(FailedToCreateJobRoleRequestException.class);
 
         assertThrows(FailedToCreateJobRoleRequestException.class, () -> jobRoleService.createJobRole(createJobRoleRequest));
     }
 
     @Test
-    public void createJobRole_shouldThrowInvalidJobRoleException_whenInvalidJobRoleRequest() throws InvalidJobRoleException {
+    public void createJobRole_shouldThrowInvalidJobRoleException_whenInvalidJobRoleRequest() throws SQLException, InvalidJobRoleException {
         Mockito.when(createJobRoleValidator.isValidJobRole(any(CreateJobRoleRequest.class))).thenReturn("Test invalid job role");
+        Mockito.when(bandDao.doesBandExist(any(int.class))).thenReturn(true);
+        Mockito.when(capabilityDao.doesCapabilityExist(any(int.class))).thenReturn(true);
         assertThrows(InvalidJobRoleException.class,
                 () -> jobRoleService.createJobRole(createJobRoleRequest));
+    }
+
+    @Test
+    public void createJobRole_shouldReturnNegativeOne_whenDaoReturnsNegativeOne() throws SQLException, FailedToCreateJobRoleRequestException, InvalidJobRoleException {
+        int expectedResult = -1;
+        Mockito.when(createJobRoleValidator.isValidJobRole(any(CreateJobRoleRequest.class))).thenReturn(null);
+        Mockito.when(bandDao.doesBandExist(any(int.class))).thenReturn(true);
+        Mockito.when(capabilityDao.doesCapabilityExist(any(int.class))).thenReturn(true);
+        Mockito.when(jobRoleDao.createJobRole(createJobRoleRequest)).thenReturn(expectedResult);
+
+        assertThrows(FailedToCreateJobRoleRequestException.class, () -> jobRoleService.createJobRole(createJobRoleRequest));
+
     }
 }

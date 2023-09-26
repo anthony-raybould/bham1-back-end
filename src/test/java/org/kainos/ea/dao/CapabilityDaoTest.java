@@ -14,8 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
@@ -52,5 +51,43 @@ public class CapabilityDaoTest {
 
         assertEquals(response.get(0).getCapabilityID(), 12);
         assertEquals(response.get(0).getCapabilityName(), "summary");
+    }
+
+    @Test
+    public void doesCapabilityExist_shouldThrowSQLException_whenDBFailure() throws SQLException {
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenThrow(SQLException.class);
+
+        assertThrows(SQLException.class, () -> capabilityDao.doesCapabilityExist(1));
+    }
+
+    @Test
+    public void doesCapabilityExist_shouldReturnTrue_whenCapabilityExists() throws SQLException {
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
+
+        Statement statementMock = mock(Statement.class);
+        ResultSet resultSetMock = mock(ResultSet.class);
+
+        Mockito.when(connectionMock.createStatement()).thenReturn(statementMock);
+        Mockito.when(statementMock.executeQuery(any(String.class))).thenReturn(resultSetMock);
+        Mockito.when(resultSetMock.next()).thenReturn(true);
+
+        assertTrue(capabilityDao.doesCapabilityExist(1));
+    }
+
+    @Test
+    public void doesCapabilityExist_shouldReturnFalse_whenCapabilityDoesNotExist() throws SQLException {
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
+
+        Statement statementMock = mock(Statement.class);
+        ResultSet resultSetMock = mock(ResultSet.class);
+
+        Mockito.when(connectionMock.createStatement()).thenReturn(statementMock);
+        Mockito.when(statementMock.executeQuery(any(String.class))).thenReturn(resultSetMock);
+        Mockito.when(resultSetMock.next()).thenReturn(false);
+
+        assertFalse(capabilityDao.doesCapabilityExist(1));
     }
 }

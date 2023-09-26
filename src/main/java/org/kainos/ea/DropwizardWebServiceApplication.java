@@ -46,13 +46,13 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         // TODO: implement application
         final DatabaseConnector databaseConnector = new DatabaseConnector();
         final JobRoleDao jobRoleDao = new JobRoleDao(databaseConnector);
+        final BandDao bandDao = new BandDao(databaseConnector);
+        final CapabilityDao capabilityDao = new CapabilityDao(databaseConnector);
         final UpdateJobRoleValidator updateJobRoleValidator = new UpdateJobRoleValidator();
         final CreateJobRoleValidator createJobRoleValidator = new CreateJobRoleValidator();
-        final JobRoleService jobRoleService = new JobRoleService(jobRoleDao, updateJobRoleValidator, createJobRoleValidator);
-        final CapabilityDao capabilityDao = new CapabilityDao(databaseConnector);
-        final BandDao bandDao = new BandDao(databaseConnector);
+        final JobRoleService jobRoleService = new JobRoleService(jobRoleDao, updateJobRoleValidator, createJobRoleValidator, bandDao, capabilityDao);
         final CapabilityService capabilityService = new CapabilityService(capabilityDao);
-        final BandService bandService = new BandService(bandDao);   
+        final BandService bandService = new BandService(bandDao);
         environment.jersey().register(new JobRoleController(jobRoleService));
         environment.jersey().register(new BandController(bandService));
         environment.jersey().register(new CapabilityController(capabilityService));
