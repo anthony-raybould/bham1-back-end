@@ -1,10 +1,13 @@
 package org.kainos.ea.db;
 
 import org.kainos.ea.cli.Role;
+import org.kainos.ea.cli.RoleResponse;
 import org.kainos.ea.cli.User;
 import org.kainos.ea.client.FailedToGetUserPassword;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class AuthDao {
@@ -41,6 +44,55 @@ public class AuthDao {
             return rs.getInt(1);
         }
         return -1;
+    }
+
+    public boolean register(String username, String password, int role) throws SQLException {
+        Connection c = databaseConnector.getConnection();
+
+        String insertStatement = "INSERT INTO `User` (email, password, roleID) " +
+                "VALUES (?, ?, ?)";
+
+        PreparedStatement st = c.prepareStatement(insertStatement);
+
+        st.setString(1, username);
+        st.setString(2, password);
+        st.setInt(3, role);
+
+        st.executeUpdate();
+        return true;
+    }
+
+    public List<Role> getRoles() throws SQLException {
+        Connection c = databaseConnector.getConnection();
+        Statement st = c.createStatement();
+
+        ResultSet rs = st.executeQuery("SELECT roleID, name FROM Role");
+
+        List<Role> roles = new ArrayList<>();
+        while (rs.next()) {
+            roles.add(new Role(
+                    rs.getInt("roleID"),
+                    rs.getString("name")
+            ));
+        }
+
+        return roles;
+    }
+
+    public Role getRole(int roleId) throws SQLException {
+        Connection c = databaseConnector.getConnection();
+        Statement st = c.createStatement();
+
+        ResultSet rs = st.executeQuery("SELECT roleID, name FROM Role WHERE roleID = " + roleId);
+
+        if (rs.next()) {
+            return new Role(
+                    rs.getInt("roleID"),
+                    rs.getString("name")
+            );
+        }
+
+        return null;
     }
 
     public User getUser(int userId) throws SQLException {
