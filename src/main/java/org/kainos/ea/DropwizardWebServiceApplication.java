@@ -19,8 +19,9 @@ import org.kainos.ea.resources.BandController;
 import org.kainos.ea.resources.CapabilityController;
 import org.kainos.ea.resources.JobRoleController;
 import org.kainos.ea.validator.CreateJobRoleValidator;
-import org.kainos.ea.validator.RegisterValidator;
+import org.kainos.ea.validator.CapabilityValidator;
 import org.kainos.ea.validator.UpdateJobRoleValidator;
+import org.kainos.ea.validator.RegisterValidator;
 
 public class DropwizardWebServiceApplication extends Application<DropwizardWebServiceConfiguration> {
 
@@ -52,6 +53,9 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         final JobRoleDao jobRoleDao = new JobRoleDao(databaseConnector);
         final CapabilityDao capabilityDao = new CapabilityDao(databaseConnector);
         final BandDao bandDao = new BandDao(databaseConnector);
+        final CapabilityValidator capabilityValidator = new CapabilityValidator();
+        final CapabilityService capabilityService = new CapabilityService(capabilityDao, capabilityValidator);
+        final BandService bandService = new BandService(bandDao);
         final AuthDao authDao = new AuthDao(databaseConnector);
 
         final RegisterValidator registerValidator = new RegisterValidator(authDao);
@@ -62,8 +66,6 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         final TokenService tokenService = new TokenService(authDao, jwtService);
         final AuthService authService = new AuthService(authDao, tokenService, registerValidator);
         final JobRoleService jobRoleService = new JobRoleService(jobRoleDao, updateJobRoleValidator, createJobRoleValidator, bandDao, capabilityDao);
-        final CapabilityService capabilityService = new CapabilityService(capabilityDao);
-        final BandService bandService = new BandService(bandDao);
 
         environment.jersey().register(new AuthController(authService));
         environment.jersey().register(new AuthDynamicFeature(

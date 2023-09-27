@@ -2,11 +2,14 @@ package org.kainos.ea.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.kainos.ea.cli.CreateCapabilityRequest;
 import org.kainos.ea.cli.JobCapabilityResponse;
+import org.kainos.ea.client.FailedToCreateCapabilityException;
 import org.kainos.ea.db.CapabilityDao;
 import org.kainos.ea.db.DatabaseConnector;
-import org.kainos.ea.db.JobRoleDao;
 import org.mockito.Mockito;
+
+import java.sql.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -18,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 
 public class CapabilityDaoTest {
@@ -95,5 +99,34 @@ public class CapabilityDaoTest {
         Mockito.when(resultSetMock.next()).thenReturn(false);
 
         assertFalse(capabilityDao.doesCapabilityExist(1));
+    }
+
+    @Test
+    public void createCapability_whenDbError_shouldThrowFailedToCreateCapabilityException() throws SQLException {
+        Mockito.when(databaseConnector.getConnection()).thenThrow(new SQLException());
+        CreateCapabilityRequest request = new CreateCapabilityRequest("Test Capability");
+        assertThrows(FailedToCreateCapabilityException.class, () -> capabilityDao.createCapability(request));
+    }
+
+    @Test
+    public void createCapability_whenSuccessful_shouldReturnId() throws SQLException, FailedToCreateCapabilityException {
+
+        CreateCapabilityRequest request = new CreateCapabilityRequest("Test Capability");
+        int expectedCapabilityId = 1;
+
+        Connection connectionMock = mock(Connection.class);
+        Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
+
+        PreparedStatement statementMock = mock(PreparedStatement.class);
+        Mockito.when(connectionMock.prepareStatement(any(String.class), eq(Statement.RETURN_GENERATED_KEYS)))
+                .thenReturn(statementMock);
+
+        ResultSet resultSetMock = mock(ResultSet.class);
+        Mockito.when(statementMock.getGeneratedKeys()).thenReturn(resultSetMock);
+        Mockito.when(resultSetMock.next()).thenReturn(true);
+        Mockito.when(resultSetMock.getInt(1)).thenReturn(expectedCapabilityId);
+
+        int actualCapabilityId = capabilityDao.createCapability(request);
+        assertEquals(expectedCapabilityId, actualCapabilityId);
     }
 }

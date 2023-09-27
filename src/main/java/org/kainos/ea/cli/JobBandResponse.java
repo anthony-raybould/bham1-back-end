@@ -7,8 +7,6 @@ public class JobBandResponse {
 
 
     private int bandID;
-
-
     private String bandName;
 
     @JsonCreator

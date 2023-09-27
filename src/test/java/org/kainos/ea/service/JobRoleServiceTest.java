@@ -251,4 +251,7 @@ public class JobRoleServiceTest {
         Mockito.when(jobRoleDao.deleteJobRole(-1)).thenThrow(SQLException.class);
         assertThrows(JobRoleDoesNotExistException.class, () -> jobRoleService.deleteJobRole(-1));
     }
+
+
+
 }

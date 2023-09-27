@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
+import org.kainos.ea.cli.CreateCapabilityRequest;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 import org.kainos.ea.client.FailedToGenerateTokenException;
 import org.kainos.ea.client.FailedToGetUserId;
 import org.kainos.ea.integration.helpers.AuthenticateUser;
@@ -28,5 +31,28 @@ public class CapabilityIntegrationTest {
         Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/capabilities").request()
                 .header("Authorization", "Bearer " + authenticateUser.loginAdmin()).get();
         Assertions.assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    void createCapability_whenValid_shouldReturn200() throws FailedToGetUserId, SQLException, FailedToGenerateTokenException {
+
+        CreateCapabilityRequest request = new CreateCapabilityRequest("Test Capability Integration");
+
+        Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/capabilities/")
+                .request(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + authenticateUser.loginAdmin())
+                .post(Entity.entity(request, MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    void createCapability_whenInvalid_shouldReturn400() throws FailedToGetUserId, SQLException, FailedToGenerateTokenException {
+        CreateCapabilityRequest request = new CreateCapabilityRequest(null);
+
+        Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/capabilities/")
+                .request(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + authenticateUser.loginAdmin())
+                .post(Entity.entity(request, MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
 }
