@@ -1,19 +1,31 @@
 package org.kainos.ea.resources;
 
+import com.mysql.cj.x.protobuf.MysqlxCrud;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import org.checkerframework.checker.units.qual.A;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.cli.JobRoleResponse;
+import org.kainos.ea.cli.UpdateJobRoleRequest;
 import org.kainos.ea.client.FailedJobRolesOperationException;
+import org.kainos.ea.client.FailedToUpdateJobRoleException;
+import org.kainos.ea.client.UpdateJobRoleIDDoesNotExistException;
+import org.kainos.ea.validator.UpdateJobRoleValidator;
 import org.kainos.ea.client.FailedToDeleteJobRoleException;
 import org.kainos.ea.client.JobRoleDoesNotExistException;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.ValidationException;
+import javax.validation.constraints.Negative;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Objects;
 
 @Api("Job Role API")
 @Path("/api")
@@ -21,6 +33,7 @@ public class JobRoleController {
     private final JobRoleService jobRoleService;
 
     public JobRoleController(JobRoleService jobRoleService) {
+        Objects.requireNonNull(jobRoleService);
         this.jobRoleService = jobRoleService;
     }
 
@@ -73,5 +86,26 @@ public class JobRoleController {
 
            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
        }
+    }
+    @PUT
+    @Path("/job-roles/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("Admin")
+    @ApiOperation(value = "Edit a single job role", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION))
+    public Response editJobRole(@PathParam("id") @NotNull Short id, UpdateJobRoleRequest jobRoleToUpdate)
+    {
+        try{
+                return Response.ok(jobRoleService.updateJobRole(id, jobRoleToUpdate)).build();
+        }
+        catch(ValidationException | UpdateJobRoleIDDoesNotExistException e)
+        {
+            System.err.println(e);
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        catch(FailedJobRolesOperationException | FailedToUpdateJobRoleException e)
+        {
+            System.err.println(e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
 }
