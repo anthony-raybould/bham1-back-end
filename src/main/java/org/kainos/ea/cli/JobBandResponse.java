@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class JobBandResponse {
 
+
     private int bandID;
     private String bandName;
 

@@ -8,15 +8,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
-import org.kainos.ea.cli.UpdateJobRoleRequest;
-import org.kainos.ea.client.FailedToGenerateTokenException;
-import org.kainos.ea.client.FailedToGetUserId;
-import org.kainos.ea.integration.helpers.AuthenticateUser;
-import org.kainos.ea.api.JobRoleService;
+import org.kainos.ea.cli.CreateJobRoleRequest;
 import org.kainos.ea.cli.JobRoleResponse;
 import org.kainos.ea.client.FailedToDeleteJobRoleException;
 import org.kainos.ea.client.JobRoleDoesNotExistException;
 import org.kainos.ea.db.DatabaseConnector;
+import org.kainos.ea.cli.UpdateJobRoleRequest;
+import org.kainos.ea.client.FailedToGenerateTokenException;
+import org.kainos.ea.client.FailedToGetUserId;
+import org.kainos.ea.integration.helpers.AuthenticateUser;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -58,27 +58,30 @@ public class JobRoleIntegrationTest {
         Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
     @Test
-    void getJobRoleById_shouldReturn200_whenValidInput() {
+    void getJobRoleById_shouldReturn200_whenValidInput() throws FailedToGetUserId, SQLException, FailedToGenerateTokenException {
         Response response = APP.client().target("http://localhost:8080/api/job-roles/1")
                 .request()
+                .header("Authorization", "Bearer " + authenticateUser.loginAdmin())
                 .get();
         Assertions.assertEquals(200,response.getStatus());
         Assertions.assertEquals(1, response.readEntity(JobRoleResponse.class).getJobRoleID());
     }
 
     @Test
-    public void deleteJobRole_shouldReturn200_whenJobDeleted() throws JobRoleDoesNotExistException, FailedToDeleteJobRoleException, SQLException {
+    public void deleteJobRole_shouldReturn200_whenJobDeleted() throws JobRoleDoesNotExistException, FailedToDeleteJobRoleException, SQLException, FailedToGetUserId, FailedToGenerateTokenException {
         int userId = createTestUser();
         Response response = APP.client().target("http://localhost:8080/api/job-roles/" + userId)
                 .request()
+                .header("Authorization", "Bearer " + authenticateUser.loginAdmin())
                 .delete();
         Assertions.assertEquals(200,response.getStatus());
     }
 
     @Test
-    public void deleteJobRole_shouldReturn400_whenInvalidUser() throws JobRoleDoesNotExistException, FailedToDeleteJobRoleException, SQLException {
+    public void deleteJobRole_shouldReturn400_whenInvalidUser() throws JobRoleDoesNotExistException, FailedToDeleteJobRoleException, SQLException, FailedToGetUserId, FailedToGenerateTokenException {
         Response response = APP.client().target("http://localhost:8080/api/job-roles/777")
                 .request()
+                .header("Authorization", "Bearer " + authenticateUser.loginAdmin())
                 .delete();
         Assertions.assertEquals(400,response.getStatus());
     }
@@ -118,6 +121,53 @@ public class JobRoleIntegrationTest {
                 .request(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + authenticateUser.loginAdmin())
                 .put(Entity.entity(jobRoleRequest , MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    void createJobRoles_shouldReturn200() throws FailedToGetUserId, SQLException, FailedToGenerateTokenException {
+        CreateJobRoleRequest jobRoleRequest = new CreateJobRoleRequest("jobRoleName",
+                "jobSpecSummary",
+                1,
+                1,
+                "jobResponsibility",
+                "https://www.something.com/");
+
+        Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/job-roles")
+                .request(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + authenticateUser.loginAdmin())
+                .post(Entity.entity(jobRoleRequest, MediaType.APPLICATION_JSON));
+
+        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    void createJobRoles_shouldReturnIdOfJobRole() throws FailedToGetUserId, SQLException, FailedToGenerateTokenException {
+        CreateJobRoleRequest jobRoleRequest = new CreateJobRoleRequest("jobRoleName",
+                "jobSpecSummary",
+                1,
+                1,
+                "jobResponsibility",
+                "https://www.something.com/");
+        int id = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/job-roles")
+                .request(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + authenticateUser.loginAdmin())
+                .post(Entity.entity(jobRoleRequest, MediaType.APPLICATION_JSON))
+                .readEntity(Integer.class);
+
+        Assertions.assertNotNull(id);
+    }
+
+    @Test
+    void createJobRoles_whenInvalidJobRoleExceptionThrown_shouldReturn400() throws FailedToGetUserId, SQLException, FailedToGenerateTokenException {
+        CreateJobRoleRequest jobRoleRequest = new CreateJobRoleRequest("jobRoleName", "jobSpecSummary",
+                1, 1,
+                "jobResponsibility", "invalidURL");
+
+        Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/job-roles")
+                .request(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + authenticateUser.loginAdmin())
+                .post(Entity.entity(jobRoleRequest , MediaType.APPLICATION_JSON));
         Assertions.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
 }

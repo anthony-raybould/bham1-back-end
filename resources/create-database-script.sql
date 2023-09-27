@@ -66,3 +66,39 @@ insert into JobRoles(jobRoleID, jobRoleName,jobSpecSummary,bandID,capabilityID,r
  "Your responsibilities include actively participating in real projects, learning development languages, and technologies, with support from experienced colleagues and mentors. You'll demonstrate a passion for technology, strong teamwork skills, and creative problem-solving abilities, contributing to innovative solutions and approaches within Kainos.",
  3 ,2,
  "As an Apprentice Software Engineer at Kainos, you'll contribute to meaningful projects, receive comprehensive training, and collaborate within tight-knit teams, all while exploring diverse development technologies and finding your niche in Software Engineering.", "https://kainossoftwareltd.sharepoint.com/:b:/r/people/Job%20Specifications/Engineering/Job%20profile%20-%20Software%20Engineer%20(Associate).pdf?csf=1&web=1&e=GHWpmX");
+
+CREATE TABLE Training (
+    trainingID SMALLINT NOT NULL AUTO_INCREMENT,
+    trainingName VARCHAR(64) NOT NULL,
+    trainingSharePoint VARCHAR(255),
+    PRIMARY KEY (trainingID)
+);
+
+CREATE TABLE BandTraining (
+    bandID SMALLINT NOT NULL,
+    trainingID SMALLINT NOT NULL,
+    FOREIGN KEY (bandID) REFERENCES JobBands(bandID),
+    FOREIGN KEY (trainingID) REFERENCES Training(trainingID)
+);
+
+insert into Training(trainingID, trainingName, trainingSharePoint) VALUES (1, 'Presentation skills', "https://kainossoftwareltd.sharepoint.com/L%26D/SitePages/Presentation-Skills.aspx");
+insert into Training(trainingID, trainingName, trainingSharePoint) VALUES (2, 'Time management', "https://kainossoftwareltd.sharepoint.com/L%26D/SitePages/Effective-Time-Management.aspx");
+insert into Training(trainingID, trainingName, trainingSharePoint) VALUES (3, 'Communication skills', "https://kainossoftwareltd.sharepoint.com/L%26D/SitePages/Communication-Skills.aspx");
+insert into Training(trainingID, trainingName, trainingSharePoint) VALUES (4, 'Customer service', "https://kainossoftwareltd.sharepoint.com/L%26D/SitePages/Customer-Service.aspx");
+insert into Training(trainingID, trainingName, trainingSharePoint) VALUES (5, 'Wellbeing', "https://kainossoftwareltd.sharepoint.com/L%26D/SitePages/Wellbeing-Conversations.aspx");
+insert into Training(trainingID, trainingName, trainingSharePoint) VALUES (6, 'Decision making', "https://kainossoftwareltd.sharepoint.com/L%26D/SitePages/Decision-Making.aspx");
+insert into Training(trainingID, trainingName, trainingSharePoint) VALUES (7, 'Recognising success', "https://kainossoftwareltd.sharepoint.com/L%26D/SitePages/Recognising-Success.aspx");
+insert into Training(trainingID, trainingName, trainingSharePoint) VALUES (8, 'Managing change', "https://kainossoftwareltd.sharepoint.com/L%26D/SitePages/Managing-Change.aspx");
+insert into Training(trainingID, trainingName, trainingSharePoint) VALUES (9, 'Interviewer skills', "https://kainossoftwareltd.sharepoint.com/L%26D/SitePages/Interviewer-Skills.aspx");
+insert into Training(trainingID, trainingName, trainingSharePoint) VALUES (10, 'Coaching', "https://kainossoftwareltd.sharepoint.com/L%26D/SitePages/Coaching-%E2%80%93-To-help-make-a-Difference.aspx");
+
+insert into BandTraining(bandID, trainingID) VALUES (1, 10);
+insert into BandTraining(bandID, trainingID) VALUES (1, 9);
+insert into BandTraining(bandID, trainingID) VALUES (2, 1);
+insert into BandTraining(bandID, trainingID) VALUES (3, 2);
+insert into BandTraining(bandID, trainingID) VALUES (4, 3);
+insert into BandTraining(bandID, trainingID) VALUES (5, 4);
+insert into BandTraining(bandID, trainingID) VALUES (5, 6);
+insert into BandTraining(bandID, trainingID) VALUES (6, 7);
+insert into BandTraining(bandID, trainingID) VALUES (6, 8);
+insert into BandTraining(bandID, trainingID) VALUES (7, 9);

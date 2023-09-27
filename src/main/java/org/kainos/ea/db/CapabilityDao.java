@@ -72,4 +72,15 @@ public class CapabilityDao {
             throw new FailedToCreateCapabilityException();
         }
     }
+
+    public boolean doesCapabilityExist(int capabilityId) throws SQLException {
+        Connection c = databaseConnector.getConnection();
+        Statement st = c.createStatement();
+
+        ResultSet rs = st.executeQuery("SELECT * " +
+                "FROM JobCapability " +
+                "WHERE capabilityID = " + capabilityId);
+
+        return rs.next();
+    }
 }
