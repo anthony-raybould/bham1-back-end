@@ -1,10 +1,8 @@
 package org.kainos.ea.resources;
 
-import com.mysql.cj.x.protobuf.MysqlxCrud;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
-import org.checkerframework.checker.units.qual.A;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.cli.CreateJobRoleRequest;
 import org.kainos.ea.cli.JobRoleResponse;

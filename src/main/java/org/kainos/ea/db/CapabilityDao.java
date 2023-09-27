@@ -1,6 +1,5 @@
 package org.kainos.ea.db;
 
-import org.kainos.ea.cli.CreateJobRoleRequest;
 import org.kainos.ea.cli.JobCapabilityResponse;
 
 import java.sql.Connection;

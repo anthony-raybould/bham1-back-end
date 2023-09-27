@@ -2,8 +2,14 @@ package org.kainos.ea.db;
 
 import org.kainos.ea.cli.*;
 import org.kainos.ea.client.FailedToCreateJobRoleRequestException;
+import org.kainos.ea.cli.JobBandResponse;
+import org.kainos.ea.cli.JobCapabilityResponse;
+import org.kainos.ea.cli.JobRoleResponse;
+import org.kainos.ea.cli.UpdateJobRoleRequest;
 import org.kainos.ea.client.FailedToUpdateJobRoleException;
 
+import javax.ws.rs.sse.Sse;
+import java.sql.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

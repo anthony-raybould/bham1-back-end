@@ -1,6 +1,7 @@
 package org.kainos.ea;
 
 import io.dropwizard.Application;
+import io.dropwizard.auth.Auth;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.setup.Bootstrap;
