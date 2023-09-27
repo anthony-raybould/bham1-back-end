@@ -14,6 +14,7 @@ import org.kainos.ea.cli.RegisterRequest;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.UUID;
 
 
 @ExtendWith(DropwizardExtensionsSupport.class)
@@ -24,8 +25,13 @@ public class RegisterIntegrationTest {
             new ResourceConfigurationSourceProvider()
     );
 
-    RegisterRequest registerRequest = new RegisterRequest("email@test.com", "Test123!", 1);
-    RegisterRequest duplicateRequest = new RegisterRequest(System.getenv("TEST_EMAIL"), System.getenv("TEST_PASSWORD"), 1);
+    public static String generateRandomEmail() {
+        String uuid = UUID.randomUUID().toString();
+        return uuid + "@blank.com";
+    }
+
+    RegisterRequest registerRequest = new RegisterRequest(generateRandomEmail(), "Test123!", 1);
+    RegisterRequest duplicateRequest = new RegisterRequest(System.getenv("TEST_EMAIL"), "Password12345!", 1);
 
     @Test
     void register_shouldReturn201_whenValidRegistration() {
@@ -59,6 +65,7 @@ public class RegisterIntegrationTest {
     void register_shouldReturn409_whenDuplicate() {
         Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/register").request()
                 .post(Entity.entity(duplicateRequest, MediaType.APPLICATION_JSON));
-        Assertions.assertEquals(409, response.getStatus());
+        System.err.println(response);
+            Assertions.assertEquals(409, response.getStatus());
     }
 }

@@ -16,6 +16,6 @@ public class AuthenticateUser {
     final TokenService tokenService = new TokenService(authDao, jwtService);
 
     public String loginAdmin() throws FailedToGetUserId, SQLException, FailedToGenerateTokenException {
-        return tokenService.generateToken("admin@admin.com");
+        return tokenService.generateToken("admin@test.com");
     }
 }
