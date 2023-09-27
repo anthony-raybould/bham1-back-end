@@ -8,7 +8,6 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
-import org.checkerframework.checker.units.qual.A;
 import org.kainos.ea.api.*;
 import org.kainos.ea.auth.*;
 import org.kainos.ea.db.*;
@@ -19,9 +18,9 @@ import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.resources.BandController;
 import org.kainos.ea.resources.CapabilityController;
 import org.kainos.ea.resources.JobRoleController;
+import org.kainos.ea.validator.CreateJobRoleValidator;
 import org.kainos.ea.validator.RegisterValidator;
 import org.kainos.ea.validator.UpdateJobRoleValidator;
-import org.kainos.ea.validator.RegisterValidator;
 
 public class DropwizardWebServiceApplication extends Application<DropwizardWebServiceConfiguration> {
 
@@ -49,34 +48,37 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
                     final Environment environment) {
 
         final DatabaseConnector databaseConnector = new DatabaseConnector();
-        final UpdateJobRoleValidator jobRoleValidator = new UpdateJobRoleValidator();
+
         final JobRoleDao jobRoleDao = new JobRoleDao(databaseConnector);
-        final JobRoleService jobRoleService = new JobRoleService(jobRoleDao, jobRoleValidator);
         final CapabilityDao capabilityDao = new CapabilityDao(databaseConnector);
         final BandDao bandDao = new BandDao(databaseConnector);
-        final CapabilityService capabilityService = new CapabilityService(capabilityDao);
-        final BandService bandService = new BandService(bandDao);
         final AuthDao authDao = new AuthDao(databaseConnector);
+
+        final RegisterValidator registerValidator = new RegisterValidator(authDao);
+        final CreateJobRoleValidator createJobRoleValidator = new CreateJobRoleValidator();
+        final UpdateJobRoleValidator updateJobRoleValidator = new UpdateJobRoleValidator();
+
         final JWTService jwtService = new JWTService();
         final TokenService tokenService = new TokenService(authDao, jwtService);
-        final RegisterValidator registerValidator = new RegisterValidator(authDao);
         final AuthService authService = new AuthService(authDao, tokenService, registerValidator);
+        final JobRoleService jobRoleService = new JobRoleService(jobRoleDao, updateJobRoleValidator, createJobRoleValidator, bandDao, capabilityDao);
+        final CapabilityService capabilityService = new CapabilityService(capabilityDao);
+        final BandService bandService = new BandService(bandDao);
+
         environment.jersey().register(new AuthController(authService));
-        environment.jersey().register(new JobRoleController(jobRoleService));
-        environment.jersey().register(new BandController(bandService));
-        environment.jersey().register(new CapabilityController(capabilityService));
-
-
         environment.jersey().register(new AuthDynamicFeature(
                 new TokenAuthFilter.Builder()
                         .setAuthenticator(new TokenAuthenticator(tokenService))
                         .setAuthorizer(new TokenAuthorizer())
                         .setPrefix("Bearer")
                         .buildAuthFilter()));
+
         environment.jersey().register(RolesAllowedDynamicFeature.class);
         environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
-        environment.jersey().register(RolesAllowedDynamicFeature.class);
-        environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
+
+        environment.jersey().register(new JobRoleController(jobRoleService));
+        environment.jersey().register(new BandController(bandService));
+        environment.jersey().register(new CapabilityController(capabilityService));
     }
 
 }
