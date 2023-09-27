@@ -42,7 +42,6 @@ public class JobRoleController {
     @GET
     @Path("/job-roles/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("Employee")
     @ApiOperation(value = "Returns a job role", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION))
     public Response getJobRoleById(@PathParam("id") int id) {
         try {
@@ -61,7 +60,6 @@ public class JobRoleController {
     @DELETE
     @Path("/job-roles/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("Employee")
     @ApiOperation(value = "Deletes a job role", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION))
     public Response deleteJobRoleById(@PathParam("id") int id) {
        try {
