@@ -61,5 +61,4 @@ public class RegisterIntegrationTest {
                 .post(Entity.entity(duplicateRequest, MediaType.APPLICATION_JSON));
         Assertions.assertEquals(409, response.getStatus());
     }
-
 }
