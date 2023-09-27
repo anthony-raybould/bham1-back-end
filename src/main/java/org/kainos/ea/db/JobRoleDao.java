@@ -49,6 +49,26 @@ public class JobRoleDao {
 
         return jobRoles;
     }
+    public boolean doesJobRoleExist(int id) throws SQLException {
+        Connection c = databaseConnector.getConnection();
+        String updateQuery = "SELECT COUNT(*) AS roleExists\n" +
+                "FROM JobRoles\n" +
+                "WHERE jobRoleID = ?";
+
+        PreparedStatement preparedStatement = c.prepareStatement(updateQuery);
+        preparedStatement.setInt(1, id);
+
+        ResultSet rs = preparedStatement.executeQuery();
+        while (rs.next())
+        {
+            if(rs.getInt("roleExists") == 1)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public int updateJobRole(int id, UpdateJobRoleRequest jobRoleRequest) throws SQLException, FailedToUpdateJobRoleException {
         Connection c = databaseConnector.getConnection();
@@ -110,4 +130,48 @@ public class JobRoleDao {
             throw e;
         }
     }
+
+   public JobRoleResponse getJobRoleById(int id) throws SQLException {
+        Connection c = databaseConnector.getConnection();
+
+        String query = "SELECT jobRoleID, jobRoleName, jobSpecSummary, JobBands.bandID, bandName, JobCapability.capabilityID, capabilityName, responsibilities, sharePoint FROM JobRoles" +
+                " INNER JOIN JobBands ON JobRoles.bandID = JobBands.bandID" +
+                " INNER JOIN JobCapability ON JobRoles.capabilityID = JobCapability.capabilityID WHERE jobRoleID = ?";
+
+        PreparedStatement st = c.prepareStatement(query);
+        st.setInt(1, id);
+
+        ResultSet rs = st.executeQuery();
+
+        if (rs.next()) {
+            return new JobRoleResponse(rs.getInt("jobRoleID"),
+                    rs.getString("jobRoleName"),
+                    rs.getString("jobSpecSummary"),
+                    new JobBandResponse(
+                            rs.getInt("JobBands.bandID"),
+                            rs.getString("bandName")
+                    ),
+                    new JobCapabilityResponse(
+                            rs.getInt("JobCapability.capabilityID"),
+                            rs.getString("capabilityName")
+                    ),
+                    rs.getString("responsibilities"),
+                    rs.getString("sharePoint"));
+        }
+        return null;
+    }
+
+    public int  deleteJobRole(int id) throws SQLException {
+        Connection c = databaseConnector.getConnection();
+
+        String deleteJobRoleQuery = "DELETE FROM JobRoles WHERE jobRoleID = ?";
+
+        PreparedStatement deleteJobRole = c.prepareStatement(deleteJobRoleQuery);
+
+        deleteJobRole.setInt(1, id);
+
+        return deleteJobRole.executeUpdate();
+
+    }
+
 }

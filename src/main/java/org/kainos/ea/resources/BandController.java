@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.kainos.ea.cli.JobBandResponse;
-import org.kainos.ea.cllient.FailedToGetBandsException;
+import org.kainos.ea.client.FailedToGetBandsException;
 import org.kainos.ea.api.BandService;
 
 import javax.annotation.security.RolesAllowed;
@@ -29,7 +29,7 @@ public class BandController {
     @GET
     @Path("/band")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("Admin")
+    @RolesAllowed("Employee")
     @ApiOperation(value = "Returns all Capabilities", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION), response = JobBandResponse.class)
     public Response getJobRoles() {
         try {

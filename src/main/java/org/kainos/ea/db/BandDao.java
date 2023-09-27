@@ -22,21 +22,27 @@ public class BandDao {
     }
 
     public List<JobBandResponse> getBands() throws SQLException {
-        Connection c = databaseConnector.getConnection();
+        try{
+            Connection c = databaseConnector.getConnection();
 
-        Statement st = c.createStatement();
+            Statement st = c.createStatement();
 
-        ResultSet rs = st.executeQuery("SELECT bandID, bandName FROM JobBands;");
+            ResultSet rs = st.executeQuery("SELECT bandID, bandName FROM JobBands;");
 
-        List<JobBandResponse> band = new ArrayList<>();
+            List<JobBandResponse> band = new ArrayList<>();
 
-        while (rs.next()) {
-            band.add(new JobBandResponse(
-                    rs.getInt("bandID"),
-                    rs.getString("bandName")))
-            ;}
+            while (rs.next()) {
+                band.add(new JobBandResponse(
+                        rs.getInt("bandID"),
+                        rs.getString("bandName")))
+                ;}
 
-        return band;
+            return band;
+        }
+      catch (Exception e)
+      {
+          throw new SQLException(e);
+      }
     }
 
     public boolean doesBandExist(int bandId) throws SQLException {

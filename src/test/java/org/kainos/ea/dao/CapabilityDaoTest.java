@@ -32,7 +32,11 @@ public class CapabilityDaoTest {
     public void constructor_shouldThrowNullPointerException_whenDatabaseConnectorIsNull() {
         assertThrows(NullPointerException.class, () -> new CapabilityDao(null));
     }
-
+    @Test
+    public void getBand_whenDbError_shouldThrowSQLException() throws SQLException {
+        Mockito.when(databaseConnector.getConnection()).thenReturn(null);
+        assertThrows(SQLException.class, () -> capabilityDao.getCapabilities());
+    }
     @Test
     public void getCapabilities_shouldReturnCapabilities_whenExist() throws SQLException {
         Connection connectionMock = mock(Connection.class);

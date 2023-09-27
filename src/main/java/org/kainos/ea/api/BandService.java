@@ -1,7 +1,7 @@
 package org.kainos.ea.api;
 
 import org.kainos.ea.cli.JobBandResponse;
-import org.kainos.ea.cllient.FailedToGetBandsException;
+import org.kainos.ea.client.FailedToGetBandsException;
 import org.kainos.ea.db.BandDao;
 
 import java.sql.SQLException;

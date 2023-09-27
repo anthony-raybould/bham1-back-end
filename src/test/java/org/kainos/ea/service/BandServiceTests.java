@@ -3,7 +3,7 @@ package org.kainos.ea.service;
 import org.junit.jupiter.api.Test;
 import org.kainos.ea.api.BandService;
 import org.kainos.ea.cli.JobBandResponse;
-import org.kainos.ea.cllient.FailedToGetBandsException;
+import org.kainos.ea.client.FailedToGetBandsException;
 import org.kainos.ea.db.BandDao;
 import org.mockito.Mockito;
 
