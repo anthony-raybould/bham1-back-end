@@ -10,6 +10,11 @@ import org.kainos.ea.db.DatabaseConnector;
 import org.mockito.Mockito;
 
 import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

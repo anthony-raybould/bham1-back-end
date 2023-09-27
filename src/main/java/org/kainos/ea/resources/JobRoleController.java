@@ -1,10 +1,8 @@
 package org.kainos.ea.resources;
 
-import com.mysql.cj.x.protobuf.MysqlxCrud;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
-import org.checkerframework.checker.units.qual.A;
 import org.kainos.ea.api.JobRoleService;
 import org.kainos.ea.cli.JobRoleResponse;
 import org.kainos.ea.cli.UpdateJobRoleRequest;
@@ -12,11 +10,15 @@ import org.kainos.ea.client.FailedJobRolesOperationException;
 import org.kainos.ea.client.FailedToUpdateJobRoleException;
 import org.kainos.ea.client.UpdateJobRoleIDDoesNotExistException;
 import org.kainos.ea.validator.UpdateJobRoleValidator;
+import org.kainos.ea.client.FailedToDeleteJobRoleException;
+import org.kainos.ea.client.JobRoleDoesNotExistException;
+import org.kainos.ea.client.FailedToUpdateJobRoleException;
+import org.kainos.ea.client.UpdateJobRoleIDDoesNotExistException;
+import org.kainos.ea.validator.UpdateJobRoleValidator;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.ValidationException;
-import javax.validation.constraints.Negative;
-import javax.validation.constraints.NotEmpty;
+
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
@@ -49,6 +51,41 @@ public class JobRoleController {
         }
     }
 
+    @GET
+    @Path("/job-roles/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Returns a job role", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION))
+    public Response getJobRoleById(@PathParam("id") int id) {
+        try {
+            return Response.ok(jobRoleService.getJobRoleById(id)).build();
+        } catch (FailedJobRolesOperationException e) {
+            e.printStackTrace();
+
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        } catch (JobRoleDoesNotExistException e) {
+            System.err.println(e.getMessage());
+
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    @DELETE
+    @Path("/job-roles/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Deletes a job role", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION))
+    public Response deleteJobRoleById(@PathParam("id") int id) {
+       try {
+           return Response.ok(jobRoleService.deleteJobRole(id)).build();
+       } catch (FailedToDeleteJobRoleException e) {
+           e.printStackTrace();
+
+           return Response.serverError().build();
+       } catch (JobRoleDoesNotExistException e) {
+           e.printStackTrace();
+
+           return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+       }
+    }
     @PUT
     @Path("/job-roles/{id}")
     @Produces(MediaType.APPLICATION_JSON)

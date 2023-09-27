@@ -10,8 +10,8 @@ import org.kainos.ea.client.FailedToGetCapabilitiesException;
 import org.kainos.ea.api.CapabilityService;
 
 import javax.annotation.security.RolesAllowed;
-import javax.validation.ValidationException;
 import javax.ws.rs.GET;
+import javax.validation.ValidationException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -33,7 +33,7 @@ public class CapabilityController {
     @GET
     @Path("/capabilities")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("Admin")
+    @RolesAllowed("Employee")
     @ApiOperation(value = "Returns all Capabilities", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION), response = JobCapabilityResponse.class)
     public Response getJobRoles() {
         try {

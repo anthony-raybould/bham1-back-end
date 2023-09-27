@@ -8,7 +8,6 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
-import org.checkerframework.checker.units.qual.A;
 import org.kainos.ea.api.*;
 import org.kainos.ea.auth.*;
 import org.kainos.ea.db.*;
@@ -21,6 +20,9 @@ import org.kainos.ea.resources.CapabilityController;
 import org.kainos.ea.resources.JobRoleController;
 import org.kainos.ea.validator.CapabilityValidator;
 import org.kainos.ea.validator.UpdateJobRoleValidator;
+import org.kainos.ea.validator.RegisterValidator;
+import org.kainos.ea.validator.UpdateJobRoleValidator;
+import org.kainos.ea.validator.RegisterValidator;
 
 public class DropwizardWebServiceApplication extends Application<DropwizardWebServiceConfiguration> {
 
@@ -55,15 +57,21 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         final BandDao bandDao = new BandDao(databaseConnector);
         final CapabilityValidator capabilityValidator = new CapabilityValidator();
         final CapabilityService capabilityService = new CapabilityService(capabilityDao, capabilityValidator);
-        final BandService bandService = new BandService(bandDao);   
+        final BandService bandService = new BandService(bandDao);
         final AuthDao authDao = new AuthDao(databaseConnector);
         final JWTService jwtService = new JWTService();
         final TokenService tokenService = new TokenService(authDao, jwtService);
-        final AuthService authService = new AuthService(authDao, tokenService);
+        final RegisterValidator registerValidator = new RegisterValidator(authDao);
+        final AuthService authService = new AuthService(authDao, tokenService, registerValidator);
         environment.jersey().register(new AuthController(authService));
         environment.jersey().register(new JobRoleController(jobRoleService));
         environment.jersey().register(new BandController(bandService));
         environment.jersey().register(new CapabilityController(capabilityService));
+        environment.jersey().register(new AuthController(authService));
+        environment.jersey().register(new JobRoleController(jobRoleService));
+        environment.jersey().register(new BandController(bandService));
+        environment.jersey().register(new CapabilityController(capabilityService));
+
 
         environment.jersey().register(new AuthDynamicFeature(
                 new TokenAuthFilter.Builder()

@@ -29,7 +29,7 @@ public class BandController {
     @GET
     @Path("/band")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("Admin")
+    @RolesAllowed("Employee")
     @ApiOperation(value = "Returns all Capabilities", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION), response = JobBandResponse.class)
     public Response getJobRoles() {
         try {
