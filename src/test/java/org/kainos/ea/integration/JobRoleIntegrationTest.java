@@ -32,8 +32,8 @@ public class JobRoleIntegrationTest {
     void updateJobRoles_shouldReturn200() {
         UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName",
                 "jobSpecSummary",
-                1,
-                1,
+                2,
+                2,
                 "jobResponsibility",
                 "https://www.something.com/");
 

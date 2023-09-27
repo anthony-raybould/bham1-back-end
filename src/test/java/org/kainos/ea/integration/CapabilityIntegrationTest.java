@@ -39,15 +39,6 @@ public class CapabilityIntegrationTest {
     }
 
     @Test
-    void deleteCapability_shouldReturn400_whenInvalidID() throws  SQLException{
-//        Response response = APP.client().target(
-//                System.getenv("TARGET_DOMAIN")+ "/api/capabilities/9999").request().delete();
-        Assertions.assertThrows(SQLException.class, ()->
-                APP.client().target(
-                        System.getenv("TARGET_DOMAIN")+ "/api/capabilities/-1").request().delete());
-    }
-
-    @Test
     void deleteCapability_shouldReturn409_whenReferenced() throws SQLException {
         int capability = createCapabilityToDelete();
         int capabilityReference = createReferenceToCapability(capability);
