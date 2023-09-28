@@ -17,3 +17,10 @@ How to run checkstyle for linting
 ---
 1. Run 'mvn checkstyle:check'
 1. It will also be run if you try to push your changes.
+
+ENV Variables
+---
+1. Create the ENV variables below for the LoginIntegrationTest build configuration.
+TARGET_DOMAIN
+TEST_EMAIL
+TEST_PWD

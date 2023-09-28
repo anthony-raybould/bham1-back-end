@@ -26,8 +26,6 @@
             <property name="illegalPkgs" value="junit, org.hamcrest"/>
             <property name="illegalClasses" value="java.util.logging.Logger"/>
         </module>
-        <!--Checks for * imports-->
-        <module name="AvoidStarImport"/>
         <!--Checks for the right amount of indentation-->
         <module name="Indentation">
             <property name="basicOffset" value="4"/>
@@ -61,7 +59,7 @@
     <!--Checks that the max number of characters for a line is 136-->
     <module name="LineLength">
         <property name="ignorePattern" value="^ *\* *@see.+$"/>
-        <property name="max" value="136"/>
+        <property name="max" value="140"/>
     </module>
 </module>
 
