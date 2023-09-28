@@ -38,7 +38,8 @@ public class UpdateJobRoleValidatorTests {
 
     @Test
     public void testValidate_LongJobRoleName_ReturnsFalse() {
-        validJobRole.setJobRoleName("ThisIsAReallyLongJobRoleNameThatExceedsTheMaximumAllowedLength ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength");
+        validJobRole.setJobRoleName("ThisIsAReallyLongJobRoleNameThatExceedsTheMaximumAllowedLength" +
+                " ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength");
         assertThrows(ValidationException.class, () -> validator.validate(validJobRole));
     }
 
@@ -69,17 +70,22 @@ public class UpdateJobRoleValidatorTests {
 
     @Test
     public void testValidate_LongSharePoint_ReturnsFalse() {
-        validJobRole.setSharePoint("ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength");
+        validJobRole.setSharePoint("ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength" +
+                " ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength" +
+                " ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength" +
+                " ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength" +
+                " ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength" +
+                " ThisIsALongSharePointLinkThatExceedsTheMaximumAllowedLength");
         assertThrows(ValidationException.class, () -> validator.validate(validJobRole));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "",
-            "  ",
-            "ftp://www.example.com",
-            "http://example",
-            "http://www.example@"
+        "",
+        "  ",
+        "ftp://www.example.com",
+        "http://example",
+        "http://www.example@"
     })
     public void testValidate_InvalidUrls_ReturnsFalse(String url)
     {
@@ -88,13 +94,13 @@ public class UpdateJobRoleValidatorTests {
     }
     @ParameterizedTest
     @ValueSource(strings = {
-            "https://www.something.com/",
-            "http://www.something.com/",
-            "https://www.something.edu.co.in",
-            "http://www.url-with-path.com/path",
-            "https://www.url-with-querystring.com/?url=has-querystring",
-            "http://url-without-www-subdomain.com/",
-            "https://mail.google.com"
+        "https://www.something.com/",
+        "http://www.something.com/",
+        "https://www.something.edu.co.in",
+        "http://www.url-with-path.com/path",
+        "https://www.url-with-querystring.com/?url=has-querystring",
+        "http://url-without-www-subdomain.com/",
+        "https://mail.google.com"
     })
     public void testValidate_validUrls_ReturnsTrue(String url)
     {

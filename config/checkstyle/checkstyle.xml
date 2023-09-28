@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+        "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+        "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+    <property name="charset" value="UTF-8"/>
+    <property name="localeLanguage" value=""/>
+    <property name="localeCountry" value=""/>
+
+    <module name="TreeWalker">
+        <!--Checks tabWidth as 4 spaces-->
+        <property name="tabWidth" value="4"/>
+        <!--Checks package names to be formatted as lowercase-->
+        <module name="PackageName">
+            <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
+        </module>
+        <!--check enforces consistent Javadoc comments for classes, methods, and fields-->
+        <module name="JavadocStyle"/>
+        <!--Checks for unused imports-->
+        <module name="UnusedImports"/>
+        <!--Checks for redundant imports-->
+        <module name="RedundantImport"/>
+        <!--Checks for illegal imports-->
+        <module name="IllegalImport">
+            <property name="illegalPkgs" value="junit, org.hamcrest"/>
+            <property name="illegalClasses" value="java.util.logging.Logger"/>
+        </module>
+        <!--Checks for the right amount of indentation-->
+        <module name="Indentation">
+            <property name="basicOffset" value="4"/>
+            <property name="braceAdjustment" value="0"/>
+            <property name="caseIndent" value="4"/>
+            <property name="throwsIndent" value="4"/>
+            <property name="lineWrappingIndentation" value="4"/>
+            <property name="arrayInitIndent" value="4"/>
+        </module>
+        <!--Checks type names follow a pattern-->
+        <module name="TypeName">
+            <property name="format" value="^[A-Z][a-zA-Z0-9]*$"/>
+            <message key="name.invalidPattern"
+                     value="Type name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+        <!--Checks parameter names follow a pattern-->
+        <module name="ParameterName">
+            <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
+            <message key="name.invalidPattern"
+                     value="Parameter name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+        <!---->
+        <module name="MethodName">
+            <property name="format" value="^[a-z][a-z0-9]\w*$"/>
+            <message key="name.invalidPattern"
+                     value="Method name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+        <!--Checks the top level classes resides in a source file of its own-->
+        <module name="OneTopLevelClass"/>
+    </module>
+    <!--Checks that the max number of characters for a line is 136-->
+    <module name="LineLength">
+        <property name="ignorePattern" value="^ *\* *@see.+$"/>
+        <property name="max" value="140"/>
+    </module>
+</module>
+

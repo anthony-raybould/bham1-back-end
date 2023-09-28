@@ -1,8 +1,8 @@
 package org.kainos.ea.db;
 
-import org.kainos.ea.cli.CreateJobRoleRequest;
+
 import org.kainos.ea.cli.JobBandResponse;
-import org.kainos.ea.cli.JobCapabilityResponse;
+
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -39,10 +39,10 @@ public class BandDao {
 
             return band;
         }
-      catch (Exception e)
-      {
-          throw new SQLException(e);
-      }
+        catch (Exception e)
+        {
+            throw new SQLException(e);
+        }
     }
 
     public boolean doesBandExist(int bandId) throws SQLException {

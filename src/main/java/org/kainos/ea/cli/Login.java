@@ -3,7 +3,6 @@ package org.kainos.ea.cli;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.validation.constraints.Email;
 
 public class Login {
     private String email;

@@ -1,7 +1,6 @@
 package org.kainos.ea.db;
 
 import org.kainos.ea.cli.Role;
-import org.kainos.ea.cli.RoleResponse;
 import org.kainos.ea.cli.User;
 import org.kainos.ea.client.FailedToGetUserPassword;
 

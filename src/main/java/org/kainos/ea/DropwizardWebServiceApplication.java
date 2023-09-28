@@ -1,7 +1,6 @@
 package org.kainos.ea;
 
 import io.dropwizard.Application;
-import io.dropwizard.auth.Auth;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.setup.Bootstrap;
@@ -65,7 +64,8 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
         final JWTService jwtService = new JWTService();
         final TokenService tokenService = new TokenService(authDao, jwtService);
         final AuthService authService = new AuthService(authDao, tokenService, registerValidator);
-        final JobRoleService jobRoleService = new JobRoleService(jobRoleDao, updateJobRoleValidator, createJobRoleValidator, bandDao, capabilityDao);
+        final JobRoleService jobRoleService = new JobRoleService(jobRoleDao, updateJobRoleValidator,
+                createJobRoleValidator, bandDao, capabilityDao);
 
         environment.jersey().register(new AuthController(authService));
         environment.jersey().register(new AuthDynamicFeature(

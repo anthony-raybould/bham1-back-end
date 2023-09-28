@@ -7,7 +7,6 @@ import org.kainos.ea.cli.*;
 import org.kainos.ea.client.*;
 
 import javax.annotation.security.PermitAll;
-import javax.validation.Validation;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -28,7 +27,7 @@ import java.util.stream.Collectors;
                 key = HttpHeaders.AUTHORIZATION,
                 name = HttpHeaders.AUTHORIZATION,
                 in = ApiKeyAuthDefinition.ApiKeyLocation.HEADER
-            )
+                )
         }
     )
 )

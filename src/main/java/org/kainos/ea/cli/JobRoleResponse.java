@@ -19,7 +19,13 @@ public class JobRoleResponse {
     private String sharePoint;
 
     @JsonCreator
-    public JobRoleResponse(@JsonProperty("jobRoleID") int jobRoleID, @JsonProperty("jobRoleName") String jobRoleName, @JsonProperty("jobSpecSummary") String jobSpecSummary, @JsonProperty("band") JobBandResponse band, @JsonProperty("capability") JobCapabilityResponse capability, @JsonProperty("responsibilities") String responsibilities, @JsonProperty("sharePoint") String sharePoint) {
+    public JobRoleResponse(@JsonProperty("jobRoleID") int jobRoleID,
+                           @JsonProperty("jobRoleName") String jobRoleName,
+                           @JsonProperty("jobSpecSummary") String jobSpecSummary,
+                           @JsonProperty("band") JobBandResponse band,
+                           @JsonProperty("capability") JobCapabilityResponse capability,
+                           @JsonProperty("responsibilities") String responsibilities,
+                           @JsonProperty("sharePoint") String sharePoint) {
         this.jobRoleID = jobRoleID;
         this.jobRoleName = jobRoleName;
         this.jobSpecSummary = jobSpecSummary;

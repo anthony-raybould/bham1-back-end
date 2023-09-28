@@ -50,7 +50,8 @@ public class CapabilityServiceTests {
     }
 
     @Test
-    public void createCapability_shouldThrowFailedToCreateCapabilityException_whenDaoThrowsFailedToCreateCapabilityException() throws FailedToCreateCapabilityException {
+    public void createCapability_shouldThrowFailedToCreateCapabilityException_whenDaoThrowsFailedToCreateCapabilityException()
+            throws FailedToCreateCapabilityException {
         Mockito.when(capabilityDao.createCapability(null)).thenThrow(FailedToCreateCapabilityException.class);
 
         capabilityService = new CapabilityService(capabilityDao, capabilityValidator);
@@ -59,7 +60,8 @@ public class CapabilityServiceTests {
     }
 
     @Test
-    public void createCapability_shouldThrowValidationException_whenValidatorThrowsValidationException() throws FailedToCreateCapabilityException {
+    public void createCapability_shouldThrowValidationException_whenValidatorThrowsValidationException() throws
+            FailedToCreateCapabilityException {
 
         Mockito.doThrow(new ValidationException()).when(capabilityValidator).validate(null);
         Mockito.when(capabilityDao.createCapability(null)).thenReturn(1);

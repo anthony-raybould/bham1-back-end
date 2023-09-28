@@ -28,7 +28,8 @@ public class JobRoleService {
     private final UpdateJobRoleValidator updateJobRoleValidator;
     private final CreateJobRoleValidator createJobRoleValidator;
 
-    public JobRoleService(JobRoleDao jobRoleDao, UpdateJobRoleValidator  updateJobRoleValidator, CreateJobRoleValidator createJobRoleValidator, BandDao bandDao, CapabilityDao capabilityDao) {
+    public JobRoleService(JobRoleDao jobRoleDao, UpdateJobRoleValidator  updateJobRoleValidator,
+                          CreateJobRoleValidator createJobRoleValidator, BandDao bandDao, CapabilityDao capabilityDao) {
         Objects.requireNonNull(jobRoleDao);
         Objects.requireNonNull(updateJobRoleValidator);
 
@@ -79,7 +80,8 @@ public class JobRoleService {
         }
     }
 
-    public int updateJobRole(Short id, UpdateJobRoleRequest jobRoleRequest) throws UpdateJobRoleIDDoesNotExistException, ValidationException, FailedToUpdateJobRoleException, FailedJobRolesOperationException {
+    public int updateJobRole(Short id, UpdateJobRoleRequest jobRoleRequest) throws UpdateJobRoleIDDoesNotExistException,
+            ValidationException, FailedToUpdateJobRoleException, FailedJobRolesOperationException {
         try {
             if (jobRoleDao.doesJobRoleExist(id)) {
                 updateJobRoleValidator.validate(jobRoleRequest);
@@ -92,9 +94,11 @@ public class JobRoleService {
         }
     }
 
-    public int createJobRole(CreateJobRoleRequest jobRoleRequest) throws FailedToCreateJobRoleRequestException, InvalidJobRoleException {
+    public int createJobRole(CreateJobRoleRequest jobRoleRequest) throws
+            FailedToCreateJobRoleRequestException, InvalidJobRoleException {
         try {
-            if ((!(bandDao.doesBandExist(jobRoleRequest.getBand()))) || (!(capabilityDao.doesCapabilityExist(jobRoleRequest.getCapability())))) {
+            if ((!(bandDao.doesBandExist(jobRoleRequest.getBand()))) ||
+                    (!(capabilityDao.doesCapabilityExist(jobRoleRequest.getCapability())))) {
                 throw new InvalidJobRoleException("Band or Capability does not exist");
             }
 

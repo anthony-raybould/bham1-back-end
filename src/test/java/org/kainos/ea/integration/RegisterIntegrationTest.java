@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
-import org.kainos.ea.cli.Login;
 import org.kainos.ea.cli.RegisterRequest;
 
 import javax.ws.rs.client.Entity;
@@ -66,6 +65,6 @@ public class RegisterIntegrationTest {
         Response response = APP.client().target(System.getenv("TARGET_DOMAIN") + "/api/register").request()
                 .post(Entity.entity(duplicateRequest, MediaType.APPLICATION_JSON));
         System.err.println(response);
-            Assertions.assertEquals(409, response.getStatus());
+        Assertions.assertEquals(409, response.getStatus());
     }
 }

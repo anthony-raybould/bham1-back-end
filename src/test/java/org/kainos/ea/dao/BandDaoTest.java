@@ -3,10 +3,8 @@ package org.kainos.ea.dao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.kainos.ea.cli.JobBandResponse;
-import org.kainos.ea.cli.JobCapabilityResponse;
 import org.kainos.ea.db.BandDao;
 import org.kainos.ea.db.DatabaseConnector;
-import org.kainos.ea.db.JobRoleDao;
 import org.mockito.Mockito;
 
 import java.sql.Connection;

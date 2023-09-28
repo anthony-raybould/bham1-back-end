@@ -34,7 +34,9 @@ public class CapabilityController {
     @Path("/capabilities")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("Employee")
-    @ApiOperation(value = "Returns all Capabilities", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION), response = JobCapabilityResponse.class)
+    @ApiOperation(value = "Returns all Capabilities",
+            authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION),
+            response = JobCapabilityResponse.class)
     public Response getJobRoles() {
         try {
             return Response.ok(capabilityService.getCapabilities()).build();
@@ -51,7 +53,8 @@ public class CapabilityController {
     @Path("/capabilities")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("Admin")
-    @ApiOperation(value = "Creates a capability", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION), response = Integer.class)
+    @ApiOperation(value = "Creates a capability", authorizations = @Authorization(
+            value = HttpHeaders.AUTHORIZATION), response = Integer.class)
     public Response createCapability(CreateCapabilityRequest request) {
 
         try {

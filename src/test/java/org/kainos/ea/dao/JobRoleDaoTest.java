@@ -67,7 +67,8 @@ public class JobRoleDaoTest {
         Mockito.when(resultSetMock.getString("bandName")).thenReturn("Test band").thenReturn("Another test band");
         Mockito.when(resultSetMock.getInt("JobCapability.capabilityID")).thenReturn(1).thenReturn(2);
         Mockito.when(resultSetMock.getString("capabilityName")).thenReturn("Test capability").thenReturn("Another test capability");
-        Mockito.when(resultSetMock.getString("responsibilities")).thenReturn("Test responsibilities").thenReturn("Another test responsibilities");
+        Mockito.when(resultSetMock.getString("responsibilities")).thenReturn(
+                "Test responsibilities").thenReturn("Another test responsibilities");
         Mockito.when(resultSetMock.getString("sharePoint")).thenReturn("Test sharepoint").thenReturn("Another test sharepoint");
 
         List<JobRoleResponse> jobRoles = jobRoleDao.getJobRoles();
@@ -125,7 +126,8 @@ public class JobRoleDaoTest {
         assertEquals(1, id, "Expected 1 row to be updated.");
     }
     @Test
-    public void updateJobRole_shouldThrowFailedToUpdateJobRoleException_whenCantUpdate() throws SQLException, FailedToUpdateJobRoleException {
+    public void updateJobRole_shouldThrowFailedToUpdateJobRoleException_whenCantUpdate() throws SQLException,
+            FailedToUpdateJobRoleException {
         UpdateJobRoleRequest jobRoleRequest = new UpdateJobRoleRequest("jobRoleName", "jobSpecSummary",
                 1, 1,
                 "jobResponsibility", "sharepointLink");
@@ -146,7 +148,12 @@ public class JobRoleDaoTest {
                                                                             1,
                                                                             1,
                                                                             "testResponsibilities",
-                                                                            "https://kainossoftwareltd.sharepoint.com/:b:/r/people/Job%20Specifications/Engineering/Job%20profile%20-%20Software%20Engineer%20(Trainee).pdf?csf=1&web=1&e=nQzHld"
+                                                                            "https://kainossoftwareltd." +
+                                                                                    "sharepoint.com/:b:/r/people/" +
+                                                                                    "Job%20Specifications/Engineering/" +
+                                                                                    "Job%20profile%20-" +
+                                                                                    "%20Software%20Engineer%20" +
+                                                                                    "(Trainee).pdf?csf=1&web=1&e=nQzHld"
         );
         Connection connectionMock = mock(Connection.class);
         Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);
@@ -186,7 +193,8 @@ public class JobRoleDaoTest {
                 1,
                 1,
                 "testResponsibilities",
-                "https://kainossoftwareltd.sharepoint.com/:b:/r/people/Job%20Specifications/Engineering/Job%20profile%20-%20Software%20Engineer%20(Trainee).pdf?csf=1&web=1&e=nQzHld"
+                "https://kainossoftwareltd.sharepoint.com/:b:/r/people/Job%20Specifications/Engineering/" +
+                        "Job%20profile%20-%20Software%20Engineer%20(Trainee).pdf?csf=1&web=1&e=nQzHld"
         );
         Connection connectionMock = mock(Connection.class);
         Mockito.when(databaseConnector.getConnection()).thenReturn(connectionMock);

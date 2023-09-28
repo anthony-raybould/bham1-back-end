@@ -68,7 +68,9 @@ public class JobRoleIntegrationTest {
     }
 
     @Test
-    public void deleteJobRole_shouldReturn200_whenJobDeleted() throws JobRoleDoesNotExistException, FailedToDeleteJobRoleException, SQLException, FailedToGetUserId, FailedToGenerateTokenException {
+    public void deleteJobRole_shouldReturn200_whenJobDeleted() throws JobRoleDoesNotExistException,
+            FailedToDeleteJobRoleException,
+            SQLException, FailedToGetUserId, FailedToGenerateTokenException {
         int userId = createTestUser();
         Response response = APP.client().target("http://localhost:8080/api/job-roles/" + userId)
                 .request()
@@ -78,7 +80,8 @@ public class JobRoleIntegrationTest {
     }
 
     @Test
-    public void deleteJobRole_shouldReturn400_whenInvalidUser() throws JobRoleDoesNotExistException, FailedToDeleteJobRoleException, SQLException, FailedToGetUserId, FailedToGenerateTokenException {
+    public void deleteJobRole_shouldReturn400_whenInvalidUser() throws JobRoleDoesNotExistException,
+            FailedToDeleteJobRoleException, SQLException, FailedToGetUserId, FailedToGenerateTokenException {
         Response response = APP.client().target("http://localhost:8080/api/job-roles/777")
                 .request()
                 .header("Authorization", "Bearer " + authenticateUser.loginAdmin())
@@ -88,7 +91,9 @@ public class JobRoleIntegrationTest {
 
     public int createTestUser() throws SQLException {
         DatabaseConnector connector = new DatabaseConnector();
-        String query = "INSERT into JobRoles(jobRoleName,jobSpecSummary,bandID,capabilityID,responsibilities,sharePoint) VALUES ('testName', 'testSummary', 2, 2, 'responsibilities', 'sharePoint')";
+        String query = "INSERT into JobRoles(jobRoleName,jobSpecSummary,bandID,capabilityID," +
+                "responsibilities,sharePoint) VALUES ('testName', 'testSummary', 2, 2, 'responsibilities'," +
+                " 'sharePoint')";
 
         Statement st = connector.getConnection().createStatement();
         int affectedRows = st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
@@ -159,8 +164,10 @@ public class JobRoleIntegrationTest {
     }
 
     @Test
-    void createJobRoles_whenInvalidJobRoleExceptionThrown_shouldReturn400() throws FailedToGetUserId, SQLException, FailedToGenerateTokenException {
-        CreateJobRoleRequest jobRoleRequest = new CreateJobRoleRequest("jobRoleName", "jobSpecSummary",
+    void createJobRoles_whenInvalidJobRoleExceptionThrown_shouldReturn400() throws FailedToGetUserId,
+            SQLException, FailedToGenerateTokenException {
+        CreateJobRoleRequest jobRoleRequest = new CreateJobRoleRequest(
+                "jobRoleName", "jobSpecSummary",
                 1, 1,
                 "jobResponsibility", "invalidURL");
 

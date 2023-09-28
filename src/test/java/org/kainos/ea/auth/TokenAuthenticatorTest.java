@@ -30,7 +30,8 @@ public class TokenAuthenticatorTest {
 
 
     @Test
-    void tokenAuthenticator_shouldNotValidateLogin_whenInvalidToken() throws SQLException, AuthenticationException, FailedToValidateTokenException {
+    void tokenAuthenticator_shouldNotValidateLogin_whenInvalidToken() throws SQLException,
+            AuthenticationException, FailedToValidateTokenException {
         Mockito.when(tokenService.validateToken("invalidToken")).thenReturn(null);
 
         boolean hasUser = tokenAuthenticator.authenticate("invalidToken").isPresent();

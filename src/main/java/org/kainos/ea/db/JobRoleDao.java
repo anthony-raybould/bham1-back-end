@@ -8,8 +8,7 @@ import org.kainos.ea.cli.JobRoleResponse;
 import org.kainos.ea.cli.UpdateJobRoleRequest;
 import org.kainos.ea.client.FailedToUpdateJobRoleException;
 
-import javax.ws.rs.sse.Sse;
-import java.sql.*;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,8 @@ public class JobRoleDao {
 
         Statement st = c.createStatement();
 
-        ResultSet rs = st.executeQuery("SELECT jobRoleID, jobRoleName, jobSpecSummary, JobBands.bandID, bandName, JobCapability.capabilityID, capabilityName, responsibilities, sharePoint FROM JobRoles" +
+        ResultSet rs = st.executeQuery("SELECT jobRoleID, jobRoleName, jobSpecSummary, JobBands.bandID," +
+                " bandName, JobCapability.capabilityID, capabilityName, responsibilities, sharePoint FROM JobRoles" +
                 " INNER JOIN JobBands ON JobRoles.bandID = JobBands.bandID" +
                 " INNER JOIN JobCapability ON JobRoles.capabilityID = JobCapability.capabilityID");
 
@@ -110,7 +110,8 @@ public class JobRoleDao {
         Connection c = databaseConnector.getConnection();
 
         try {
-            String insertJobRoleQuery = "INSERT INTO JobRoles (jobRoleName, jobSpecSummary, bandID, capabilityID, responsibilities, sharePoint) " +
+            String insertJobRoleQuery = "INSERT INTO JobRoles (jobRoleName, jobSpecSummary," +
+                    " bandID, capabilityID, responsibilities, sharePoint) " +
                     "VALUES (?, ?, ?, ?, ?, ?)";
 
             PreparedStatement insertJobRole = c.prepareStatement(insertJobRoleQuery, Statement.RETURN_GENERATED_KEYS);
@@ -137,10 +138,11 @@ public class JobRoleDao {
         }
     }
 
-   public JobRoleResponse getJobRoleById(int id) throws SQLException {
+    public JobRoleResponse getJobRoleById(int id) throws SQLException {
         Connection c = databaseConnector.getConnection();
 
-        String query = "SELECT jobRoleID, jobRoleName, jobSpecSummary, JobBands.bandID, bandName, JobCapability.capabilityID, capabilityName, responsibilities, sharePoint FROM JobRoles" +
+        String query = "SELECT jobRoleID, jobRoleName, jobSpecSummary, JobBands.bandID," +
+                " bandName, JobCapability.capabilityID, capabilityName, responsibilities, sharePoint FROM JobRoles" +
                 " INNER JOIN JobBands ON JobRoles.bandID = JobBands.bandID" +
                 " INNER JOIN JobCapability ON JobRoles.capabilityID = JobCapability.capabilityID WHERE jobRoleID = ?";
 

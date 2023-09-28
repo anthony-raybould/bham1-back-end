@@ -30,7 +30,8 @@ public class BandController {
     @Path("/band")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("Employee")
-    @ApiOperation(value = "Returns all Capabilities", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION), response = JobBandResponse.class)
+    @ApiOperation(value = "Returns all Capabilities", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION),
+            response = JobBandResponse.class)
     public Response getJobRoles() {
         try {
             return Response.ok(bandService.getBands()).build();

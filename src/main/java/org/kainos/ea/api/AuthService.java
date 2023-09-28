@@ -30,7 +30,8 @@ public class AuthService {
         this.registerValidator = registerValidator;
     }
 
-    public String login(Login login) throws FailedToGenerateTokenException, FailedToGetUserPassword, FailedToGetUserId, FailedToLoginException {
+    public String login(Login login) throws FailedToGenerateTokenException,
+            FailedToGetUserPassword, FailedToGetUserId, FailedToLoginException {
         try {
             String userPassword = authDao.getUserPassword(login.getEmail());
             if (userPassword != null) {
@@ -45,7 +46,8 @@ public class AuthService {
         }
     }
 
-    public void register(RegisterRequest request) throws FailedToRegisterException, DuplicateRegistrationException, FailedToValidateRegisterRequestException, ValidationFailedException {
+    public void register(RegisterRequest request) throws FailedToRegisterException, DuplicateRegistrationException,
+            FailedToValidateRegisterRequestException, ValidationFailedException {
         String validationError = registerValidator.validateRequest(request);
         if (validationError != null) {
             throw new ValidationFailedException(validationError);

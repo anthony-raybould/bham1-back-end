@@ -47,7 +47,9 @@ public class JobRoleServiceTest {
             1,
             1,
             "testResponsibilities",
-            "https://kainossoftwareltd.sharepoint.com/:b:/r/people/Job%20Specifications/Engineering/Job%20profile%20-%20Software%20Engineer%20(Trainee).pdf?csf=1&web=1&e=nQzHld"
+            "https://kainossoftwareltd.sharepoint.com/" +
+                    ":b:/r/people/Job%20Specifications/Engineering/" +
+                    "Job%20profile%20-%20Software%20Engineer%20(Trainee).pdf?csf=1&web=1&e=nQzHld"
     );
 
     @BeforeEach
@@ -101,34 +103,40 @@ public class JobRoleServiceTest {
         }
     }
     @Test
-    public void updateJobRole_shouldThrowFailedJobRolesException_whenDaoThrowsSqlException() throws SQLException, FailedToUpdateJobRoleException {
+    public void updateJobRole_shouldThrowFailedJobRolesException_whenDaoThrowsSqlException() throws SQLException,
+            FailedToUpdateJobRoleException {
         Mockito.when(jobRoleDao.updateJobRole(any(int.class), any(UpdateJobRoleRequest.class))).thenThrow(SQLException.class);
         Mockito.when(jobRoleDao.doesJobRoleExist(any(int.class))).thenReturn(true);
         assertThrows(FailedJobRolesOperationException.class,
                 () -> jobRoleService.updateJobRole((short) 1,jobRoleRequest));
     }
     @Test
-    public void updateJobRole_shouldThrowUpdateJobRoleIDDoesNotExistException_whenUserIdNotInDB() throws SQLException, FailedToUpdateJobRoleException {
+    public void updateJobRole_shouldThrowUpdateJobRoleIDDoesNotExistException_whenUserIdNotInDB() throws SQLException,
+            FailedToUpdateJobRoleException {
         Mockito.when(jobRoleDao.updateJobRole(any(int.class), any(UpdateJobRoleRequest.class))).thenThrow(SQLException.class);
         Mockito.when(jobRoleDao.doesJobRoleExist(any(int.class))).thenReturn(false);
         assertThrows(UpdateJobRoleIDDoesNotExistException.class,
                 () -> jobRoleService.updateJobRole((short) 1,jobRoleRequest));
     }
     @Test
-    public void updateJobRole_shouldThrowValidationException_whenInvalidJobRoleRequest() throws ValidationException, FailedToUpdateJobRoleException, SQLException {
+    public void updateJobRole_shouldThrowValidationException_whenInvalidJobRoleRequest() throws ValidationException,
+            FailedToUpdateJobRoleException, SQLException {
         Mockito.when(jobRoleDao.doesJobRoleExist(any(int.class))).thenReturn(true);
         assertThrows(ValidationException.class,
-                () -> new JobRoleService(jobRoleDao, new UpdateJobRoleValidator(), Mockito.mock(CreateJobRoleValidator.class), Mockito.mock(BandDao.class), Mockito.mock(CapabilityDao.class)).updateJobRole((short)1, jobRoleRequest));
+                () -> new JobRoleService(jobRoleDao, new UpdateJobRoleValidator(), Mockito.mock(CreateJobRoleValidator.class),
+                        Mockito.mock(BandDao.class), Mockito.mock(CapabilityDao.class)).updateJobRole((short)1, jobRoleRequest));
     }
     @Test
-    public void updateJobRole_shouldReturnID_whenSuccess() throws SQLException, FailedToUpdateJobRoleException, FailedJobRolesOperationException, UpdateJobRoleIDDoesNotExistException {
+    public void updateJobRole_shouldReturnID_whenSuccess() throws SQLException, FailedToUpdateJobRoleException,
+            FailedJobRolesOperationException, UpdateJobRoleIDDoesNotExistException {
         Mockito.when(jobRoleDao.updateJobRole(any(int.class), any(UpdateJobRoleRequest.class))).thenReturn(1);
         Mockito.when(jobRoleDao.doesJobRoleExist(any(int.class))).thenReturn(true);
         assertEquals(1, jobRoleService.updateJobRole((short) 1, jobRoleRequest));
     }
 
     @Test
-    public void createJobRole_shouldReturnID__whenDaoReturnsId() throws SQLException, FailedToCreateJobRoleRequestException, InvalidJobRoleException {
+    public void createJobRole_shouldReturnID__whenDaoReturnsId() throws SQLException, FailedToCreateJobRoleRequestException,
+            InvalidJobRoleException {
         int expectedResult = 1;
         Mockito.when(createJobRoleValidator.isValidJobRole(any(CreateJobRoleRequest.class))).thenReturn(null);
         Mockito.when(bandDao.doesBandExist(any(int.class))).thenReturn(true);
@@ -140,7 +148,8 @@ public class JobRoleServiceTest {
     }
 
     @Test
-    public void createJobRole_shouldThrowFailedToCreateJobRoleRequestException_whenDaoThrowsSQLException() throws SQLException, FailedToCreateJobRoleRequestException {
+    public void createJobRole_shouldThrowFailedToCreateJobRoleRequestException_whenDaoThrowsSQLException() throws SQLException,
+            FailedToCreateJobRoleRequestException {
 
         Mockito.when(createJobRoleValidator.isValidJobRole(any(CreateJobRoleRequest.class))).thenReturn(null);
         Mockito.when(bandDao.doesBandExist(any(int.class))).thenReturn(true);
@@ -160,7 +169,9 @@ public class JobRoleServiceTest {
     }
 
     @Test
-    public void createJobRole_shouldReturnNegativeOne_whenDaoReturnsNegativeOne() throws SQLException, FailedToCreateJobRoleRequestException, InvalidJobRoleException {
+    public void createJobRole_shouldReturnNegativeOne_whenDaoReturnsNegativeOne() throws SQLException,
+            FailedToCreateJobRoleRequestException,
+            InvalidJobRoleException {
         int expectedResult = -1;
         Mockito.when(createJobRoleValidator.isValidJobRole(any(CreateJobRoleRequest.class))).thenReturn(null);
         Mockito.when(bandDao.doesBandExist(any(int.class))).thenReturn(true);
@@ -170,7 +181,8 @@ public class JobRoleServiceTest {
         assertThrows(FailedToCreateJobRoleRequestException.class, () -> jobRoleService.createJobRole(createJobRoleRequest));
 
     }
-    public void getJobRole_shouldReturnJobRole_whenDaoReturnsJobRole() throws SQLException, FailedJobRolesOperationException, JobRoleDoesNotExistException {
+    public void getJobRole_shouldReturnJobRole_whenDaoReturnsJobRole() throws SQLException,
+            FailedJobRolesOperationException, JobRoleDoesNotExistException {
         JobRoleResponse jobRole = new JobRoleResponse(
                 1,
                 "Test",
@@ -223,7 +235,8 @@ public class JobRoleServiceTest {
     }
 
     @Test
-    public void deleteJobRole_shouldReturn1_whenDaoDeletesTheJobRole() throws JobRoleDoesNotExistException, FailedToDeleteJobRoleException, SQLException {
+    public void deleteJobRole_shouldReturn1_whenDaoDeletesTheJobRole() throws JobRoleDoesNotExistException,
+            FailedToDeleteJobRoleException, SQLException {
         JobRoleResponse jobRole = new JobRoleResponse(1,
                 "Test",
                 "Test summary",

@@ -38,7 +38,8 @@ public class JobRoleController {
     @Path("/job-roles")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("Employee")
-    @ApiOperation(value = "Returns all job roles", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION), response = JobRoleResponse.class)
+    @ApiOperation(value = "Returns all job roles", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION),
+            response = JobRoleResponse.class)
     public Response getJobRoles() {
         try {
             return Response.ok(jobRoleService.getJobRoles()).build();
@@ -74,17 +75,17 @@ public class JobRoleController {
     @RolesAllowed("Admin")
     @ApiOperation(value = "Deletes a job role", authorizations = @Authorization(value = HttpHeaders.AUTHORIZATION))
     public Response deleteJobRoleById(@PathParam("id") int id) {
-       try {
-           return Response.ok(jobRoleService.deleteJobRole(id)).build();
-       } catch (FailedToDeleteJobRoleException e) {
-           e.printStackTrace();
+        try {
+            return Response.ok(jobRoleService.deleteJobRole(id)).build();
+        } catch (FailedToDeleteJobRoleException e) {
+            e.printStackTrace();
 
-           return Response.serverError().build();
-       } catch (JobRoleDoesNotExistException e) {
-           e.printStackTrace();
+            return Response.serverError().build();
+        } catch (JobRoleDoesNotExistException e) {
+            e.printStackTrace();
 
-           return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-       }
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
     }
     @PUT
     @Path("/job-roles/{id}")
@@ -94,7 +95,7 @@ public class JobRoleController {
     public Response editJobRole(@PathParam("id") @NotNull Short id, UpdateJobRoleRequest jobRoleToUpdate)
     {
         try{
-                return Response.ok(jobRoleService.updateJobRole(id, jobRoleToUpdate)).build();
+            return Response.ok(jobRoleService.updateJobRole(id, jobRoleToUpdate)).build();
         }
         catch(ValidationException | UpdateJobRoleIDDoesNotExistException e)
         {
